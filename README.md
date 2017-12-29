@@ -20,7 +20,7 @@
 
 |浮动效果|错误效果|
 |:---:|:---:|
-|![](art/demo.gif)|![](art/error.gif)|
+|![](art/float.gif)|![](art/error.gif)|
 
 ## 依赖:
 ```
