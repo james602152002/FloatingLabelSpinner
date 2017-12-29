@@ -1,9 +1,9 @@
 # Android浮动字体下拉框-FloatingLabelSpinner
 
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![](https://jitpack.io/v/james602152002/FloatingLabelSpinner.svg)](https://jitpack.io/#james602152002/FloatingLabelSpinner)
 [![MinSDK](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
-[![Methods](https://img.shields.io/badge/Methods%20%7C%20Size%20-%20148%20%7C%20107%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.github.james602152002%3AFloatingLabelSpinner%3A1.0.1)
+[![Methods](https://img.shields.io/badge/Methods%20%7C%20Size%20-%20148%20%7C%20107%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.github.james602152002%3AFloatingLabelSpinner%3A1.1.0)
+[![](https://jitpack.io/v/james602152002/FloatingLabelSpinner.svg)](https://jitpack.io/#james602152002/FloatingLabelSpinner)
 
 ## [English](README_EN.md) | 中文
 
