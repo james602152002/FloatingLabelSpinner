@@ -116,6 +116,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         int defaultErrorColor = Color.RED;
         defaultArray.recycle();
 
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, null);
         label_horizontal_margin = 0;
         label_vertical_margin = 0;
         divider_stroke_width = 1;
