@@ -260,6 +260,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                             final int h = w;
                             firstChild.measure(w, h);
                             hint_cell_height = (short) firstChild.getMeasuredHeight();
+                            invalidate();
                         }
                     }
                 }
