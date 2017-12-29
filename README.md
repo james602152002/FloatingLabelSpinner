@@ -26,16 +26,16 @@
 
 ```
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
 }
 ```
 
 ```
 dependencies {
-	        compile 'com.github.james602152002:FloatingLabelSpinner:1.1.0'
+	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.0'
 }
 ```
 
