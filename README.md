@@ -23,9 +23,25 @@
 |![](art/float_ch.gif)|![](art/error_ch.gif)|
 
 ## 依赖:
+
 ```
-com.github.james602152002:FloatingLabelSpinner:1.0.1
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+}
 ```
+
+```
+dependencies {
+	        compile 'com.github.james602152002:FloatingLabelSpinner:1.1.0'
+}
+```
+
+## 混淆
+
+无需混淆代码。
 
 License
 -------
