@@ -116,8 +116,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         int defaultErrorColor = Color.RED;
         defaultArray.recycle();
 
-//        TypedArray typedArray = context.obtainStyledAttributes(attrs, null);
-//        typedArray.getChangingConfigurations()
         label_horizontal_margin = 0;
         label_vertical_margin = 0;
         divider_stroke_width = 1;
@@ -262,7 +260,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                             final int h = w;
                             firstChild.measure(w, h);
                             hint_cell_height = (short) firstChild.getMeasuredHeight();
-//                            invalidate();
                         }
                     }
                 }
