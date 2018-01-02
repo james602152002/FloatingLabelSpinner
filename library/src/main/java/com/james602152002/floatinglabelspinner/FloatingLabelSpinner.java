@@ -13,13 +13,13 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,18 +55,18 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private short padding_left, padding_top, padding_right, padding_bottom;
     private short hint_cell_height = -1;
 
-    private float label_text_size = 40;
-    private float hint_text_size = 60;
-    private float error_text_size = 40;
+    private float label_text_size;
+    private float hint_text_size;
+    private float error_text_size;
     private float float_label_anim_percentage = 0;
-    private final short ANIM_DURATION = 800;
-    private final short ERROR_ANIM_DURATION_PER_WIDTH = 8000;
+    private short ANIM_DURATION;
+    private short ERROR_ANIM_DURATION_PER_WIDTH;
     private OnItemSelectedListener listener;
     private HintAdapter hintAdapter;
     //    private View hintView;
     private View dropDownHintView;
     //Default hint views
-    private Integer mDropDownHintView;
+    private int dropDownHintViewID;
     private boolean is_error = false;
     private CharSequence error;
     private ObjectAnimator errorAnimator;
@@ -110,29 +110,57 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray defaultArray = context.obtainStyledAttributes(new int[]{R.attr.colorControlNormal, R.attr.colorAccent});
-        int defaultBaseColor = defaultArray.getColor(0, 0);
-        int defaultHighlightColor = defaultArray.getColor(1, 0);
-        int defaultErrorColor = Color.RED;
+        final int primary_color = defaultArray.getColor(0, 0);
         defaultArray.recycle();
+        defaultArray = null;
 
-        label_horizontal_margin = 0;
-        label_vertical_margin = 0;
-        divider_stroke_width = 1;
-        error_vertical_margin = 0;
-        setHint_text_color(Color.GRAY);
-        setHighlight_color(Color.BLUE);
-        setError_color(Color.RED);
-        SpannableString spannableString = new SpannableString("hint*");
-        spannableString.setSpan(new ForegroundColorSpan(Color.RED), spannableString.length() - 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        setHint(spannableString);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FloatingLabelSpinner);
+        label_horizontal_margin = (short) typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_label_horizontal_margin, 0);
+        label_vertical_margin = (short) typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_label_vertical_margin, 0);
+        error_horizontal_margin = (short) typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_error_horizontal_margin, 0);
+        error_vertical_margin = (short) typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_error_vertical_margin, dp2px(3));
+        hint_text_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_textColorHint, Color.GRAY);
+        highlight_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_colorHighlight, primary_color);
+        error_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_colorError, Color.RED);
+        hint = typedArray.getString(R.styleable.FloatingLabelSpinner_j_fls_hint);
+        divider_stroke_width = (short) typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_thickness, dp2px(2));
+        label_text_size = typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_label_textSize, sp2Px(16));
+        hint_text_size = typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_hint_textSize, sp2Px(20));
+        error_text_size = typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_error_textSize, sp2Px(16));
         dividerPaint.setStrokeWidth(divider_stroke_width);
         labelPaint.setTextSize(hint_text_size);
         errorPaint.setTextSize(error_text_size);
-        setPadding(0, 0, 0, 0);
+        dropDownHintViewID = typedArray.getResourceId(R.styleable.FloatingLabelSpinner_j_fls_dropDownHintView, R.layout.drop_down_hint_view);
+        ANIM_DURATION = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_float_anim_duration, 800);
+        ERROR_ANIM_DURATION_PER_WIDTH = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_error_anim_duration, 8000);
+
         setBackgroundColor(0);
         setOnItemSelectedListener(null);
+        typedArray.recycle();
+        typedArray = null;
+
+        TypedArray paddingArray = context.obtainStyledAttributes(attrs, new int[]
+                {android.R.attr.padding, android.R.attr.paddingLeft, android.R.attr.paddingTop, android.R.attr.paddingBottom, android.R.attr.paddingRight});
+        if (paddingArray.hasValue(0)) {
+            padding_left = padding_top = padding_right = padding_bottom = (short) paddingArray.getDimensionPixelOffset(0, 0);
+        } else {
+            padding_left = (short) paddingArray.getDimensionPixelOffset(1, 0);
+            padding_top = (short) paddingArray.getDimensionPixelOffset(2, 0);
+            padding_right = (short) paddingArray.getDimensionPixelOffset(3, 0);
+            padding_bottom = (short) paddingArray.getDimensionPixelOffset(4, 0);
+        }
+        paddingArray.recycle();
+        paddingArray = null;
+        updatePadding();
     }
 
+    private int dp2px(float dpValue) {
+        return (int) (0.5f + dpValue * getResources().getDisplayMetrics().density);
+    }
+
+    private int sp2Px(float spValue) {
+        return (int) (spValue * getResources().getDisplayMetrics().scaledDensity);
+    }
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
@@ -168,8 +196,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
         final int label_paint_dy = (int) (padding_top + current_text_size + (1 - float_label_anim_percentage) * (hint_cell_height * .5f));
 
-        if (getHint() != null)
-            drawSpannableString(canvas, getHint(), labelPaint, label_horizontal_margin, label_paint_dy);
+        if (hint != null)
+            drawSpannableString(canvas, hint, labelPaint, label_horizontal_margin, label_paint_dy);
 
         final int divider_y = (int) (padding_top + label_text_size + (hint_cell_height > 0 ? hint_cell_height : hint_text_size));
         if (!is_error) {
@@ -350,14 +378,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     public int getErrorTopMargin() {
         return error_vertical_margin;
     }
-//
-//    public View getHintView() {
-//        return hintView;
-//    }
-//
-//    public void setHintView(View hintView) {
-//        this.hintView = hintView;
-//    }
 
     public View getDropDownHintView() {
         return dropDownHintView;
@@ -365,6 +385,14 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     public void setDropDownHintView(View dropDownHintView) {
         this.dropDownHintView = dropDownHintView;
+    }
+
+    public int getDropDownHintViewID() {
+        return dropDownHintViewID;
+    }
+
+    public void setDropDownHintView(int mDropDownHintView) {
+        this.dropDownHintViewID = mDropDownHintView;
     }
 
     public CharSequence getHint() {
@@ -534,8 +562,10 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                     convertView.setTag(HINT_TYPE);
                 } else {
                     final LayoutInflater inflater = LayoutInflater.from(mContext);
-                    final int resid = mDropDownHintView;
+                    final int resid = dropDownHintViewID;
                     final TextView textView = (TextView) inflater.inflate(resid, parent, false);
+                    textView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hint_cell_height));
+                    textView.setGravity(Gravity.CENTER_VERTICAL);
                     textView.setText(getHint());
                     textView.setTextColor(getHint_text_color());
                     if (hint_text_size != -1)

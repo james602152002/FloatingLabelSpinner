@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FloatingLabelSpinner">
+        <attr name="j_fls_textColorHint" format = "color"/>
+        <attr name="j_fls_colorHighlight" format = "color"/>
+        <attr name="j_fls_colorError" format = "color"/>
+        <attr name="j_fls_hint" format ="string" />
+        <attr name="j_fls_thickness" format = "dimension"/>
+        <attr name="j_fls_label_horizontal_margin"  format="dimension"/>
+        <attr name="j_fls_label_vertical_margin" format = "dimension"/>
+        <attr name="j_fls_error_horizontal_margin" format= "dimension"/>
+        <attr name="j_fls_error_vertical_margin" format="dimension"/>
+        <attr name="j_fls_label_textSize" format="dimension"/>
+        <attr name="j_fls_hint_textSize" format ="dimension"/>
+        <attr name="j_fls_error_textSize" format="dimension" />
+        <attr name="j_fls_dropDownHintView" format="reference"/>
+        <attr name="j_fls_float_anim_duration" format="integer"/>
+        <attr name="j_fls_error_anim_duration" format="integer"/>
+    </declare-styleable>
+</resources>
