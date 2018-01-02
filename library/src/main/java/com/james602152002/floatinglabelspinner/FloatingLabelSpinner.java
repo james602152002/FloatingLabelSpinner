@@ -63,11 +63,10 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private final short ERROR_ANIM_DURATION_PER_WIDTH = 8000;
     private OnItemSelectedListener listener;
     private HintAdapter hintAdapter;
-    private View hintView;
+    //    private View hintView;
     private View dropDownHintView;
     //Default hint views
     private Integer mDropDownHintView;
-    private Integer mHintView;
     private boolean is_error = false;
     private CharSequence error;
     private ObjectAnimator errorAnimator;
@@ -252,18 +251,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
-                if (hint_cell_height == -1) {
-                    if (hintAdapter != null && hintAdapter.getCount() > 0) {
-                        View firstChild = hintAdapter.getView(1, null, null);
-                        if (firstChild != null) {
-                            final int w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
-                            final int h = w;
-                            firstChild.measure(w, h);
-                            hint_cell_height = (short) firstChild.getMeasuredHeight();
-                            invalidate();
-                        }
-                    }
-                }
+                measureHintCellHeight();
                 if (init && float_label_anim_percentage == 0) {
                     startAnimator(0, 1);
                 } else if (position == 0 && float_label_anim_percentage != 0) {
@@ -290,6 +278,21 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             }
         };
         super.setOnItemSelectedListener(itemSelectedListener);
+    }
+
+    private void measureHintCellHeight() {
+        if (hint_cell_height == -1) {
+            if (hintAdapter != null && hintAdapter.getCount() > 0) {
+                View firstChild = hintAdapter.getView(1, null, null);
+                if (firstChild != null) {
+                    final int w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+                    final int h = w;
+                    firstChild.measure(w, h);
+                    hint_cell_height = (short) firstChild.getMeasuredHeight();
+                    invalidate();
+                }
+            }
+        }
     }
 
 
@@ -347,14 +350,14 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     public int getErrorTopMargin() {
         return error_vertical_margin;
     }
-
-    public View getHintView() {
-        return hintView;
-    }
-
-    public void setHintView(View hintView) {
-        this.hintView = hintView;
-    }
+//
+//    public View getHintView() {
+//        return hintView;
+//    }
+//
+//    public void setHintView(View hintView) {
+//        this.hintView = hintView;
+//    }
 
     public View getDropDownHintView() {
         return dropDownHintView;
@@ -540,19 +543,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                     convertView = textView;
                 }
             } else {
-                if (hintView != null) {
-                    convertView = hintView;
-                    convertView.setTag(HINT_TYPE);
-                } else {
-                    final LayoutInflater inflater = LayoutInflater.from(mContext);
-                    final int resid = mHintView;
-                    final TextView textView = (TextView) inflater.inflate(resid, parent, false);
-                    textView.setText(getHint());
-                    textView.setTextColor(getHint_text_color());
-                    if (hint_text_size != -1)
-                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, hint_text_size);
-                    convertView = textView;
-                }
+                convertView = new View(getContext());
+                measureHintCellHeight();
+                convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hint_cell_height));
             }
             if (convertView.getLayoutParams() == null) {
                 AbsListView.LayoutParams lp = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
