@@ -76,13 +76,40 @@ dependencies {
           app:j_fls_hint_textSize="20sp"
           //错误文字字体大小
           app:j_fls_error_textSize="14sp"
-          //drop down view头部
+          //设置drop down view头部
           app:j_fls_dropDownHintView="@layout/header"
           //浮动文字动画时间(单位：毫秒)
-          app:j_fls_float_anim_duration="@layout/header"
+          app:j_fls_float_anim_duration="800"
           //错误状态下跑马灯动画时间(单位：毫秒)
-          app:j_fls_error_anim_duration="@layout/header"/>
+          app:j_fls_error_anim_duration="8000"/>
           
+```
+
+## 方法
+
+```java
+
+	//浮动文字字体大小
+	setLabel_text_size(float label_text_size);
+	//提示文字字体大小
+	setHint_text_size(float hint_text_size);
+	//错误文字字体大小
+	setError_text_size(float error_text_size);
+	//分割线厚度
+	setThickness(int thickness);
+	//分割线颜色
+	setHighlight_color(int color);
+	//提示文字颜色
+	setHint_text_color(int color);
+	//错误状态颜色
+	setError_color(int color);
+	//设置错误文字水平垂直偏移量
+	setErrorMargin(int horizontal_margin, int vertical_margin);
+	//设置浮动及提示文字(支持ForegroundColorSpan)
+	spinner.setHint(CharSequence hint);
+	//设置drop down view头部
+	spinner.setDropDownHintView(View view);
+
 ```
 
 ## 混淆
