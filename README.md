@@ -15,6 +15,8 @@
  - 支持代码设置提示、分割线以及错误状态下的颜色 
  - 支持自定义弹出框dropDownHintView(弹出框头部)
  - 错误文字的字数太多会以跑马灯动画展示
+ - 浮动文字显示字数过多以ellipsize展示
+ - 浮动文字支持ForegroundColorSpan
  
 ## Demo
 [下载 APK-Demo](art/demo.apk)
@@ -24,6 +26,8 @@
 |浮动效果|错误效果|
 |:---:|:---:|
 |![](art/float_ch.gif)|![](art/error_ch.gif)|
+
+[更多效果](common_md/DEMONSTRATION_CH.md)
 
 ## 依赖:
 
@@ -45,6 +49,14 @@ dependencies {
 ## 混淆
 
 无需混淆代码。
+
+## 赞赏
+
+如果觉得效果写得不错，欢迎赏小弟一口蛋白粉 :)
+
+|微信|支付宝|
+|:---:|:---:|
+|![](art/weixin_green.jpg)|![](art/zhifubao_blue.jpg)|
 
 License
 -------
