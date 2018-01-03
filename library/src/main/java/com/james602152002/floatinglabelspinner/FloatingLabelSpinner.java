@@ -73,6 +73,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private ObjectAnimator errorAnimator;
     private float error_percentage = 0;
 
+
     public FloatingLabelSpinner(Context context) {
         super(context);
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
