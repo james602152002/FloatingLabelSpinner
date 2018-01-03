@@ -50,6 +50,14 @@ dependencies {
 
 无需混淆代码。
 
+## 赞赏
+
+如果觉得效果写得不错，欢迎赏小弟一口蛋白粉 :)
+
+|微信|支付宝|
+|:---:|:---:|
+|![](art/weixin.jpg)|![](art/zhifubao.jpg)|
+
 License
 -------
 
