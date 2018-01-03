@@ -27,7 +27,7 @@
 |:---:|:---:|
 |![](art/float_ch.gif)|![](art/error_ch.gif)|
 
-[更多效果](art/MORE_DEMO_CH.md)
+[更多效果](common_md/DEMONSTRATION_CH.md)
 
 ## 依赖:
 
