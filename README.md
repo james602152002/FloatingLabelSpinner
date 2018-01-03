@@ -26,10 +26,8 @@
 |浮动效果|错误效果|
 |:---:|:---:|
 |![](art/float_ch.gif)|![](art/error_ch.gif)|
-|Ellipsize|ForegroundColorSpan|
-|![](art/ellipsize_ch.png)|![](art/spannable_string_ch.png)|
-|自定义drop down hint view||
-|![](art/customize_spinner_hint_ch.gif)||
+
+[更多效果](art/MORE_DEMO_CH.md)
 
 ## 依赖:
 
