@@ -56,7 +56,7 @@ dependencies {
 
 |微信|支付宝|
 |:---:|:---:|
-|![](art/weixin.jpg)|![](art/zhifubao.jpg)|
+|![](art/weixin_green.jpg)|![](art/zhifubao_blue.jpg)|
 
 License
 -------
