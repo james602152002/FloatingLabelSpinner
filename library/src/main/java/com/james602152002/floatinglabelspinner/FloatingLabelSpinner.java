@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.SpannableString;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
@@ -39,14 +40,14 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     private short label_horizontal_margin;
     private short label_vertical_margin;
-    private final Paint labelPaint;
+    private final TextPaint labelPaint;
 
     private short divider_stroke_width;
     private final Paint dividerPaint;
 
     private short error_vertical_margin;
     private short error_horizontal_margin;
-    private final Paint errorPaint;
+    private final TextPaint errorPaint;
 
     private int highlight_color;
     private int hint_text_color;
@@ -75,36 +76,36 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     public FloatingLabelSpinner(Context context) {
         super(context);
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
-        labelPaint = new Paint(anti_alias_flag);
+        labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
-        errorPaint = new Paint(anti_alias_flag);
+        errorPaint = new TextPaint(anti_alias_flag);
         init(context, null);
     }
 
     public FloatingLabelSpinner(Context context, int mode) {
         super(context, mode);
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
-        labelPaint = new Paint(anti_alias_flag);
+        labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
-        errorPaint = new Paint(anti_alias_flag);
+        errorPaint = new TextPaint(anti_alias_flag);
         init(context, null);
     }
 
     public FloatingLabelSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode) {
         super(context, attrs, defStyleAttr, mode);
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
-        labelPaint = new Paint(anti_alias_flag);
+        labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
-        errorPaint = new Paint(anti_alias_flag);
+        errorPaint = new TextPaint(anti_alias_flag);
         init(context, attrs);
     }
 
     public FloatingLabelSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
-        labelPaint = new Paint(anti_alias_flag);
+        labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
-        errorPaint = new Paint(anti_alias_flag);
+        errorPaint = new TextPaint(anti_alias_flag);
         init(context, attrs);
     }
 
@@ -229,11 +230,13 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         canvas.drawLine(0, divider_y, getWidth(), divider_y, dividerPaint);
     }
 
-    private void drawSpannableString(final Canvas canvas, CharSequence hint, final Paint paint, final int start_x, final int start_y) {
+    private void drawSpannableString(final Canvas canvas, CharSequence hint, final TextPaint paint, final int start_x, final int start_y) {
         // draw each span one at a time
         int next;
         float xStart = start_x;
         float xEnd;
+        hint = TextUtils.ellipsize(hint, paint, getWidth() - padding_left - padding_right, TextUtils.TruncateAt.END);
+
         if (hint instanceof SpannableString) {
             SpannableString spannableString = (SpannableString) hint;
             for (int i = 0; i < spannableString.length(); i = next) {
