@@ -29,7 +29,7 @@
 |Ellipsize|ForegroundColorSpan|
 |![](art/ellipsize_ch.png)|![](art/spannable_string_ch.png)|
 |自定义drop down hint view||
-|![](art/ellipsize_ch.png)||
+|![](art/customize_spinner_hint_ch.gif)||
 
 ## 依赖:
 
