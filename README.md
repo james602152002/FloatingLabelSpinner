@@ -27,8 +27,9 @@
 |:---:|:---:|
 |![](art/float_ch.gif)|![](art/error_ch.gif)|
 |Ellipsize|ForegroundColorSpan|
-|:---:|:---:|
 |![](art/ellipsize_ch.png)|![](art/spannable_string_ch.png)|
+|自定义drop down hint view||
+|![](art/ellipsize_ch.png)||
 
 ## 依赖:
 
