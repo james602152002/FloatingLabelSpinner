@@ -46,6 +46,45 @@ dependencies {
 }
 ```
 
+## 属性
+
+```xml
+<com.james602152002.floatinglabelspinner.FloatingLabelSpinner
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          //浮动文字颜色
+          app:j_fls_textColorHint="@android:color/holo_orange_light" 
+          //分割线颜色
+          app:j_fls_colorHighlight="#0000FF" 
+          //错误提示颜色
+          app:j_fls_colorError="#0000FF"
+          //浮动文字
+          app:j_fls_hint="label"
+          //分割线厚度
+          app:j_fls_thickness="2dp"
+          //浮动文字水平偏移量
+          app: j_fls_label_horizontal_margin="2dp"
+          //浮动文字垂直偏移量
+          app: j_fls_label_vertical_margin="2dp"
+          //错误文字水平偏移量
+          app: j_fls_error_horizontal_margin="2dp"
+          //错误文字垂直偏移量
+          app: j_fls_error_vertical_margin="2dp"
+          //浮动文字字体大小
+          app: j_fls_label_textSize="14sp"
+          //提示文字字体大小
+          app:j_fls_hint_textSize="20sp"
+          //错误文字字体大小
+          app:j_fls_error_textSize="14sp"
+          //drop down view头部
+          app:j_fls_dropDownHintView="@layout/header"
+          //浮动文字动画时间(单位：毫秒)
+          app:j_fls_float_anim_duration="@layout/header"
+          //错误状态下跑马灯动画时间(单位：毫秒)
+          app:j_fls_error_anim_duration="@layout/header"/>
+          
+```
+
 ## 混淆
 
 无需混淆代码。
