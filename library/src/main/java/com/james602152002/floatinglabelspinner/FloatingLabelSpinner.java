@@ -236,7 +236,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         int next;
         float xStart = start_x;
         float xEnd;
-        hint = TextUtils.ellipsize(hint, paint, getWidth() - padding_left - padding_right - label_horizontal_margin, TextUtils.TruncateAt.END);
+
+        if (paint != errorPaint)
+            hint = TextUtils.ellipsize(hint, paint, getWidth() - padding_left - padding_right - label_horizontal_margin, TextUtils.TruncateAt.END);
 
         if (hint instanceof SpannableString) {
             SpannableString spannableString = (SpannableString) hint;
