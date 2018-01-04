@@ -19,7 +19,7 @@ Most of floating label spinner always use xml to adjust your widget's size. Some
  - Label support ForegroundColorSpan now.
  
 ## APK Demo
-[Download APK-Demo](art/demo_en.apk)
+[Download APK-Demo](art/demo.apk)
 
 ## Demonstration
 
@@ -42,7 +42,7 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.1'
+	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.2'
 }
 ```
 
@@ -109,6 +109,8 @@ dependencies {
 	spinner.setHint(CharSequence hint);
 	//set drop down hint view header
 	spinner.setDropDownHintView(View view);
+	//set error text(null for cancel error status)
+	setError(String error);
 
 ```
 
