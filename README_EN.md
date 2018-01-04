@@ -52,35 +52,35 @@ dependencies {
 <com.james602152002.floatinglabelspinner.FloatingLabelSpinner
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          //浮动文字颜色
+          //floating label and hint text color
           app:j_fls_textColorHint="@android:color/holo_orange_light" 
-          //分割线颜色
+          //divider color
           app:j_fls_colorHighlight="#0000FF" 
-          //错误提示颜色
+          //error color
           app:j_fls_colorError="#0000FF"
-          //浮动文字
+          //floating label text
           app:j_fls_hint="label"
-          //分割线厚度
+          //thickness of divider
           app:j_fls_thickness="2dp"
-          //浮动文字水平偏移量
+          //horizontal margin of label
           app: j_fls_label_horizontal_margin="2dp"
-          //浮动文字垂直偏移量
+          //vertical margin of label
           app: j_fls_label_vertical_margin="2dp"
-          //错误文字水平偏移量
+          //horizontal margin of error text
           app: j_fls_error_horizontal_margin="2dp"
-          //错误文字垂直偏移量
+          //vertical margin of error text
           app: j_fls_error_vertical_margin="2dp"
-          //浮动文字字体大小
+          //floating label text size
           app: j_fls_label_textSize="14sp"
-          //提示文字字体大小
+          //hint text size
           app:j_fls_hint_textSize="20sp"
-          //错误文字字体大小
+          //error text size
           app:j_fls_error_textSize="14sp"
-          //设置drop down view头部
+          //header of drop down hint view
           app:j_fls_dropDownHintView="@layout/header"
-          //浮动文字动画时间(单位：毫秒)
+          //float animation duration(unit：ms)
           app:j_fls_float_anim_duration="800"
-          //错误状态下跑马灯动画时间(单位：毫秒)
+          //scrolling text animation duration(unit：ms)
           app:j_fls_error_anim_duration="8000"/>
           
 ```
@@ -89,25 +89,25 @@ dependencies {
 
 ```java
 
-	//浮动文字字体大小
+	//floating label text size
 	setLabel_text_size(float label_text_size);
-	//提示文字字体大小
+	//hint text size
 	setHint_text_size(float hint_text_size);
-	//错误文字字体大小
+	//error text size
 	setError_text_size(float error_text_size);
-	//分割线厚度
+	//thichness of divider
 	setThickness(int thickness);
-	//分割线颜色
+	//divider color
 	setHighlight_color(int color);
-	//提示文字颜色
+	//hint text color
 	setHint_text_color(int color);
-	//错误状态颜色
+	//error color
 	setError_color(int color);
-	//设置错误文字水平垂直偏移量
+	//set error text horizontal and vertical margin
 	setErrorMargin(int horizontal_margin, int vertical_margin);
-	//设置浮动及提示文字(支持ForegroundColorSpan)
+	//set float label text and hint text(Support ForegroundColorSpan)
 	spinner.setHint(CharSequence hint);
-	//设置drop down view头部
+	//set drop down hint view header
 	spinner.setDropDownHintView(View view);
 
 ```
@@ -127,13 +127,11 @@ If you like this widget,  you could praise me some protein powder below lol
 ## Suggestion
 
 ```
-此控件于设置适配器后才会正常测量高度，如果里面的数据用到网络请求
-我建议：
+This widget meaure precisely after set adapter. If your data request from internet, I suggest:
 
-1. 获取数据后再设置适配器。
-2. 用延时加载的效果载入页面，获取数据后再更新视图。
+1. Setting adpater after fetching data.
+2. Customizing your UI like facebook loading style, and then refresh your UI to improve your UX.
 
-以提高交互体验～～～
 ```
 
 License
