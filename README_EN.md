@@ -9,27 +9,27 @@
 
 Most of floating label spinner always use xml to adjust your widget's size. Sometimes we wanna do it by code, and we want to style our floating label by ForegroundColorSpan. My widget will satisfy your demands.
 
-## 特点功能:
+## Feature:
 
- - 支持代码更改字体大小(包含浮动文字、提示文字、错误文字)
- - 支持代码设置提示、分割线以及错误状态下的颜色 
- - 支持自定义弹出框dropDownHintView(弹出框头部)
- - 错误文字的字数太多会以跑马灯动画展示
- - 浮动文字显示字数过多以ellipsize展示
- - 浮动文字支持ForegroundColorSpan
+ - Set text size by code. (Include floating label, hint text, and error text)
+ - Set hint color, divider color and error color by code.
+ - Customize DropDownHintView.
+ - Scrolling text animation when your error character is too long.
+ - Ellipsize when hint character is too long.
+ - Label support ForegroundColorSpan now.
  
-## Demo
-[下载 APK-Demo](art/demo.apk)
+## APK Demo
+[Download APK-Demo](art/demo_en.apk)
 
-## 项目演示
+## Demonstration
 
-|浮动效果|错误效果|
+|Floating Status|Error Status|
 |:---:|:---:|
-|![](art/float_ch.gif)|![](art/error_ch.gif)|
+|![](art/float_en.gif)|![](art/error_en.gif)|
 
-[更多效果](common_md/DEMONSTRATION_CH.md)
+[More Demostration](common_md/DEMONSTRATION_EN.md)
 
-## 依赖:
+## Dependency:
 
 ```
 allprojects {
@@ -46,7 +46,7 @@ dependencies {
 }
 ```
 
-## 属性
+## Property
 
 ```xml
 <com.james602152002.floatinglabelspinner.FloatingLabelSpinner
@@ -85,7 +85,7 @@ dependencies {
           
 ```
 
-## 方法
+## Method
 
 ```java
 
@@ -112,19 +112,19 @@ dependencies {
 
 ```
 
-## 混淆
+## Proguard
 
-无需混淆代码。
+You don't need use proguard at all.
 
-## 赞赏
+## Donate
 
-如果觉得效果写得不错，欢迎赏小弟一口蛋白粉 :)
+If you like this widget,  you could praise me some protein powder below lol
 
-|微信|支付宝|
+|WeChat|AliPay|
 |:---:|:---:|
 |![](art/weixin_green.jpg)|![](art/zhifubao_blue.jpg)|
 
-## 建议
+## Suggestion
 
 ```
 此控件于设置适配器后才会正常测量高度，如果里面的数据用到网络请求
