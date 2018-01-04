@@ -1,4 +1,4 @@
-# Android浮动字体下拉框-FloatingLabelSpinner
+# Android-FloatingLabelSpinner
 
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![MinSDK](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
@@ -7,7 +7,7 @@
 
 ## English| [中文](README.md)
 
-多数的浮动下拉框控件碍于多数的适配方式必须由xml实现，故无法在页面上显示流体布局浮动提示文字。设计上通常欠缺考虑，无法设置ForegroundColorSpan文字以满足个人需求，故开发此控件。
+Most of floating label spinner always use xml to adjust your widget's size. Sometimes we wanna do it by code, and we want to style our floating label by ForegroundColorSpan. My widget will satisfy your demands.
 
 ## 特点功能:
 
