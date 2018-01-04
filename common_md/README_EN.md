@@ -1,35 +1,35 @@
-# Android浮动字体下拉框-FloatingLabelSpinner
+# Android-FloatingLabelSpinner
 
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![MinSDK](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Methods](https://img.shields.io/badge/Methods%20%7C%20Size%20-%20148%20%7C%20107%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.github.james602152002%3AFloatingLabelSpinner%3A1.1.0)
 [![](https://jitpack.io/v/james602152002/FloatingLabelSpinner.svg)](https://jitpack.io/#james602152002/FloatingLabelSpinner)
 
-## [English](README_EN.md) | 中文
+## English| [中文](README.md)
 
-多数的浮动下拉框控件碍于多数的适配方式必须由xml实现，故无法在页面上显示流体布局浮动提示文字。设计上通常欠缺考虑，无法设置ForegroundColorSpan文字以满足个人需求，故开发此控件。
+Most of floating label spinner always use xml to adjust your widget's size. Sometimes we wanna do it by code, and we want to style our floating label by ForegroundColorSpan. My widget will satisfy your demands.
 
-## 特点功能:
+## Feature:
 
- - 支持代码更改字体大小(包含浮动文字、提示文字、错误文字)
- - 支持代码设置提示、分割线以及错误状态下的颜色 
- - 支持自定义弹出框dropDownHintView(弹出框头部)
- - 错误文字的字数太多会以跑马灯动画展示
- - 浮动文字显示字数过多以ellipsize展示
- - 浮动文字支持ForegroundColorSpan
+ - Set text size by code. (Include floating label, hint text, and error text)
+ - Set hint color, divider color and error color by code.
+ - Customize DropDownHintView.
+ - Scrolling text animation when your error character is too long.
+ - Ellipsize when hint character is too long.
+ - Label support ForegroundColorSpan now.
  
-## Demo
-[下载 APK-Demo](art/demo.apk)
+## APK Demo
+[Download APK-Demo](art/demo_en.apk)
 
-## 项目演示
+## Demonstration
 
-|浮动效果|错误效果|
+|Floating Status|Error Status|
 |:---:|:---:|
-|![](art/float_ch.gif)|![](art/error_ch.gif)|
+|![](art/float_en.gif)|![](art/error_en.gif)|
 
-[更多效果](common_md/DEMONSTRATION_CH.md)
+[More Demostration](common_md/DEMONSTRATION_EN.md)
 
-## 依赖:
+## Dependency:
 
 ```
 allprojects {
@@ -46,94 +46,92 @@ dependencies {
 }
 ```
 
-## 属性
+## Property
 
 ```xml
 <com.james602152002.floatinglabelspinner.FloatingLabelSpinner
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          //浮动文字颜色
+          //floating label and hint text color
           app:j_fls_textColorHint="@android:color/holo_orange_light" 
-          //分割线颜色
+          //divider color
           app:j_fls_colorHighlight="#0000FF" 
-          //错误提示颜色
+          //error color
           app:j_fls_colorError="#0000FF"
-          //浮动文字
+          //floating label text
           app:j_fls_hint="label"
-          //分割线厚度
+          //thickness of divider
           app:j_fls_thickness="2dp"
-          //浮动文字水平偏移量
+          //horizontal margin of label
           app: j_fls_label_horizontal_margin="2dp"
-          //浮动文字垂直偏移量
+          //vertical margin of label
           app: j_fls_label_vertical_margin="2dp"
-          //错误文字水平偏移量
+          //horizontal margin of error text
           app: j_fls_error_horizontal_margin="2dp"
-          //错误文字垂直偏移量
+          //vertical margin of error text
           app: j_fls_error_vertical_margin="2dp"
-          //浮动文字字体大小
+          //floating label text size
           app: j_fls_label_textSize="14sp"
-          //提示文字字体大小
+          //hint text size
           app:j_fls_hint_textSize="20sp"
-          //错误文字字体大小
+          //error text size
           app:j_fls_error_textSize="14sp"
-          //设置drop down view头部
+          //header of drop down hint view
           app:j_fls_dropDownHintView="@layout/header"
-          //浮动文字动画时间(单位：毫秒)
+          //float animation duration(unit：ms)
           app:j_fls_float_anim_duration="800"
-          //错误状态下跑马灯动画时间(单位：毫秒)
+          //scrolling text animation duration(unit：ms)
           app:j_fls_error_anim_duration="8000"/>
           
 ```
 
-## 方法
+## Method
 
 ```java
 
-	//浮动文字字体大小
+	//floating label text size
 	setLabel_text_size(float label_text_size);
-	//提示文字字体大小
+	//hint text size
 	setHint_text_size(float hint_text_size);
-	//错误文字字体大小
+	//error text size
 	setError_text_size(float error_text_size);
-	//分割线厚度
+	//thichness of divider
 	setThickness(int thickness);
-	//分割线颜色
+	//divider color
 	setHighlight_color(int color);
-	//提示文字颜色
+	//hint text color
 	setHint_text_color(int color);
-	//错误状态颜色
+	//error color
 	setError_color(int color);
-	//设置错误文字水平垂直偏移量
+	//set error text horizontal and vertical margin
 	setErrorMargin(int horizontal_margin, int vertical_margin);
-	//设置浮动及提示文字(支持ForegroundColorSpan)
+	//set float label text and hint text(Support ForegroundColorSpan)
 	spinner.setHint(CharSequence hint);
-	//设置drop down view头部
+	//set drop down hint view header
 	spinner.setDropDownHintView(View view);
 
 ```
 
-## 混淆
+## Proguard
 
-无需混淆代码。
+You don't need use proguard at all.
 
-## 赞赏
+## Donate
 
-如果觉得效果写得不错，欢迎赏小弟一口蛋白粉 :)
+If you like this widget,  you could praise me some protein powder below lol
 
-|微信|支付宝|
+|WeChat|AliPay|
 |:---:|:---:|
 |![](art/weixin_green.jpg)|![](art/zhifubao_blue.jpg)|
 
-## 建议
+## Suggestion
 
 ```
-此控件于设置适配器后才会正常测量高度，如果里面的数据用到网络请求
-我建议：
+This widget meaure precisely after set adapter. If your data request from internet, I suggest:
 
-1. 获取数据后再设置适配器。
-2. 用延时加载的效果载入页面，获取数据后再更新视图。
+1. Setting adpater after fetching data.
+2. Customizing your UI like facebook loading style, and then refresh your UI to improve your UX.
 
-以提高交互体验～～～
 ```
 
 License
