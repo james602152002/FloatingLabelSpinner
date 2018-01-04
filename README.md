@@ -42,7 +42,7 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.1'
+	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.2'
 }
 ```
 
@@ -109,6 +109,8 @@ dependencies {
 	spinner.setHint(CharSequence hint);
 	//设置drop down view头部
 	spinner.setDropDownHintView(View view);
+	//设置错误文字(传空就不显示)
+	setError(String error);
 
 ```
 
