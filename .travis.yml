@@ -27,4 +27,3 @@ before_script:
 script:
   - ./gradlew test
   - ./gradlew connectedAndroidTest
-script: "./travis-build.sh"
