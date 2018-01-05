@@ -20,8 +20,8 @@ Most of floating label spinner always use xml to adjust your widget's size. Some
  - Label support ForegroundColorSpan now.
  
 ## APK Demo
-[Download APK-Demo](art/demo.apk)
-[Reference](https://github.com/james602152002/FloatingLabelSpinnerDemo)
+ - [Download APK-Demo](art/demo.apk)
+ - [Reference](https://github.com/james602152002/FloatingLabelSpinnerDemo)
 
 ## Demonstration
 
