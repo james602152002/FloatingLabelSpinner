@@ -1,32 +1,54 @@
 language: android
-android:
-  components:
-    - tools # to get the new `repository-11.xml`
-    - tools # see https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943)
-    - platform-tools
-    - build-tools-24.0.1
-    - android-24
-    - extra-android-m2repository
-    - extra-android-support
-    - sys-img-armeabi-v7a-android-22
-    - extra-google-google_play_services
+jdk: oraclejdk8
+sudo: false
 
-licenses:
-    - 'android-sdk-preview-license-.+'
-    - echo y
-    - 'android-sdk-license-.+'
-    - echo y
-    - 'google-gdk-license-.+'
-    - echo y
+env:
+    global:
+        - ADB_INSTALL_TIMEOUT=10    #Time out to 10 mins
+
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+  directories:      #Cache all dirs under .gradle folder
+    - $HOME/.gradle/daemon      #Cache daemon logs
+    - $HOME/.gradle/native      #Cache library downloaded from the gradle dependency
+    - $HOME/.gradle/wrapper     #Cache the gradle
+
+android:
+    update_sdk: true
+    components:
+        - platform-tools
+        - tools
+        - build-tools-23.0.3
+        - android-23
+
+        # Additional components
+        - extra-google-google_play_services
+        - extra-google-m2repository
+        - extra-android-m2repository
+
+        #system images
+        - sys-img-armeabi-v7a-android-22
 
 before_script:
-  - android update sdk --no-ui --filter build-tools-24.0.1,android-24,extra-android-m2repository
-  - android list targets
-#  - echo no | android create avd --force -n test -t android-10 --abi armeabi-v7a -c 32M
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - adb wait-for-device
-  - adb shell input keyevent 82 &
-before_install:
-  - chmod +x gradlew
+    - chmod +x gradlew      #Grand permissions
+    - android list targets
+    - echo no | android create avd --force --name test --target android-21 --abi armeabi-v7a    #Create AVD for API 21
+    - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
+
 script:
-  - ./gradlew build connectedCheck
+    - echo "Travis branch is $TRAVIS_BRANCH"
+    - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"
+    - android-wait-for-emulator
+    - adb devices   #Display list of devices
+    - adb shell input keyevent 82 &
+    - ./gradlew connectedCheck -PdisablePreDex --stacktrace
+
+before_install:
+    - pip install --user codecov    #Install codecov
+
+after_success:
+    - codecov                       #Run codecov
+
+after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"
