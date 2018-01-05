@@ -29,6 +29,7 @@ script:
   - ./gradlew test
   - ./gradlew jacocoTestReport
   - ./gradlew build jacocoTestReport
+  - ./gradlew connectedCheck
 #  - ./gradlew connectedAndroidTest
 
 after_success:
