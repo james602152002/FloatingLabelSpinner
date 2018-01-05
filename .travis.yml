@@ -14,10 +14,12 @@ licenses:
     - 'google-gdk-license-.+'
 
 before_script:
-  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+  - "android update sdk --no-ui --filter build-tools-24.0.1,android-24,extra-android-m2repository"
+  - "echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a"
   - emulator -avd test -no-skin -no-audio -no-window &
   - adb wait-for-device
   - adb shell input keyevent 82 &
-
+before_install:
+  - "chmod +x gradlew"
 script:
-   - ./gradlew build connectedCheck
+  - ./gradlew build connectedCheck
