@@ -21,7 +21,7 @@
  
 ## Demo
  - [下载 APK-Demo](art/demo.apk)
- - [Demo网址](https://github.com/james602152002/FloatingLabelSpinnerDemo)
+ - [示例网址](https://github.com/james602152002/FloatingLabelSpinnerDemo)
 
 ## 项目演示
 
