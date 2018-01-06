@@ -131,9 +131,9 @@ If you like this widget,  you could praise me some protein powder below lol
 ## Suggestion
 
 ```
-This widget meaure precisely after set adapter. If your data request from internet, I suggest:
+This widget meaㄋure precisely after set adapter. If your data request from internet, I suggest:
 
-1. Setting adpater after fetching data.
+1. Setting adapter after fetching data.
 2. Customizing your UI like facebook loading style, and then refresh your UI to improve your UX.
 
 ```
