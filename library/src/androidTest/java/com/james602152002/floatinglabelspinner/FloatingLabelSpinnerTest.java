@@ -1,5 +1,6 @@
 package com.james602152002.floatinglabelspinner;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
@@ -8,6 +9,7 @@ import android.support.annotation.VisibleForTesting;
 import android.test.AndroidTestCase;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,14 +79,45 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     }
 
     @Test
-    public void testDispatchDraw() {
+    public void testDispatchDraw() throws NoSuchFieldException, IllegalAccessException {
+        customView.setError("error");
+        Field field = FloatingLabelSpinner.class.getDeclaredField("errorAnimator");
+        field.setAccessible(true);
+        field.set(customView, new ObjectAnimator());
         customView.setHint("hint");
+        customView.setError("error");
         customView.dispatchDraw(new Canvas());
+    }
+
+    @Test
+    public void testDispatchDrawWithErrorMargin()throws NoSuchFieldException, IllegalAccessException {
+        customView.setErrorMargin(10, 10);
+        customView.setError("error");
+        Field field = FloatingLabelSpinner.class.getDeclaredField("errorAnimator");
+        field.setAccessible(true);
+        field.set(customView, new ObjectAnimator());
+        customView.setHint("hint");
+        customView.setError("error");
+        customView.dispatchDraw(new Canvas());
+    }
+
+    @Test
+    public void testDispatchDrawWithoutHintAndError() {
+        customView.setHint(null);
+        customView.setError(null);
+        customView.dispatchDraw(new Canvas());
+    }
+
+    @Test
+    public void testDrawSpannableString() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
         SpannableString span = new SpannableString("*hint");
         span.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         customView.setHint(span);
-        customView.setError("error");
-        customView.dispatchDraw(new Canvas());
+        Method method = FloatingLabelSpinner.class.getDeclaredMethod("drawSpannableString", Canvas.class, CharSequence.class, TextPaint.class, int.class, int.class);
+        method.setAccessible(true);
+        method.invoke(customView, new Canvas(), span, new TextPaint(), 0 , 0);
+//        Field field = FloatingLabelSpinner.class.getDeclaredField("error_percentage");
+//        drawSpannableString(final Canvas canvas, CharSequence hint, final TextPaint paint, final int start_x, final int start_y)
     }
 
     @Test
@@ -146,7 +179,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     }
 
     @Test
-    public void testAdapter() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
+    public void testAdapter() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         customView.setAdapter(new SpinnerAdapter() {
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
@@ -210,7 +243,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     }
 
     @VisibleForTesting
-    public void testErrorAnimation(){
+    public void testErrorAnimation() {
         try {
             customView.setError("error");
             Method method = FloatingLabelSpinner.class.getDeclaredMethod("startErrorAnimation");
@@ -219,7 +252,6 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         } catch (Exception e) {
 
         }
-
     }
 
     @Test
