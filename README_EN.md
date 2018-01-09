@@ -4,8 +4,8 @@
 [![MinSDK](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Methods](https://img.shields.io/badge/Methods%20%7C%20Size%20-%20160%20%7C%2031%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.github.james602152002%3AFloatingLabelSpinner%3A1.1.0)
 [![](https://jitpack.io/v/james602152002/FloatingLabelSpinner.svg)](https://jitpack.io/#james602152002/FloatingLabelSpinner)
-[![codecov](https://codecov.io/gh/james602152002/FloatingLabelSpinner/branch/master/graph/badge.svg)](https://codecov.io/gh/james602152002/FloatingLabelSpinner)
 [![Build Status](https://travis-ci.org/james602152002/FloatingLabelSpinner.svg?branch=master)](https://travis-ci.org/james602152002/FloatingLabelSpinner)
+[![codecov](https://codecov.io/gh/james602152002/FloatingLabelSpinner/branch/master/graph/badge.svg)](https://codecov.io/gh/james602152002/FloatingLabelSpinner)
 
 ## English| [中文](README.md)
 
