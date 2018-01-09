@@ -45,7 +45,7 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.2'
+	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.3'
 }
 ```
 
@@ -114,6 +114,10 @@ dependencies {
 	spinner.setDropDownHintView(View view);
 	//设置错误文字(传空就不显示)
 	setError(String error);
+	//设置浮动文字动画时间(单位：毫秒）
+	setAnimDuration(short duration)
+	//设置错误状态跑马灯动画时间(单位：毫秒）
+	setErrorAnimDuration(short duration)
 
 ```
 

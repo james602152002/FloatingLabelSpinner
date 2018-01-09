@@ -13,6 +13,7 @@ import android.text.TextPaint;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -90,7 +91,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     }
 
     @Test
-    public void testDispatchDrawWithErrorMargin()throws NoSuchFieldException, IllegalAccessException {
+    public void testDispatchDrawWithErrorMargin() throws NoSuchFieldException, IllegalAccessException {
         customView.setErrorMargin(10, 10);
         customView.setError("error");
         Field field = FloatingLabelSpinner.class.getDeclaredField("errorAnimator");
@@ -109,13 +110,13 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     }
 
     @Test
-    public void testDrawSpannableString() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
+    public void testDrawSpannableString() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         SpannableString span = new SpannableString("*hint");
         span.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         customView.setHint(span);
         Method method = FloatingLabelSpinner.class.getDeclaredMethod("drawSpannableString", Canvas.class, CharSequence.class, TextPaint.class, int.class, int.class);
         method.setAccessible(true);
-        method.invoke(customView, new Canvas(), span, new TextPaint(), 0 , 0);
+        method.invoke(customView, new Canvas(), span, new TextPaint(), 0, 0);
 //        Field field = FloatingLabelSpinner.class.getDeclaredField("error_percentage");
 //        drawSpannableString(final Canvas canvas, CharSequence hint, final TextPaint paint, final int start_x, final int start_y)
     }
@@ -176,6 +177,20 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         Field field = FloatingLabelSpinner.class.getDeclaredField("float_label_anim_percentage");
         field.setAccessible(true);
         assertEquals(test_percentage, field.get(customView));
+    }
+
+    @Test
+    public void testAnimationDuration() {
+        final short anim_duration = 80;
+        customView.setAnimDuration(anim_duration);
+        assertEquals(anim_duration, customView.getAnimDuration());
+    }
+
+    @Test
+    public void testErrorAnimDuration() {
+        final short error_anim_duration = 5000;
+        customView.setErrorAnimDuration(error_anim_duration);
+        assertEquals(error_anim_duration, customView.getErrorAnimDuration());
     }
 
     @Test
@@ -262,6 +277,24 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         int dropDownHintView = (int) (Integer.MAX_VALUE * Math.random());
         customView.setDropDownHintView(dropDownHintView);
         assertEquals(dropDownHintView, customView.getDropDownHintViewID());
+    }
+
+    @VisibleForTesting
+    public void testOnItemSelectedListener() {
+        customView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        final AdapterView.OnItemSelectedListener listener = customView.getOnItemSelectedListener();
+        listener.onItemSelected(null, null, 0, 0);
+        listener.onNothingSelected(null);
     }
 
     @After

@@ -136,6 +136,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         ANIM_DURATION = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_float_anim_duration, 800);
         ERROR_ANIM_DURATION_PER_WIDTH = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_error_anim_duration, 8000);
 
+        if (ANIM_DURATION < 0)
+            ANIM_DURATION = 800;
+        if (ERROR_ANIM_DURATION_PER_WIDTH < 0)
+            ERROR_ANIM_DURATION_PER_WIDTH = 8000;
+
         setBackgroundColor(0);
         setOnItemSelectedListener(null);
         typedArray.recycle();
@@ -410,6 +415,25 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         invalidate();
     }
 
+    public void setAnimDuration(int ANIM_DURATION) {
+        if (ANIM_DURATION < 0)
+            ANIM_DURATION = 800;
+        this.ANIM_DURATION = (short) ANIM_DURATION;
+    }
+
+    public short getAnimDuration() {
+        return ANIM_DURATION;
+    }
+
+    public void setErrorAnimDuration(int ERROR_ANIM_DURATION) {
+        if (ERROR_ANIM_DURATION < 0)
+            ERROR_ANIM_DURATION_PER_WIDTH = 8000;
+        this.ERROR_ANIM_DURATION_PER_WIDTH = (short) ERROR_ANIM_DURATION;
+    }
+
+    public short getErrorAnimDuration() {
+        return ERROR_ANIM_DURATION_PER_WIDTH;
+    }
 
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
@@ -482,8 +506,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             errorAnimator.setRepeatMode(ValueAnimator.RESTART);
             errorAnimator.setStartDelay(ANIM_DURATION);
             short duration = (short) (ERROR_ANIM_DURATION_PER_WIDTH * error_length / width);
-            if(duration <= 0)
-                duration = 0;
             errorAnimator.setDuration(duration);
             errorAnimator.start();
         }

@@ -45,7 +45,7 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.2'
+	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.3'
 }
 ```
 
@@ -114,6 +114,10 @@ dependencies {
 	spinner.setDropDownHintView(View view);
 	//set error text(null for cancel error status)
 	setError(String error);
+	//set float animation duration(unit：ms)
+    setAnimDuration(short duration)
+    //set scrolling text animation duration(unit：ms)
+    setErrorAnimDuration(short duration)
 
 ```
 
