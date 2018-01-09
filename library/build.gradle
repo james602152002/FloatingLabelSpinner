@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
-apply plugin: 'jacoco-android'
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.0"
+}
 
 android {
     compileSdkVersion 26
@@ -16,7 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-        debug{
+        debug {
             testCoverageEnabled true
         }
     }

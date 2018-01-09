@@ -359,6 +359,10 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         updatePadding();
     }
 
+    public float getError_text_size() {
+        return error_text_size;
+    }
+
     public void setLabelMargins(int horizontal_margin, int vertical_margin) {
         this.label_horizontal_margin = (short) horizontal_margin;
         this.label_vertical_margin = (short) vertical_margin;
@@ -379,10 +383,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         this.error_horizontal_margin = (short) horizontal_margin;
         this.error_vertical_margin = (short) vertical_margin;
         updatePadding();
-    }
-
-    public int getErrorTopMargin() {
-        return error_vertical_margin;
     }
 
     public View getDropDownHintView() {
@@ -482,6 +482,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             errorAnimator.setRepeatMode(ValueAnimator.RESTART);
             errorAnimator.setStartDelay(ANIM_DURATION);
             short duration = (short) (ERROR_ANIM_DURATION_PER_WIDTH * error_length / width);
+            if(duration <= 0)
+                duration = 0;
             errorAnimator.setDuration(duration);
             errorAnimator.start();
         }
