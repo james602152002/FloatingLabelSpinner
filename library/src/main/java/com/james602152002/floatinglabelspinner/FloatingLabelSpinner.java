@@ -9,9 +9,10 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.os.Build;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.CardView;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -19,17 +20,16 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.SpinnerAdapter;
-import android.widget.TextView;
+
+import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
+import com.james602152002.floatinglabelspinner.popupwindow.SpinnerPopupWindow;
 
 
 /**
@@ -73,6 +73,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private ObjectAnimator errorAnimator;
     private float error_percentage = 0;
 
+    private SpinnerPopupWindow popupWindow;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -412,6 +413,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     public void setHint(CharSequence hint) {
         this.hint = hint;
+        if (hintAdapter != null)
+            hintAdapter.setHint(hint);
         invalidate();
     }
 
@@ -440,9 +443,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (adapter instanceof HintAdapter) {
             super.setAdapter(adapter);
         } else {
-            hintAdapter = new HintAdapter(getContext(), adapter);
+            hintAdapter = new HintAdapter(getContext(), this, adapter);
             setAdapter(hintAdapter);
         }
+        if (hintAdapter != null)
+            hintAdapter.setHint(hint);
     }
 
     public int getHighlight_color() {
@@ -516,102 +521,37 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         invalidate();
     }
 
-    class HintAdapter extends BaseAdapter {
+    public short getHint_cell_height() {
+        measureHintCellHeight();
+        return hint_cell_height;
+    }
 
-        private final short HINT_TYPE = -1;
+    @Override
+    public boolean performClick() {
+        togglePopupWindow();
+        return true;
+    }
 
-        private SpinnerAdapter mSpinnerAdapter;
-        private Context mContext;
+    private void togglePopupWindow() {
+        if (popupWindow == null) {
+            final short margin = (short) dp2px(8);
+            popupWindow = new SpinnerPopupWindow(getContext());
+            popupWindow.setBackgroundDrawable(new ColorDrawable(0));
+            popupWindow.setOutsideTouchable(true);
+            View contentView = LayoutInflater.from(getContext()).inflate(R.layout.floating_label_spinner_popup_window, null, false);
+            ListView listView = contentView.findViewById(R.id.list_view);
+            CardView cardView = contentView.findViewById(R.id.card_view);
+            listView.setAdapter(hintAdapter);
 
-        public HintAdapter(Context context, SpinnerAdapter spinnerAdapter) {
-            this.mContext = context;
-            this.mSpinnerAdapter = spinnerAdapter;
-        }
+            ((FrameLayout.LayoutParams) cardView.getLayoutParams()).setMargins(margin, margin, margin, margin);
+            popupWindow.setWidth(getWidth() - padding_left - padding_right + margin + margin);
+            popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
 
-        @Override
-        public int getViewTypeCount() {
-            //Workaround waiting for a Google correction (https://code.google.com/p/android/issues/detail?id=79011)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                return 1;
-            }
-            int viewTypeCount = mSpinnerAdapter.getViewTypeCount();
-            return viewTypeCount;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            position = getHint() != null ? position - 1 : position;
-            return (position == -1) ? HINT_TYPE : mSpinnerAdapter.getItemViewType(position);
-        }
-
-        @Override
-        public int getCount() {
-            int count = mSpinnerAdapter.getCount();
-            return getHint() != null ? count + 1 : count;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            position = getHint() != null ? position - 1 : position;
-            return (position == -1) ? getHint() : mSpinnerAdapter.getItem(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            position = getHint() != null ? position - 1 : position;
-            return (position == -1) ? 0 : mSpinnerAdapter.getItemId(position);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return buildView(position, convertView, parent, false);
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return buildView(position, convertView, parent, true);
-        }
-
-        private View buildView(int position, View convertView, ViewGroup parent, boolean isDropDownView) {
-            if (getItemViewType(position) == HINT_TYPE) {
-                return getHintView(parent, isDropDownView);
-            }
-            //workaround to have multiple types in spinner
-            if (convertView != null) {
-                convertView = (convertView.getTag() != null && convertView.getTag() instanceof Integer && (Integer) convertView.getTag() != HINT_TYPE) ? convertView : null;
-            }
-            position = getHint() != null ? position - 1 : position;
-            return isDropDownView ? mSpinnerAdapter.getDropDownView(position, convertView, parent) : mSpinnerAdapter.getView(position, convertView, parent);
-        }
-
-        private View getHintView(final ViewGroup parent, final boolean isDropDownView) {
-            View convertView = null;
-            if (isDropDownView) {
-                if (dropDownHintView != null) {
-                    convertView = dropDownHintView;
-                    convertView.setTag(HINT_TYPE);
-                } else {
-                    final LayoutInflater inflater = LayoutInflater.from(mContext);
-                    final int resid = dropDownHintViewID;
-                    final TextView textView = (TextView) inflater.inflate(resid, parent, false);
-                    textView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hint_cell_height));
-                    textView.setGravity(Gravity.CENTER_VERTICAL);
-                    textView.setText(getHint());
-                    textView.setTextColor(getHint_text_color());
-                    if (hint_text_size != -1)
-                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, hint_text_size);
-                    convertView = textView;
-                }
-            } else {
-                convertView = new View(getContext());
-                measureHintCellHeight();
-                convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hint_cell_height));
-            }
-            if (convertView.getLayoutParams() == null) {
-                AbsListView.LayoutParams lp = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                convertView.setLayoutParams(lp);
-            }
-            return convertView;
+            popupWindow.setContentView(contentView);
+            popupWindow.showAsDropDown(this, -margin, 0);
+        } else {
+            popupWindow.dismiss();
+            popupWindow = null;
         }
     }
 }

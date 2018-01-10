@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,7 @@ import org.junit.Test;
  */
 public class HintAdapterTest extends AndroidTestCase {
 
-    FloatingLabelSpinner.HintAdapter adapter;
+    HintAdapter adapter;
     FloatingLabelSpinner spinner;
 
     @Before
@@ -42,8 +44,9 @@ public class HintAdapterTest extends AndroidTestCase {
         };
 
         spinner = new FloatingLabelSpinner(getContext());
+        spinner.setAdapter(baseAdapter);
         spinner.setHint("hint");
-        adapter = spinner.new HintAdapter(getContext(), baseAdapter);
+        adapter = (HintAdapter) spinner.getAdapter();
     }
 
     @Test

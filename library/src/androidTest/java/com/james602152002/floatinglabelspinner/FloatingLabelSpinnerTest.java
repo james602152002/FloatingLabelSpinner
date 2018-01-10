@@ -117,8 +117,6 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         Method method = FloatingLabelSpinner.class.getDeclaredMethod("drawSpannableString", Canvas.class, CharSequence.class, TextPaint.class, int.class, int.class);
         method.setAccessible(true);
         method.invoke(customView, new Canvas(), span, new TextPaint(), 0, 0);
-//        Field field = FloatingLabelSpinner.class.getDeclaredField("error_percentage");
-//        drawSpannableString(final Canvas canvas, CharSequence hint, final TextPaint paint, final int start_x, final int start_y)
     }
 
     @Test
