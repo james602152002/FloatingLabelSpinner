@@ -12,7 +12,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.CardView;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -20,12 +19,9 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 
 import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
@@ -311,7 +307,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             }
 
             private void startAnimator(float startValue, float endValue) {
-                ObjectAnimator animator = ObjectAnimator.ofFloat(FloatingLabelSpinner.this, "float_label_anim_percentage", startValue, endValue);
+                final ObjectAnimator animator = ObjectAnimator.ofFloat(FloatingLabelSpinner.this, "float_label_anim_percentage", startValue, endValue);
                 animator.setInterpolator(new AccelerateInterpolator(3));
                 animator.setDuration(ANIM_DURATION);
                 animator.start();
@@ -538,17 +534,15 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             popupWindow = new SpinnerPopupWindow(getContext());
             popupWindow.setBackgroundDrawable(new ColorDrawable(0));
             popupWindow.setOutsideTouchable(true);
-            View contentView = LayoutInflater.from(getContext()).inflate(R.layout.floating_label_spinner_popup_window, null, false);
-            ListView listView = contentView.findViewById(R.id.list_view);
-            CardView cardView = contentView.findViewById(R.id.card_view);
-            listView.setAdapter(hintAdapter);
-
-            ((FrameLayout.LayoutParams) cardView.getLayoutParams()).setMargins(margin, margin, margin, margin);
             popupWindow.setWidth(getWidth() - padding_left - padding_right + margin + margin);
             popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-
-            popupWindow.setContentView(contentView);
-            popupWindow.showAsDropDown(this, -margin, 0);
+            popupWindow.setAdapter(getContext(), hintAdapter, margin);
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    popupWindow.showAsDropDown(FloatingLabelSpinner.this, -margin, (int) -(error_text_size + (error_vertical_margin << 1)));
+                }
+            });
         } else {
             popupWindow.dismiss();
             popupWindow = null;

@@ -31,6 +31,7 @@ public class HintAdapter extends BaseAdapter {
         this.mContext = context;
         this.spinner = spinner;
         this.mSpinnerAdapter = spinnerAdapter;
+        hint = spinner.getHint();
     }
 
     public void setHint(CharSequence hint) {

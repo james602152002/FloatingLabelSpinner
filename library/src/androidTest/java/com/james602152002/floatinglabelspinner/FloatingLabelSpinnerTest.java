@@ -297,12 +297,8 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
 
     @VisibleForTesting
     public void testPerformClick() {
-        customView.post(new Runnable() {
-            @Override
-            public void run() {
-                customView.performClick();
-            }
-        });
+        customView.performClick();
+        customView.performClick();
     }
 
 
