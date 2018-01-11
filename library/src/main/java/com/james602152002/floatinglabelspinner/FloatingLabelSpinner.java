@@ -10,6 +10,8 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.SpannableString;
@@ -70,6 +72,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private float error_percentage = 0;
 
     private SpinnerPopupWindow popupWindow;
+    private boolean is_recursive_mode = false;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -138,7 +141,15 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (ERROR_ANIM_DURATION_PER_WIDTH < 0)
             ERROR_ANIM_DURATION_PER_WIDTH = 8000;
 
-        setBackgroundColor(0);
+        TypedArray backgroundTypedArray = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.background});
+        Drawable background = backgroundTypedArray.getDrawable(0);
+        if (background != null) {
+            setBackgroundDrawable(background);
+        } else
+            setBackgroundColor(0);
+        backgroundTypedArray.recycle();
+        backgroundTypedArray = null;
+
         setOnItemSelectedListener(null);
         typedArray.recycle();
         typedArray = null;
@@ -297,6 +308,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                 if (FloatingLabelSpinner.this.listener != null) {
                     FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
                 }
+                if (!is_recursive_mode)
+                    popupWindow = null;
             }
 
             @Override
@@ -531,16 +544,19 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private void togglePopupWindow() {
         if (popupWindow == null) {
             final short margin = (short) dp2px(8);
+            final short card_margin_below_lollipop = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (short) 0 : (short) dp2px(5);
             popupWindow = new SpinnerPopupWindow(getContext());
             popupWindow.setBackgroundDrawable(new ColorDrawable(0));
             popupWindow.setOutsideTouchable(true);
-            popupWindow.setWidth(getWidth() - padding_left - padding_right + margin + margin);
+            popupWindow.setWidth(getWidth() - padding_left - padding_right + ((card_margin_below_lollipop + margin) << 1));
             popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-            popupWindow.setAdapter(getContext(), hintAdapter, margin,listener);
+            popupWindow.setAdapter(getContext(), hintAdapter, margin, getOnItemSelectedListener());
             post(new Runnable() {
                 @Override
                 public void run() {
-                    popupWindow.showAsDropDown(FloatingLabelSpinner.this, -margin, (int) -(error_text_size + (error_vertical_margin << 1)));
+                    int dy = -(Math.round(error_text_size) + (error_vertical_margin << 1) + padding_bottom + margin
+                            + (card_margin_below_lollipop != 0 ? card_margin_below_lollipop + dp2px(3) : card_margin_below_lollipop));
+                    popupWindow.showAsDropDown(FloatingLabelSpinner.this, -(card_margin_below_lollipop + margin), dy);
                 }
             });
         } else {
