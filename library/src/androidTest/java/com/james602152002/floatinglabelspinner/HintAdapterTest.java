@@ -60,7 +60,6 @@ public class HintAdapterTest extends AndroidTestCase {
         adapter.getItem(0);
         adapter.getItemViewType(0);
         adapter.getItemId(0);
-        assertNotNull("not null");
         assertNotNull(adapter.getView(0, null, null));
         assertNotNull(adapter.getDropDownView(0, null, null));
     }
@@ -69,6 +68,31 @@ public class HintAdapterTest extends AndroidTestCase {
     public void testDropDownHintView() {
         spinner.setDropDownHintView(new View(getContext()));
         assertNotNull(adapter.getDropDownView(0, spinner.getDropDownHintView(), null));
+        adapter.setHint(null);
+        View dropDownHintView = adapter.getDropDownView(0, spinner.getDropDownHintView(), null);
+        assertNull(dropDownHintView);
+        spinner.getDropDownHintView().setTag(-1);
+        dropDownHintView = adapter.getDropDownView(0, spinner.getDropDownHintView(), null);
+        assertNull(dropDownHintView);
+        spinner.getDropDownHintView().setTag(0);
+        dropDownHintView = adapter.getDropDownView(0, spinner.getDropDownHintView(), null);
+        assertNull(dropDownHintView);
+    }
+
+    @Test
+    public void testDropDownView() {
+        adapter.setHint(null);
+        View dropDownView = adapter.getDropDownView(1, null, null);
+        assertNull(dropDownView);
+        dropDownView = adapter.getDropDownView(1, new View(getContext()), null);
+        assertNull(dropDownView);
+    }
+
+    @Test
+    public void testItemWithoutHint() {
+        adapter.setHint(null);
+        adapter.getItem(0);
+        adapter.getItem(1);
     }
 
     @After

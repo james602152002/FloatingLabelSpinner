@@ -536,7 +536,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             popupWindow.setOutsideTouchable(true);
             popupWindow.setWidth(getWidth() - padding_left - padding_right + margin + margin);
             popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-            popupWindow.setAdapter(getContext(), hintAdapter, margin);
+            popupWindow.setAdapter(getContext(), hintAdapter, margin,listener);
             post(new Runnable() {
                 @Override
                 public void run() {
