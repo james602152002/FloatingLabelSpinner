@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.VisibleForTesting;
 import android.test.AndroidTestCase;
 import android.text.SpannableString;
@@ -294,6 +295,17 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         listener.onItemSelected(null, null, 0, 0);
         listener.onNothingSelected(null);
     }
+
+    @VisibleForTesting
+    public void testPerformClick() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                customView.performClick();
+            }
+        });
+    }
+
 
     @After
     public void tearDown() throws Exception {

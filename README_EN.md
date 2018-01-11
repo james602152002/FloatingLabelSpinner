@@ -1,5 +1,6 @@
 # Android-FloatingLabelSpinner
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Floating%20Label%20Spinner-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6635)
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![MinSDK](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Methods](https://img.shields.io/badge/Methods%20%7C%20Size%20-%20160%20%7C%2031%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.github.james602152002%3AFloatingLabelSpinner%3A1.1.0)
