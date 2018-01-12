@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.james602152002.floatinglabelspinner.FloatingLabelSpinner;
 import com.james602152002.floatinglabelspinner.R;
 import com.james602152002.floatinglabelspinner.adapter.DropDownViewAdapter;
 import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
@@ -21,13 +22,15 @@ public class SpinnerPopupWindow extends PopupWindow implements AdapterView.OnIte
 
     private DropDownViewAdapter dropDownViewAdapter;
     private AdapterView.OnItemSelectedListener listener;
+    private FloatingLabelSpinner spinner;
 
     public SpinnerPopupWindow(Context context) {
         super(context);
     }
 
-    public void setAdapter(Context context, HintAdapter hintAdapter, short margin, AdapterView.OnItemSelectedListener listener) {
-        View contentView = LayoutInflater.from(context).inflate(R.layout.floating_label_spinner_popup_window, null, false);
+    public void setAdapter(FloatingLabelSpinner spinner, HintAdapter hintAdapter, short margin, AdapterView.OnItemSelectedListener listener) {
+        this.spinner = spinner;
+        View contentView = LayoutInflater.from(spinner.getContext()).inflate(R.layout.floating_label_spinner_popup_window, null, false);
         ListView listView = contentView.findViewById(R.id.list_view);
         CardView cardView = contentView.findViewById(R.id.card_view);
         dropDownViewAdapter = new DropDownViewAdapter(hintAdapter);
@@ -41,10 +44,12 @@ public class SpinnerPopupWindow extends PopupWindow implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        spinner.layoutSpinnerView(position);
         if (listener != null) {
             listener.onItemSelected(parent, view, position, id);
         }
-        dismiss();
+        if (!spinner.isRecursive_mode())
+            dismiss();
     }
 
 

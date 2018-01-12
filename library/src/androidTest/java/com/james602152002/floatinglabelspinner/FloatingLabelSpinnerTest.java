@@ -301,6 +301,11 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         customView.performClick();
     }
 
+    @Test
+    public void testRecursiveMode() {
+        customView.setRecursive_mode(true);
+        assertTrue(customView.isRecursive_mode());
+    }
 
     @After
     public void tearDown() throws Exception {

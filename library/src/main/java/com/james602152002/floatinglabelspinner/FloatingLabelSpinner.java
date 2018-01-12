@@ -29,6 +29,8 @@ import android.widget.SpinnerAdapter;
 import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
 import com.james602152002.floatinglabelspinner.popupwindow.SpinnerPopupWindow;
 
+import java.lang.reflect.Field;
+
 
 /**
  * Created by shiki60215 on 17-12-22.
@@ -72,7 +74,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private float error_percentage = 0;
 
     private SpinnerPopupWindow popupWindow;
-    private boolean is_recursive_mode = false;
+    private boolean recursive_mode = false;
+    private View selectedView;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -299,7 +302,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
                 measureHintCellHeight();
-                if (init && float_label_anim_percentage == 0) {
+                if (init && float_label_anim_percentage == 0 && position != 0) {
                     startAnimator(0, 1);
                 } else if (position == 0 && float_label_anim_percentage != 0) {
                     startAnimator(1, 0);
@@ -308,7 +311,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                 if (FloatingLabelSpinner.this.listener != null) {
                     FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
                 }
-                if (!is_recursive_mode)
+                if (!isRecursive_mode())
                     popupWindow = null;
             }
 
@@ -535,6 +538,14 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         return hint_cell_height;
     }
 
+    public boolean isRecursive_mode() {
+        return recursive_mode;
+    }
+
+    public void setRecursive_mode(boolean recursive_mode) {
+        this.recursive_mode = recursive_mode;
+    }
+
     @Override
     public boolean performClick() {
         togglePopupWindow();
@@ -550,7 +561,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             popupWindow.setOutsideTouchable(true);
             popupWindow.setWidth(getWidth() - padding_left - padding_right + ((card_margin_below_lollipop + margin) << 1));
             popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-            popupWindow.setAdapter(getContext(), hintAdapter, margin, getOnItemSelectedListener());
+            popupWindow.setAdapter(this, hintAdapter, margin, getOnItemSelectedListener());
             post(new Runnable() {
                 @Override
                 public void run() {
@@ -564,4 +575,38 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             popupWindow = null;
         }
     }
+
+    public void layoutSpinnerView(int position) {
+        if (position != getSelectedItemPosition()) {
+            removeSelectedView();
+            selectedView = null;
+        }
+
+        try {
+            Field field = FloatingLabelSpinner.class.getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("mNextSelectedPosition");
+            field.setAccessible(true);
+            field.set(this, position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        removeSelectedView();
+        addViewInLayout(getSelectedView(), 0, new LayoutParams(LayoutParams.MATCH_PARENT, hint_cell_height));
+        requestLayout();
+    }
+
+    private void removeSelectedView() {
+        if (selectedView != null)
+            removeAllViewsInLayout();
+    }
+
+    @Override
+    public View getSelectedView() {
+        if (hintAdapter != null) {
+            selectedView = hintAdapter.getView(getSelectedItemPosition(), selectedView, this);
+            return selectedView;
+        }
+        return super.getSelectedView();
+    }
+
 }

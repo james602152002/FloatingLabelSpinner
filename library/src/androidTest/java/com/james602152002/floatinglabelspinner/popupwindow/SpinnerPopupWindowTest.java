@@ -1,11 +1,10 @@
 package com.james602152002.floatinglabelspinner.popupwindow;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.test.AndroidTestCase;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SpinnerAdapter;
+import android.widget.BaseAdapter;
 
 import com.james602152002.floatinglabelspinner.FloatingLabelSpinner;
 import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
@@ -22,28 +21,16 @@ import java.lang.reflect.Field;
 public class SpinnerPopupWindowTest extends AndroidTestCase {
 
     private SpinnerPopupWindow popupWindow;
+    private FloatingLabelSpinner spinner;
 
     @Before
     public void setUp() throws Exception {
         final Context context = getContext();
-        FloatingLabelSpinner spinner = new FloatingLabelSpinner(context);
+        spinner = new FloatingLabelSpinner(context);
+        spinner.setDropDownHintView(new View(context));
+        spinner.setHint("hint");
         popupWindow = new SpinnerPopupWindow(context);
-        HintAdapter hintAdapter = new HintAdapter(context, spinner, new SpinnerAdapter() {
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                return null;
-            }
-
-            @Override
-            public void registerDataSetObserver(DataSetObserver observer) {
-
-            }
-
-            @Override
-            public void unregisterDataSetObserver(DataSetObserver observer) {
-
-            }
-
+        spinner.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
                 return 0;
@@ -60,31 +47,11 @@ public class SpinnerPopupWindowTest extends AndroidTestCase {
             }
 
             @Override
-            public boolean hasStableIds() {
-                return false;
-            }
-
-            @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 return null;
             }
-
-            @Override
-            public int getItemViewType(int position) {
-                return 0;
-            }
-
-            @Override
-            public int getViewTypeCount() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
         });
-        popupWindow.setAdapter(getContext(), hintAdapter, (short) 0, spinner.getOnItemSelectedListener());
+        popupWindow.setAdapter(spinner, (HintAdapter) spinner.getAdapter(), (short) 0, spinner.getOnItemSelectedListener());
     }
 
     @Test
@@ -93,11 +60,13 @@ public class SpinnerPopupWindowTest extends AndroidTestCase {
         Field field = SpinnerPopupWindow.class.getDeclaredField("listener");
         field.setAccessible(true);
         field.set(popupWindow, null);
+        spinner.setRecursive_mode(true);
         popupWindow.onItemClick(null, null, 0, 0);
     }
 
     @After
     public void tearDown() throws Exception {
         popupWindow = null;
+        spinner = null;
     }
 }
