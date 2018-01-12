@@ -456,7 +456,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             super.setAdapter(adapter);
         } else {
             hintAdapter = new HintAdapter(getContext(), this, adapter);
-            setAdapter(hintAdapter);
+            super.setAdapter(hintAdapter);
         }
         if (hintAdapter != null)
             hintAdapter.setHint(hint);
@@ -591,8 +591,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         }
 
         removeSelectedView();
-        addViewInLayout(getSelectedView(), 0, new LayoutParams(LayoutParams.MATCH_PARENT, hint_cell_height));
-        requestLayout();
+        getSelectedView();
+        if (selectedView != null) {
+            addViewInLayout(selectedView, 0, new LayoutParams(LayoutParams.MATCH_PARENT, hint_cell_height));
+            requestLayout();
+        }
     }
 
     private void removeSelectedView() {
