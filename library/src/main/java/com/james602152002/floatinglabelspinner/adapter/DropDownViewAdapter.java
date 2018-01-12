@@ -18,26 +18,26 @@ public class DropDownViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return hintAdapter != null ? hintAdapter.getCount() : 0;
+        return hintAdapter.getCount();
     }
 
     @Override
     public Object getItem(int position) {
-        return hintAdapter != null ? hintAdapter.getItem(position) : 0;
+        return hintAdapter.getItem(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return hintAdapter != null ? hintAdapter.getItemId(position) : 0;
+        return hintAdapter.getItemId(position);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return hintAdapter != null ? hintAdapter.getItemViewType(position) : 0;
+        return hintAdapter.getItemViewType(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return hintAdapter != null ? hintAdapter.getDropDownView(position, convertView, parent) : null;
+        return hintAdapter.getDropDownView(position, convertView, parent);
     }
 }
