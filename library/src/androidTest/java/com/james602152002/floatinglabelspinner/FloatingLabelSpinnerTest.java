@@ -312,6 +312,13 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         customView.layoutSpinnerView(1);
     }
 
+    @Test
+    public void testSetSelection() {
+        final int position = 1;
+        customView.setSelection(position, false);
+        assertEquals(position, customView.getSelectedItemPosition());
+    }
+
     @After
     public void tearDown() throws Exception {
         customView = null;

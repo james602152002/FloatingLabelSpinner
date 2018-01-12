@@ -605,6 +605,16 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         }
     }
 
+    @Override
+    public void setSelection(int position, boolean animate) {
+        setSelection(position);
+    }
+
+    @Override
+    public void setSelection(int position) {
+        layoutSpinnerView(position);
+    }
+
     private void removeSelectedView() {
         if (selectedView != null)
             removeAllViewsInLayout();
@@ -613,7 +623,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     @Override
     public View getSelectedView() {
         if (hintAdapter != null) {
-            selectedView = hintAdapter.getView(getSelectedItemPosition(), selectedView, this);
             selectedView = hintAdapter.getView(getSelectedItemPosition(), selectedView, this);
             return selectedView;
         }
