@@ -319,6 +319,30 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         assertEquals(position, customView.getSelectedItemPosition());
     }
 
+    @Test
+    public void testRecursiveModeDismiss() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+        Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
+        method.setAccessible(true);
+        method.invoke(customView);
+        customView.setRecursive_mode(true);
+        customView.dismiss();
+        Field field = FloatingLabelSpinner.class.getDeclaredField("popupWindow");
+        field.setAccessible(true);
+        assertNull(field.get(customView));
+    }
+
+    @Test
+    public void testAllDismissCondition() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        customView.dismiss();
+        customView.setRecursive_mode(true);
+        customView.dismiss();
+        customView.setRecursive_mode(false);
+        Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
+        method.setAccessible(true);
+        method.invoke(customView);
+        customView.dismiss();
+    }
+
     @After
     public void tearDown() throws Exception {
         customView = null;

@@ -629,4 +629,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         return super.getSelectedView();
     }
 
+    public void dismiss() {
+        if (recursive_mode && popupWindow != null) {
+            popupWindow.dismiss();
+            popupWindow = null;
+        }
+    }
+
 }
