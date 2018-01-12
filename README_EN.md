@@ -116,9 +116,9 @@ dependencies {
 	//set error text(null for cancel error status)
 	setError(String error);
 	//set float animation duration(unit：ms)
-    setAnimDuration(short duration)
-    //set scrolling text animation duration(unit：ms)
-    setErrorAnimDuration(short duration)
+    	setAnimDuration(short duration)
+    	//set scrolling text animation duration(unit：ms)
+    	setErrorAnimDuration(short duration)
 
 ```
 
