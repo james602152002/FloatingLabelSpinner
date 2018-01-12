@@ -8,7 +8,7 @@
 [![Build Status](https://travis-ci.org/james602152002/FloatingLabelSpinner.svg?branch=master)](https://travis-ci.org/james602152002/FloatingLabelSpinner)
 [![codecov](https://codecov.io/gh/james602152002/FloatingLabelSpinner/branch/master/graph/badge.svg)](https://codecov.io/gh/james602152002/FloatingLabelSpinner)
 
-## English| [中文](README.md)
+## English | [中文](README.md)
 
 Most of floating label spinner always use xml to adjust your widget's size. Sometimes we wanna do it by code, and we want to style our floating label by ForegroundColorSpan. My widget will satisfy your demands.
 

@@ -201,11 +201,12 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        if (float_label_anim_percentage != 1) {
-            View selectedView = getSelectedView();
-            if (selectedView != null)
-                selectedView.setAlpha(getSelectedItemPosition() != 0 ? float_label_anim_percentage : 0);
-        }
+//        if (float_label_anim_percentage != 1) {
+//            View selectedView = getSelectedView();
+        if (selectedView != null)
+//            selectedView.setAlpha(.5f);
+            selectedView.setAlpha(getSelectedItemPosition() != 0 ? float_label_anim_percentage : 0);
+//        }
         super.dispatchDraw(canvas);
 
         labelPaint.setColor(hint_text_color);
@@ -577,8 +578,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     }
 
     public void layoutSpinnerView(int position) {
+        removeSelectedView();
         if (position != getSelectedItemPosition()) {
-            removeSelectedView();
             selectedView = null;
         }
 
@@ -590,11 +591,17 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             e.printStackTrace();
         }
 
-        removeSelectedView();
         getSelectedView();
         if (selectedView != null) {
             addViewInLayout(selectedView, 0, new LayoutParams(LayoutParams.MATCH_PARENT, hint_cell_height));
-            requestLayout();
+            selectedView.setSelected(true);
+            selectedView.setEnabled(true);
+            int w = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+            int h = w;
+            selectedView.measure(w, h);
+            final int top = (int) (padding_top + label_text_size + label_vertical_margin);
+            selectedView.layout(padding_left, top, padding_left + selectedView.getMeasuredWidth(),
+                    top + selectedView.getMeasuredHeight());
         }
     }
 
@@ -606,6 +613,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     @Override
     public View getSelectedView() {
         if (hintAdapter != null) {
+            selectedView = hintAdapter.getView(getSelectedItemPosition(), selectedView, this);
             selectedView = hintAdapter.getView(getSelectedItemPosition(), selectedView, this);
             return selectedView;
         }
