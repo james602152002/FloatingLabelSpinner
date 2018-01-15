@@ -85,9 +85,9 @@ dependencies {
           //浮动文字动画时间(单位：毫秒)
           app:j_fls_float_anim_duration="800"
           //错误状态下跑马灯动画时间(单位：毫秒)
-          app:j_fls_error_anim_duration="8000"/>
+          app:j_fls_error_anim_duration="8000"
           //开启递归模式(如果传false为关闭)
-          app:j_fls_recursive="true"/>
+          app:j_fls_recursive="true"
           
 ```
 
