@@ -122,11 +122,11 @@ dependencies {
 	//设置错误状态跑马灯动画时间(单位：毫秒）
 	setErrorAnimDuration(short duration)
 	//设置递归模式，如果下拉框有二级页面可使用
-    setRecursive_mode(boolean recursive_mode)
-    //递归模式下手动关闭弹窗
-    dismiss()
-    //递归模式下更新适配器
-    notifyDataSetChanged()
+    	setRecursive_mode(boolean recursive_mode)
+    	//递归模式下手动关闭弹窗
+    	dismiss()
+    	//递归模式下更新适配器
+    	notifyDataSetChanged()
     
 ```
 
