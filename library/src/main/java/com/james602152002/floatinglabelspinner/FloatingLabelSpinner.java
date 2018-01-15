@@ -307,10 +307,10 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                 } else if (position == 0 && float_label_anim_percentage != 0) {
                     startAnimator(1, 0);
                 }
-                init = true;
-                if (FloatingLabelSpinner.this.listener != null) {
+                if (FloatingLabelSpinner.this.listener != null && init) {
                     FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
                 }
+                init = true;
                 if (!isRecursive_mode())
                     popupWindow = null;
             }
@@ -552,6 +552,18 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         return true;
     }
 
+    @Override
+    public boolean performLongClick() {
+        togglePopupWindow();
+        return true;
+    }
+
+    @Override
+    public boolean performLongClick(float x, float y) {
+        togglePopupWindow();
+        return true;
+    }
+
     private void togglePopupWindow() {
         if (popupWindow == null) {
             final short margin = (short) dp2px(8);
@@ -632,6 +644,12 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (recursive_mode && popupWindow != null) {
             popupWindow.dismiss();
             popupWindow = null;
+        }
+    }
+
+    public void notifyDataSetChanged() {
+        if (popupWindow != null) {
+            popupWindow.notifyDataSetChanged();
         }
     }
 

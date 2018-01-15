@@ -3,7 +3,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Floating%20Label%20Spinner-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6635)
 [![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![MinSDK](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
-[![Methods](https://img.shields.io/badge/Methods%20%7C%20Size%20-%20164%20%7C%2031%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.github.james602152002%3AFloatingLabelSpinner%3A1.1.3)
+[![Methods](https://img.shields.io/badge/Methods%20%7C%20Size%20-%20164%20%7C%2031%20KB-d9534f.svg)](http://www.methodscount.com/?lib=com.github.james602152002%3AFloatingLabelSpinner%3A1.1.4)
 [![](https://jitpack.io/v/james602152002/FloatingLabelSpinner.svg)](https://jitpack.io/#james602152002/FloatingLabelSpinner)
 [![Build Status](https://travis-ci.org/james602152002/FloatingLabelSpinner.svg?branch=master)](https://travis-ci.org/james602152002/FloatingLabelSpinner)
 [![codecov](https://codecov.io/gh/james602152002/FloatingLabelSpinner/branch/master/graph/badge.svg)](https://codecov.io/gh/james602152002/FloatingLabelSpinner)
@@ -46,7 +46,7 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.3'
+	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.4'
 }
 ```
 
@@ -86,6 +86,8 @@ dependencies {
           app:j_fls_float_anim_duration="800"
           //scrolling text animation duration(unit：ms)
           app:j_fls_error_anim_duration="8000"/>
+          //open recursive mode(false to close)
+          app:j_fls_recursive="true"/>
           
 ```
 
@@ -119,6 +121,12 @@ dependencies {
     	setAnimDuration(short duration)
     	//set scrolling text animation duration(unit：ms)
     	setErrorAnimDuration(short duration)
+    	//set recursive mode, if you have many level data to fetch , you can set it true.
+        setRecursive_mode(boolean recursive_mode)
+        //dismiss dialog while recursive mode
+        dismiss()
+        //notify datasetchanged while recursive mode
+        notifyDataSetChanged()
 
 ```
 
@@ -135,6 +143,10 @@ If you like this widget,  you could praise me some protein powder below lol
 |![](art/weixin_green.jpg)|![](art/zhifubao_blue.jpg)|
 
 ## Suggestion
+
+```
+You must set your adapter and hint label first to use this widget.
+```
 
 ```
 This widget measure precisely after set adapter. If your data request from internet, I suggest:

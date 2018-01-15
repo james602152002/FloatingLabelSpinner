@@ -290,6 +290,17 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         customView.dismiss();
     }
 
+    @Test
+    public void testDataSetChanged() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+        initAdapter();
+        customView.notifyDataSetChanged();
+        customView.setDropDownHintView(new View(getContext()));
+        Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
+        method.setAccessible(true);
+        method.invoke(customView);
+        customView.notifyDataSetChanged();
+    }
+
     private void initAdapter() {
         customView.setAdapter(new BaseAdapter() {
             @Override

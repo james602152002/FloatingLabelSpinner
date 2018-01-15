@@ -52,5 +52,10 @@ public class SpinnerPopupWindow extends PopupWindow implements AdapterView.OnIte
             dismiss();
     }
 
+    public void notifyDataSetChanged() {
+        if (dropDownViewAdapter != null)
+            dropDownViewAdapter.notifyDataSetChanged();
+    }
+
 
 }
