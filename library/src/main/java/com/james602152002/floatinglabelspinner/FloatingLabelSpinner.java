@@ -138,6 +138,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         dropDownHintViewID = typedArray.getResourceId(R.styleable.FloatingLabelSpinner_j_fls_dropDownHintView, R.layout.drop_down_hint_view);
         ANIM_DURATION = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_float_anim_duration, 800);
         ERROR_ANIM_DURATION_PER_WIDTH = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_error_anim_duration, 8000);
+        recursive_mode = typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_recursive, false);
 
         if (ANIM_DURATION < 0)
             ANIM_DURATION = 800;
@@ -201,12 +202,10 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-//        if (float_label_anim_percentage != 1) {
-//            View selectedView = getSelectedView();
-        if (selectedView != null)
-//            selectedView.setAlpha(.5f);
-            selectedView.setAlpha(getSelectedItemPosition() != 0 ? float_label_anim_percentage : 0);
-//        }
+        if (float_label_anim_percentage != 1) {
+            if (selectedView != null)
+                selectedView.setAlpha(getSelectedItemPosition() != 0 ? float_label_anim_percentage : 0);
+        }
         super.dispatchDraw(canvas);
 
         labelPaint.setColor(hint_text_color);
