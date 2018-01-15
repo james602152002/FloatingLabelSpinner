@@ -22,6 +22,7 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.SpinnerAdapter;
@@ -298,6 +299,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         this.listener = listener;
         OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
             private boolean init = false;
+            private boolean firstClick = true;
 
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
@@ -552,18 +554,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         return true;
     }
 
-    @Override
-    public boolean performLongClick() {
-        togglePopupWindow();
-        return true;
-    }
-
-    @Override
-    public boolean performLongClick(float x, float y) {
-        togglePopupWindow();
-        return true;
-    }
-
     private void togglePopupWindow() {
         if (popupWindow == null) {
             final short margin = (short) dp2px(8);
@@ -604,7 +594,10 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
         getSelectedView();
         if (selectedView != null) {
-            addViewInLayout(selectedView, 0, new LayoutParams(LayoutParams.MATCH_PARENT, hint_cell_height));
+            ViewGroup.LayoutParams lp = selectedView.getLayoutParams();
+            if (lp == null)
+                lp = generateDefaultLayoutParams();
+            addViewInLayout(selectedView, 0, lp);
             selectedView.setSelected(true);
             selectedView.setEnabled(true);
             int w = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
@@ -634,8 +627,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     @Override
     public View getSelectedView() {
         if (hintAdapter != null) {
-            selectedView = hintAdapter.getView(getSelectedItemPosition(), selectedView, this);
-            return selectedView;
+            final int position = getSelectedItemPosition();
+            if (position < hintAdapter.getCount()) {
+                selectedView = hintAdapter.getView(position, selectedView, this);
+                return selectedView;
+            }
         }
         return super.getSelectedView();
     }
@@ -644,13 +640,17 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (recursive_mode && popupWindow != null) {
             popupWindow.dismiss();
             popupWindow = null;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                requestLayout();
+            }
         }
     }
 
     public void notifyDataSetChanged() {
+        if (dropDownHintView != null)
+            dropDownHintView.invalidate();
         if (popupWindow != null) {
             popupWindow.notifyDataSetChanged();
         }
     }
-
 }
