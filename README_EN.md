@@ -87,7 +87,7 @@ dependencies {
           //scrolling text animation duration(unit：ms)
           app:j_fls_error_anim_duration="8000"
           //open recursive mode(false to close)
-          app:j_fls_recursive="true"
+          app:j_fls_recursive="true"/>
           
 ```
 
