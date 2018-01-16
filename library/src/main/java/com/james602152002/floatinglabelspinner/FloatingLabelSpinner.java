@@ -554,7 +554,21 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         return true;
     }
 
+    @Override
+    public boolean performLongClick() {
+        togglePopupWindow();
+        return true;
+    }
+
+    @Override
+    public boolean performLongClick(float x, float y) {
+        togglePopupWindow();
+        return true;
+    }
+
     private void togglePopupWindow() {
+        if (hintAdapter == null)
+            return;
         if (popupWindow == null) {
             final short margin = (short) dp2px(8);
             final short card_margin_below_lollipop = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (short) 0 : (short) dp2px(5);

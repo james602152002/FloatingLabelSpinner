@@ -246,6 +246,14 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         customView.performClick();
     }
 
+    @VisibleForTesting
+    public void testPerformLongClick() {
+        initAdapter();
+        customView.performLongClick();
+        customView.performLongClick(0, 0);
+    }
+
+
     @Test
     public void testRecursiveMode() {
         customView.setRecursive_mode(true);
