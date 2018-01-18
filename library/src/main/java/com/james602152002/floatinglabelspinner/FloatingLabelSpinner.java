@@ -444,7 +444,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     public void setErrorAnimDuration(int ERROR_ANIM_DURATION) {
         if (ERROR_ANIM_DURATION < 0)
-            ERROR_ANIM_DURATION_PER_WIDTH = 8000;
+            ERROR_ANIM_DURATION = 8000;
         this.ERROR_ANIM_DURATION_PER_WIDTH = (short) ERROR_ANIM_DURATION;
     }
 
