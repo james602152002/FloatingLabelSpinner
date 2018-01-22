@@ -31,7 +31,7 @@ Most of floating label spinner always use xml to adjust your widget's size. Some
 |:---:|:---:|
 |![](art/float_en.gif)|![](art/error_en.gif)|
 
-[More Demostration](common_md/DEMONSTRATION_EN.md)
+[More Demonstration](common_md/DEMONSTRATION_EN.md)
 
 ## Dependency:
 
