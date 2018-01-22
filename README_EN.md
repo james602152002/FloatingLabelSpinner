@@ -54,8 +54,6 @@ dependencies {
 
 ```xml
 <com.james602152002.floatinglabelspinner.FloatingLabelSpinner
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
           //floating label and hint text color
           app:j_fls_textColorHint="@android:color/holo_orange_light" 
           //divider color

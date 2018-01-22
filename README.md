@@ -54,8 +54,6 @@ dependencies {
 
 ```xml
 <com.james602152002.floatinglabelspinner.FloatingLabelSpinner
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
           //浮动文字颜色
           app:j_fls_textColorHint="@android:color/holo_orange_light" 
           //分割线颜色
