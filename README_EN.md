@@ -65,15 +65,15 @@ dependencies {
           //thickness of divider
           app:j_fls_thickness="2dp"
           //horizontal margin of label
-          app: j_fls_label_horizontal_margin="2dp"
+          app:j_fls_label_horizontal_margin="2dp"
           //vertical margin of label
-          app: j_fls_label_vertical_margin="2dp"
+          app:j_fls_label_vertical_margin="2dp"
           //horizontal margin of error text
-          app: j_fls_error_horizontal_margin="2dp"
+          app:j_fls_error_horizontal_margin="2dp"
           //vertical margin of error text
-          app: j_fls_error_vertical_margin="2dp"
+          app:j_fls_error_vertical_margin="2dp"
           //floating label text size
-          app: j_fls_label_textSize="14sp"
+          app:j_fls_label_textSize="14sp"
           //hint text size
           app:j_fls_hint_textSize="20sp"
           //error text size

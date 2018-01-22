@@ -65,15 +65,15 @@ dependencies {
           //分割线厚度
           app:j_fls_thickness="2dp"
           //浮动文字水平偏移量
-          app: j_fls_label_horizontal_margin="2dp"
+          app:j_fls_label_horizontal_margin="2dp"
           //浮动文字垂直偏移量
-          app: j_fls_label_vertical_margin="2dp"
+          app:j_fls_label_vertical_margin="2dp"
           //错误文字水平偏移量
-          app: j_fls_error_horizontal_margin="2dp"
+          app:j_fls_error_horizontal_margin="2dp"
           //错误文字垂直偏移量
-          app: j_fls_error_vertical_margin="2dp"
+          app:j_fls_error_vertical_margin="2dp"
           //浮动文字字体大小
-          app: j_fls_label_textSize="14sp"
+          app:j_fls_label_textSize="14sp"
           //提示文字字体大小
           app:j_fls_hint_textSize="20sp"
           //错误文字字体大小
