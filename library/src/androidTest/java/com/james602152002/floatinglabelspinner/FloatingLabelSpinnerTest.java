@@ -80,13 +80,48 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
 
     @Test
     public void testDispatchDraw() throws NoSuchFieldException, IllegalAccessException {
+        final Canvas canvas = new Canvas();
         customView.setError("error");
         Field field = FloatingLabelSpinner.class.getDeclaredField("errorAnimator");
         field.setAccessible(true);
         field.set(customView, new ObjectAnimator());
+        field = FloatingLabelSpinner.class.getDeclaredField("hint_cell_height");
+        field.setAccessible(true);
+        field.set(customView, (short)1);
+        customView.setAdapter(new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return 0;
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                return new View(getContext());
+            }
+        });
+        customView.setSelection(1);
+        field = FloatingLabelSpinner.class.getDeclaredField("selectedView");
+        field.setAccessible(true);
+        field.set(customView, new View(getContext()));
         customView.setHint("hint");
         customView.setError("error");
-        customView.dispatchDraw(new Canvas());
+        customView.dispatchDraw(canvas);
+        customView.setSelection(0);
+        customView.dispatchDraw(canvas);
+        field = FloatingLabelSpinner.class.getDeclaredField("float_label_anim_percentage");
+        field.setAccessible(true);
+        field.set(customView, 1);
+        customView.dispatchDraw(canvas);
     }
 
     @Test
@@ -179,6 +214,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     @Test
     public void testAnimationDuration() {
         final short anim_duration = 80;
+        customView.setAnimDuration(-1);
         customView.setAnimDuration(anim_duration);
         assertEquals(anim_duration, customView.getAnimDuration());
     }
@@ -186,6 +222,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     @Test
     public void testErrorAnimDuration() {
         final short error_anim_duration = 5000;
+        customView.setErrorAnimDuration(-1);
         customView.setErrorAnimDuration(error_anim_duration);
         assertEquals(error_anim_duration, customView.getErrorAnimDuration());
     }
