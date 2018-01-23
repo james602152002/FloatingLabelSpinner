@@ -4,12 +4,14 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.support.annotation.VisibleForTesting;
 import android.test.AndroidTestCase;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ForegroundColorSpan;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -87,7 +89,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         field.set(customView, new ObjectAnimator());
         field = FloatingLabelSpinner.class.getDeclaredField("hint_cell_height");
         field.setAccessible(true);
-        field.set(customView, (short)1);
+        field.set(customView, (short) 1);
         customView.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
@@ -344,6 +346,56 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         method.setAccessible(true);
         method.invoke(customView);
         customView.notifyDataSetChanged();
+    }
+
+    @Test
+    public void testTouchEvent() throws NoSuchFieldException, IllegalAccessException {
+        // Obtain MotionEvent object
+        long downTime = SystemClock.uptimeMillis();
+        long eventTime = SystemClock.uptimeMillis() + 100;
+        float x = 0.0f;
+        float y = 0.0f;
+        // List of meta states found here: developer.android.com/reference/android/view/KeyEvent.html#getMetaState()
+        int metaState = 0;
+        MotionEvent motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        Field field = FloatingLabelSpinner.class.getDeclaredField("long_click");
+        field.setAccessible(true);
+        field.set(customView, true);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 1000, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 0, 1000, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 1000, 1000, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
+        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_CANCEL, x, y, metaState);
+        customView.dispatchTouchEvent(motionEvent);
     }
 
     private void initAdapter() {

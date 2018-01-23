@@ -21,7 +21,9 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
@@ -77,6 +79,12 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private SpinnerPopupWindow popupWindow;
     private boolean recursive_mode = false;
     private View selectedView;
+    private long click_time;
+    private boolean is_moving = false;
+    private boolean terminate = false;
+    private boolean long_click = false;
+    private final short touch_slop;
+    private float down_x, down_y;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -84,6 +92,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
+        touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, null);
     }
 
@@ -93,6 +102,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
+        touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, null);
     }
 
@@ -102,6 +112,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
+        touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, attrs);
     }
 
@@ -111,6 +122,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
+        touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, attrs);
     }
 
@@ -172,6 +184,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         paddingArray.recycle();
         paddingArray = null;
         updatePadding();
+
     }
 
     private int dp2px(float dpValue) {
@@ -218,7 +231,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (hint != null)
             drawSpannableString(canvas, hint, labelPaint, label_horizontal_margin, label_paint_dy);
 
-        final int divider_y = (int) (padding_top + label_text_size + (hint_cell_height > 0 ? hint_cell_height : hint_text_size));
+        final int divider_y = (int) (padding_top + label_text_size + (divider_stroke_width >> 1) + (hint_cell_height > 0 ? hint_cell_height : hint_text_size));
         if (!is_error) {
             dividerPaint.setColor(highlight_color);
         } else {
@@ -563,6 +576,42 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     @Override
     public boolean performLongClick(float x, float y) {
         togglePopupWindow();
+        return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                terminate = false;
+                long_click = false;
+                is_moving = false;
+                click_time = System.currentTimeMillis();
+                down_x = event.getRawX();
+                down_y = event.getRawY();
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (FloatingLabelSpinner.this != null && !terminate && System.currentTimeMillis() - click_time >= 1000) {
+                            performLongClick();
+                            long_click = true;
+                        }
+                    }
+                }, 1000);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (!is_moving && (Math.abs(event.getRawX() - down_x) > touch_slop || Math.abs(event.getRawY() - down_y) > touch_slop)) {
+                    is_moving = true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (!is_moving && !long_click) {
+                    performClick();
+                }
+                click_time = System.currentTimeMillis();
+                terminate = true;
+                break;
+        }
         return true;
     }
 
