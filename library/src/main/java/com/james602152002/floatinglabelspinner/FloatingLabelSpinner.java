@@ -176,10 +176,10 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (paddingArray.hasValue(0)) {
             padding_left = padding_top = padding_right = padding_bottom = (short) paddingArray.getDimensionPixelOffset(0, 0);
         } else {
-            padding_left = (short) paddingArray.getDimensionPixelOffset(1, 0);
-            padding_top = (short) paddingArray.getDimensionPixelOffset(2, 0);
-            padding_right = (short) paddingArray.getDimensionPixelOffset(3, 0);
-            padding_bottom = (short) paddingArray.getDimensionPixelOffset(4, 0);
+            padding_left = (short) paddingArray.getDimensionPixelOffset(1, getPaddingLeft());
+            padding_top = (short) paddingArray.getDimensionPixelOffset(2, getPaddingTop());
+            padding_right = (short) paddingArray.getDimensionPixelOffset(3, getPaddingRight());
+            padding_bottom = (short) paddingArray.getDimensionPixelOffset(4, getPaddingBottom());
         }
         paddingArray.recycle();
         paddingArray = null;
