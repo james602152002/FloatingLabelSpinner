@@ -231,7 +231,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (hint != null)
             drawSpannableString(canvas, hint, labelPaint, label_horizontal_margin, label_paint_dy);
 
-        final int divider_y = (int) (padding_top + label_text_size + (divider_stroke_width >> 1) + (hint_cell_height > 0 ? hint_cell_height : hint_text_size));
+        final int divider_y = (int) (padding_top + label_text_size + label_vertical_margin + (divider_stroke_width >> 1) + (hint_cell_height > 0 ? hint_cell_height : hint_text_size));
         if (!is_error) {
             dividerPaint.setColor(highlight_color);
         } else {
