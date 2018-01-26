@@ -172,14 +172,14 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         typedArray = null;
 
         TypedArray paddingArray = context.obtainStyledAttributes(attrs, new int[]
-                {android.R.attr.padding, android.R.attr.paddingLeft, android.R.attr.paddingTop, android.R.attr.paddingBottom, android.R.attr.paddingRight});
+                {android.R.attr.padding, android.R.attr.paddingLeft, android.R.attr.paddingTop, android.R.attr.paddingRight, android.R.attr.paddingBottom});
         if (paddingArray.hasValue(0)) {
             padding_left = padding_top = padding_right = padding_bottom = (short) paddingArray.getDimensionPixelOffset(0, 0);
         } else {
-            padding_left = (short) paddingArray.getDimensionPixelOffset(1, getPaddingLeft());
-            padding_top = (short) paddingArray.getDimensionPixelOffset(2, getPaddingTop());
-            padding_right = (short) paddingArray.getDimensionPixelOffset(3, getPaddingRight());
-            padding_bottom = (short) paddingArray.getDimensionPixelOffset(4, getPaddingBottom());
+            padding_left = (short) (paddingArray.hasValue(1) ? paddingArray.getDimensionPixelOffset(1, getPaddingLeft()) : 0);
+            padding_top = (short) (paddingArray.hasValue(2) ? paddingArray.getDimensionPixelOffset(2, getPaddingTop()) : 0);
+            padding_right = (short) (paddingArray.hasValue(3) ? paddingArray.getDimensionPixelOffset(3, getPaddingRight()) : 0);
+            padding_bottom = (short) (paddingArray.hasValue(4) ? paddingArray.getDimensionPixelOffset(4, getPaddingBottom()) : 0);
         }
         paddingArray.recycle();
         paddingArray = null;
