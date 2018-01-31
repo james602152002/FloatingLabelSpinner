@@ -530,7 +530,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private void startErrorAnimation() {
         final float error_length = errorPaint.measureText(error.toString());
         final int width = getWidth();
-        if (error_length > width) {
+        if (error_length > width - (error_horizontal_margin << 1)) {
             error_percentage = 0;
             if (errorAnimator == null)
                 errorAnimator = ObjectAnimator.ofFloat(this, "error_percentage", 0, 1);
