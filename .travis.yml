@@ -8,7 +8,7 @@ android:
   components:
   - platform-tools
   - tools
-  - build-tools-27.1.0
+  - build-tools-26.0.2
   - android-22 # Android platform used by your alternative emulator
   - android-27
   - sys-img-armeabi-v7a-android-22
