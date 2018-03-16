@@ -17,6 +17,6 @@ public class ExampleInstrumentedTest {
 //        // Context of the app under test.
 //        Context appContext = InstrumentationRegistry.getTargetContext();
 //
-//        assertEquals("com.james602152002.floatinglabelspinner", appContext.getPackageName());
+//        Assert.assertEquals("com.james602152002.floatinglabelspinner", appContext.getPackageName());
     }
 }

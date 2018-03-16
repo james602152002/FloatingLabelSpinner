@@ -1,7 +1,8 @@
 package com.james602152002.floatinglabelspinner.popupwindow;
 
 import android.content.Context;
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnitRunner;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,14 +19,14 @@ import java.lang.reflect.Field;
 /**
  * Created by shiki60215 on 18-1-10.
  */
-public class SpinnerPopupWindowTest extends AndroidTestCase {
+public class SpinnerPopupWindowTest extends AndroidJUnitRunner {
 
     private SpinnerPopupWindow popupWindow;
     private FloatingLabelSpinner spinner;
 
     @Before
     public void setUp() throws Exception {
-        final Context context = getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         spinner = new FloatingLabelSpinner(context);
         spinner.setDropDownHintView(new View(context));
         spinner.setHint("hint");

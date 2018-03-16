@@ -1,6 +1,7 @@
 package com.james602152002.floatinglabelspinner;
 
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnitRunner;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,13 +9,14 @@ import android.widget.BaseAdapter;
 import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Created by shiki60215 on 18-1-9.
  */
-public class HintAdapterTest extends AndroidTestCase {
+public class HintAdapterTest extends AndroidJUnitRunner {
 
     HintAdapter adapter;
     FloatingLabelSpinner spinner;
@@ -43,7 +45,7 @@ public class HintAdapterTest extends AndroidTestCase {
             }
         };
 
-        spinner = new FloatingLabelSpinner(getContext());
+        spinner = new FloatingLabelSpinner(InstrumentationRegistry.getInstrumentation().getTargetContext());
         spinner.setAdapter(baseAdapter);
         spinner.setHint("hint");
         adapter = (HintAdapter) spinner.getAdapter();
@@ -51,7 +53,7 @@ public class HintAdapterTest extends AndroidTestCase {
 
     @Test
     public void testGetCount() {
-        assertEquals(1, adapter.getCount());
+        Assert.assertEquals(1, adapter.getCount());
     }
 
     @Test
@@ -60,32 +62,32 @@ public class HintAdapterTest extends AndroidTestCase {
         adapter.getItem(0);
         adapter.getItemViewType(0);
         adapter.getItemId(0);
-        assertNotNull(adapter.getView(0, null, null));
-        assertNotNull(adapter.getDropDownView(0, null, null));
+        Assert.assertNotNull(adapter.getView(0, null, null));
+        Assert.assertNotNull(adapter.getDropDownView(0, null, null));
     }
 
     @Test
     public void testDropDownHintView() {
-        spinner.setDropDownHintView(new View(getContext()));
-        assertNotNull(adapter.getDropDownView(0, spinner.getDropDownHintView(), null));
+        spinner.setDropDownHintView(new View(InstrumentationRegistry.getInstrumentation().getTargetContext()));
+        Assert.assertNotNull(adapter.getDropDownView(0, spinner.getDropDownHintView(), null));
         adapter.setHint(null);
         View dropDownHintView = adapter.getDropDownView(0, spinner.getDropDownHintView(), null);
-        assertNull(dropDownHintView);
+        Assert.assertNull(dropDownHintView);
         spinner.getDropDownHintView().setTag(-1);
         dropDownHintView = adapter.getDropDownView(0, spinner.getDropDownHintView(), null);
-        assertNull(dropDownHintView);
+        Assert.assertNull(dropDownHintView);
         spinner.getDropDownHintView().setTag(0);
         dropDownHintView = adapter.getDropDownView(0, spinner.getDropDownHintView(), null);
-        assertNull(dropDownHintView);
+        Assert.assertNull(dropDownHintView);
     }
 
     @Test
     public void testDropDownView() {
         adapter.setHint(null);
         View dropDownView = adapter.getDropDownView(1, null, null);
-        assertNull(dropDownView);
-        dropDownView = adapter.getDropDownView(1, new View(getContext()), null);
-        assertNull(dropDownView);
+        Assert.assertNull(dropDownView);
+        dropDownView = adapter.getDropDownView(1, new View(InstrumentationRegistry.getInstrumentation().getTargetContext()), null);
+        Assert.assertNull(dropDownView);
     }
 
     @Test

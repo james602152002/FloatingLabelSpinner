@@ -6,7 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.SystemClock;
 import android.support.annotation.VisibleForTesting;
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnitRunner;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -19,8 +20,8 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -30,14 +31,14 @@ import java.lang.reflect.Method;
 /**
  * Created by shiki60215 on 18-1-9.
  */
-public class FloatingLabelSpinnerTest extends AndroidTestCase {
+public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
 
-    @Rule
-    private FloatingLabelSpinner customView;
+//    @Rule
+    public FloatingLabelSpinner customView;
 
     @Before
-    protected void setUp() throws Exception {
-        Context context = getContext();
+    public void setUp() throws Exception {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         customView = new FloatingLabelSpinner(context, null, 0, Spinner.MODE_DROPDOWN);
         customView = new FloatingLabelSpinner(context, null);
         customView = new FloatingLabelSpinner(context, Spinner.MODE_DROPDOWN);
@@ -49,35 +50,35 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     public void testHintTextEqual() {
         final String hint = "hint";
         customView.setHint(hint);
-        assertEquals(hint, customView.getHint());
+        Assert.assertEquals(hint, customView.getHint());
     }
 
     @Test
     public void testHintTextColor() {
         final int color = Color.GRAY;
         customView.setHint_text_color(color);
-        assertEquals(color, customView.getHint_text_color());
+        Assert.assertEquals(color, customView.getHint_text_color());
     }
 
     @Test
     public void testHintTestSize() {
         final float text_size = 10;
         customView.setHint_text_size(text_size);
-        assertEquals(text_size, customView.getHint_text_size());
+        Assert.assertEquals(text_size, customView.getHint_text_size(), 0);
     }
 
     @Test
     public void testHighLightColor() {
         final int color = Color.BLUE;
         customView.setHighlight_color(color);
-        assertEquals(color, customView.getHighlight_color());
+        Assert.assertEquals(color, customView.getHighlight_color());
     }
 
     @Test
     public void testLabelTextSize() {
         final float label_text_size = 8;
         customView.setLabel_text_size(label_text_size);
-        assertEquals(label_text_size, customView.getLabel_text_size());
+        Assert.assertEquals(label_text_size, customView.getLabel_text_size(),0);
     }
 
     @Test
@@ -108,13 +109,13 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                return new View(getContext());
+                return new View(InstrumentationRegistry.getInstrumentation().getTargetContext());
             }
         });
         customView.setSelection(1);
         field = FloatingLabelSpinner.class.getDeclaredField("selectedView");
         field.setAccessible(true);
-        field.set(customView, new View(getContext()));
+        field.set(customView, new View(InstrumentationRegistry.getInstrumentation().getTargetContext()));
         customView.setHint("hint");
         customView.setError("error");
         customView.dispatchDraw(canvas);
@@ -160,7 +161,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         final String error = "error";
         customView.requestLayout();
         customView.setError(error);
-        assertEquals(error, customView.getError());
+        Assert.assertEquals(error, customView.getError());
         customView.setError(null);
     }
 
@@ -168,14 +169,14 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     public void testErrorColor() {
         final int color = Color.RED;
         customView.setError_color(color);
-        assertEquals(color, customView.getError_color());
+        Assert.assertEquals(color, customView.getError_color());
     }
 
     @Test
     public void testErrorTextSize() {
         final float error_text_size = 6;
         customView.setError_text_size(error_text_size);
-        assertEquals(error_text_size, customView.getError_text_size());
+        Assert.assertEquals(error_text_size, customView.getError_text_size(), 0);
     }
 
     @Test
@@ -188,7 +189,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     public void testThickness() {
         final int thickness = 5;
         customView.setThickness(thickness);
-        assertEquals(thickness, customView.getThickness());
+        Assert.assertEquals(thickness, customView.getThickness());
     }
 
     @Test
@@ -199,7 +200,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         method.invoke(customView, test_percentage);
         Field field = FloatingLabelSpinner.class.getDeclaredField("error_percentage");
         field.setAccessible(true);
-        assertEquals(test_percentage, field.get(customView));
+        Assert.assertEquals(test_percentage, field.get(customView));
     }
 
     @Test
@@ -210,7 +211,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         method.invoke(customView, test_percentage);
         Field field = FloatingLabelSpinner.class.getDeclaredField("float_label_anim_percentage");
         field.setAccessible(true);
-        assertEquals(test_percentage, field.get(customView));
+        Assert.assertEquals(test_percentage, field.get(customView));
     }
 
     @Test
@@ -218,7 +219,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         final short anim_duration = 80;
         customView.setAnimDuration(-1);
         customView.setAnimDuration(anim_duration);
-        assertEquals(anim_duration, customView.getAnimDuration());
+        Assert.assertEquals(anim_duration, customView.getAnimDuration());
     }
 
     @Test
@@ -226,7 +227,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         final short error_anim_duration = 5000;
         customView.setErrorAnimDuration(-1);
         customView.setErrorAnimDuration(error_anim_duration);
-        assertEquals(error_anim_duration, customView.getErrorAnimDuration());
+        Assert.assertEquals(error_anim_duration, customView.getErrorAnimDuration());
     }
 
     @Test
@@ -252,12 +253,12 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
 
     @Test
     public void testDropDownHintView() {
-        View hintView = new View(getContext());
+        View hintView = new View(InstrumentationRegistry.getInstrumentation().getTargetContext());
         customView.setDropDownHintView(hintView);
-        assertEquals(hintView, customView.getDropDownHintView());
+        Assert.assertEquals(hintView, customView.getDropDownHintView());
         int dropDownHintView = (int) (Integer.MAX_VALUE * Math.random());
         customView.setDropDownHintView(dropDownHintView);
-        assertEquals(dropDownHintView, customView.getDropDownHintViewID());
+        Assert.assertEquals(dropDownHintView, customView.getDropDownHintViewID());
     }
 
     @VisibleForTesting
@@ -296,7 +297,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     @Test
     public void testRecursiveMode() {
         customView.setRecursive_mode(true);
-        assertTrue(customView.isRecursive_mode());
+        Assert.assertTrue(customView.isRecursive_mode());
     }
 
     @Test
@@ -308,7 +309,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     public void testSetSelection() {
         final int position = 1;
         customView.setSelection(position, false);
-        assertEquals(position, customView.getSelectedItemPosition());
+        Assert.assertEquals(position, customView.getSelectedItemPosition());
     }
 
     @Test
@@ -321,7 +322,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
         customView.dismiss();
         Field field = FloatingLabelSpinner.class.getDeclaredField("popupWindow");
         field.setAccessible(true);
-        assertNull(field.get(customView));
+        Assert.assertNull(field.get(customView));
     }
 
     @Test
@@ -341,7 +342,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
     public void testDataSetChanged() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
         initAdapter();
         customView.notifyDataSetChanged();
-        customView.setDropDownHintView(new View(getContext()));
+        customView.setDropDownHintView(new View(InstrumentationRegistry.getInstrumentation().getTargetContext()));
         Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
         method.setAccessible(true);
         method.invoke(customView);
@@ -417,7 +418,7 @@ public class FloatingLabelSpinnerTest extends AndroidTestCase {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                return new View(getContext());
+                return new View(InstrumentationRegistry.getInstrumentation().getTargetContext());
             }
         });
     }
