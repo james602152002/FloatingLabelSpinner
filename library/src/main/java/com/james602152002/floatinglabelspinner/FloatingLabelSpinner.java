@@ -312,7 +312,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         this.listener = listener;
         OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
             private boolean init = false;
-            private boolean firstClick = true;
+//            private boolean firstClick = true;
 
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
@@ -328,6 +328,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                 init = true;
                 if (!isRecursive_mode())
                     popupWindow = null;
+                requestLayout();
             }
 
             @Override
