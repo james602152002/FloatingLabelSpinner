@@ -81,8 +81,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private View selectedView;
     private long click_time;
     private boolean is_moving = false;
-    private boolean terminate = false;
-    private boolean long_click = false;
+//    private boolean terminate = false;
+//    private boolean long_click = false;
     private final short touch_slop;
     private float down_x, down_y;
 
@@ -584,21 +584,21 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                terminate = false;
-                long_click = false;
+//                terminate = false;
+//                long_click = false;
                 is_moving = false;
                 click_time = System.currentTimeMillis();
                 down_x = event.getRawX();
                 down_y = event.getRawY();
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (FloatingLabelSpinner.this != null && !terminate && System.currentTimeMillis() - click_time >= 1000) {
-                            performLongClick();
-                            long_click = true;
-                        }
-                    }
-                }, 1000);
+//                postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (FloatingLabelSpinner.this != null && !terminate && System.currentTimeMillis() - click_time >= 1000) {
+//                            performLongClick();
+//                            long_click = true;
+//                        }
+//                    }
+//                }, 1000);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (!is_moving && (Math.abs(event.getRawX() - down_x) > touch_slop || Math.abs(event.getRawY() - down_y) > touch_slop)) {
@@ -606,11 +606,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (!is_moving && !long_click) {
+                if (!is_moving) {
                     performClick();
                 }
                 click_time = System.currentTimeMillis();
-                terminate = true;
+//                terminate = true;
                 break;
         }
         return true;
@@ -628,14 +628,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             popupWindow.setWidth(getWidth() - padding_left - padding_right + ((card_margin_below_lollipop + margin) << 1));
             popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
             popupWindow.setAdapter(this, hintAdapter, margin, getOnItemSelectedListener());
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    int dy = -(Math.round(error_text_size) + (error_vertical_margin << 1) + padding_bottom + margin
-                            + (card_margin_below_lollipop != 0 ? card_margin_below_lollipop + dp2px(3) : card_margin_below_lollipop));
-                    popupWindow.showAsDropDown(FloatingLabelSpinner.this, -(card_margin_below_lollipop + margin), dy);
-                }
-            });
+            int dy = -(Math.round(error_text_size) + (error_vertical_margin << 1) + padding_bottom + margin
+                    + (card_margin_below_lollipop != 0 ? card_margin_below_lollipop + dp2px(3) : card_margin_below_lollipop));
+            popupWindow.showAsDropDown(this, -(card_margin_below_lollipop + margin), dy);
         } else {
             popupWindow.dismiss();
             popupWindow = null;
