@@ -81,7 +81,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private View selectedView;
     private long click_time;
     private boolean is_moving = false;
-//    private boolean terminate = false;
+    //    private boolean terminate = false;
 //    private boolean long_click = false;
     private final short touch_slop;
     private float down_x, down_y;
@@ -312,7 +312,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         this.listener = listener;
         OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
             private boolean init = false;
-//            private boolean firstClick = true;
 
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
