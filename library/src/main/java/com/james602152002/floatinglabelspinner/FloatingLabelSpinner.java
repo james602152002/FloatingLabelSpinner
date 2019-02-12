@@ -311,20 +311,23 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     public void setOnItemSelectedListener(@Nullable final OnItemSelectedListener listener) {
         this.listener = listener;
         OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
-            private boolean init = false;
+            private boolean can_select = false;
 
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
                 measureHintCellHeight();
-                if (init && float_label_anim_percentage == 0 && position != 0) {
+                if (can_select && float_label_anim_percentage == 0 && position != 0) {
                     startAnimator(0, 1);
                 } else if (position == 0 && float_label_anim_percentage != 0) {
                     startAnimator(1, 0);
                 }
-                if (FloatingLabelSpinner.this.listener != null && init) {
+                if (FloatingLabelSpinner.this.listener != null && can_select) {
                     FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
+                    can_select = false;
+                } else {
+                    can_select = true;
                 }
-                init = true;
+
                 if (!isRecursive_mode())
                     popupWindow = null;
                 requestLayout();
