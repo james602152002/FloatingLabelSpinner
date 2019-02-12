@@ -321,9 +321,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                 } else if (position == 0 && float_label_anim_percentage != 0) {
                     startAnimator(1, 0);
                 }
-//                if (FloatingLabelSpinner.this.listener != null && init) {
-//                    FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
-//                }
+                if (FloatingLabelSpinner.this.listener != null && init) {
+                    FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
+                }
                 init = true;
                 if (!isRecursive_mode())
                     popupWindow = null;
