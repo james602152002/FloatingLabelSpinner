@@ -649,6 +649,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             final int top = (int) (padding_top + label_text_size + label_vertical_margin);
             selectedView.layout(padding_left, top, padding_left + selectedView.getMeasuredWidth(),
                     top + selectedView.getMeasuredHeight());
+            selectedView.requestLayout();
         }
 
         measureHintCellHeight();
