@@ -81,7 +81,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private boolean is_moving = false;
     private final short touch_slop;
     private float down_x, down_y;
-//    private boolean can_select = false;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -640,6 +639,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             ViewGroup.LayoutParams lp = selectedView.getLayoutParams();
             if (lp == null)
                 lp = generateDefaultLayoutParams();
+            addViewInLayout(selectedView, 0, lp);
             addViewInLayout(selectedView, 0, lp);
             selectedView.setSelected(true);
             selectedView.setEnabled(true);
