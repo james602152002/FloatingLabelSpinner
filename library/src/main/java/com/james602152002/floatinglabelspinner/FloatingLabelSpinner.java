@@ -646,9 +646,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             int w = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
             int h = w;
             selectedView.measure(w, h);
+            final int left = padding_left;
             final int top = (int) (padding_top + label_text_size + label_vertical_margin);
-            selectedView.layout(padding_left, top, padding_left + selectedView.getMeasuredWidth(),
-                    top + selectedView.getMeasuredHeight());
+            final int right = padding_left + selectedView.getMeasuredWidth();
+            final int bottom = top + selectedView.getMeasuredHeight();
+            selectedView.layout(left, top, right, bottom);
             selectedView.requestLayout();
         }
 
