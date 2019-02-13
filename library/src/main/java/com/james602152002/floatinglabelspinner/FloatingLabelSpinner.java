@@ -82,7 +82,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private boolean is_moving = false;
     private final short touch_slop;
     private float down_x, down_y;
-    private boolean can_select = false;
+//    private boolean can_select = false;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -313,17 +313,17 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
                 measureHintCellHeight();
-                if (can_select && float_label_anim_percentage == 0 && position != 0) {
+                if (float_label_anim_percentage == 0 && position != 0) {
                     startAnimator(0, 1);
                 } else if (position == 0 && float_label_anim_percentage != 0) {
                     startAnimator(1, 0);
                 }
-                if (FloatingLabelSpinner.this.listener != null && can_select) {
-                    FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
-                    can_select = false;
-                } else {
-                    can_select = true;
-                }
+//                if (FloatingLabelSpinner.this.listener != null && can_select) {
+//                    FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
+//                    can_select = false;
+//                } else {
+//                    can_select = true;
+//                }
 
                 if (!isRecursive_mode())
                     popupWindow = null;
@@ -612,7 +612,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             popupWindow.setOutsideTouchable(true);
             popupWindow.setWidth(getWidth() - padding_left - padding_right + ((card_margin_below_lollipop + margin) << 1));
             popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-            popupWindow.setAdapter(this, hintAdapter, margin, getOnItemSelectedListener());
+            popupWindow.setAdapter(this, hintAdapter, margin, listener);
             int dy = -(Math.round(error_text_size) + (error_vertical_margin << 1) + padding_bottom + margin
                     + (card_margin_below_lollipop != 0 ? card_margin_below_lollipop + dp2px(3) : card_margin_below_lollipop));
             popupWindow.showAsDropDown(this, -(card_margin_below_lollipop + margin), dy);
@@ -681,7 +681,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     }
 
     public void dismiss() {
-        can_select = false;
+//        can_select = false;
         if (recursive_mode && popupWindow != null) {
             popupWindow.dismiss();
             popupWindow = null;
