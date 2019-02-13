@@ -44,10 +44,10 @@ public class SpinnerPopupWindow extends PopupWindow implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        spinner.layoutSpinnerView(position);
         if (listener != null) {
             listener.onItemSelected(parent, view, position, id);
         }
+        spinner.layoutSpinnerView(position);
         if (!spinner.isRecursive_mode())
             dismiss();
     }
