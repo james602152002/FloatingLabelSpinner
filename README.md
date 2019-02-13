@@ -45,7 +45,7 @@ allprojects {
 
 ```
 dependencies {
-	implementation 'com.github.james602152002:FloatingLabelSpinner:1.3.5'
+	implementation 'com.github.james602152002:FloatingLabelSpinner:1.3.6'
 }
 ```
 
