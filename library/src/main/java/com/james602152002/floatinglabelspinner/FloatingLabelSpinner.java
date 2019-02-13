@@ -79,10 +79,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private SpinnerPopupWindow popupWindow;
     private boolean recursive_mode = false;
     private View selectedView;
-    private long click_time;
     private boolean is_moving = false;
-    //    private boolean terminate = false;
-//    private boolean long_click = false;
     private final short touch_slop;
     private float down_x, down_y;
     private boolean can_select = false;
@@ -586,21 +583,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-//                terminate = false;
-//                long_click = false;
                 is_moving = false;
-                click_time = System.currentTimeMillis();
                 down_x = event.getRawX();
                 down_y = event.getRawY();
-//                postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (FloatingLabelSpinner.this != null && !terminate && System.currentTimeMillis() - click_time >= 1000) {
-//                            performLongClick();
-//                            long_click = true;
-//                        }
-//                    }
-//                }, 1000);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (!is_moving && (Math.abs(event.getRawX() - down_x) > touch_slop || Math.abs(event.getRawY() - down_y) > touch_slop)) {
@@ -611,8 +596,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
                 if (!is_moving) {
                     performClick();
                 }
-                click_time = System.currentTimeMillis();
-//                terminate = true;
                 break;
         }
         return true;
@@ -698,13 +681,13 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     }
 
     public void dismiss() {
+        can_select = false;
         if (recursive_mode && popupWindow != null) {
             popupWindow.dismiss();
             popupWindow = null;
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 requestLayout();
             }
-            can_select = true;
         }
     }
 
