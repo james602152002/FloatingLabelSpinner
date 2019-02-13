@@ -704,7 +704,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 requestLayout();
             }
-            can_select = false;
+            can_select = true;
         }
     }
 
