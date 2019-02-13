@@ -85,6 +85,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 //    private boolean long_click = false;
     private final short touch_slop;
     private float down_x, down_y;
+    private boolean can_select = false;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -311,7 +312,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     public void setOnItemSelectedListener(@Nullable final OnItemSelectedListener listener) {
         this.listener = listener;
         OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
-            private boolean can_select = false;
 
             @Override
             public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
@@ -704,6 +704,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 requestLayout();
             }
+            can_select = false;
         }
     }
 
