@@ -306,43 +306,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     @Override
     public void setOnItemSelectedListener(@Nullable final OnItemSelectedListener listener) {
         this.listener = listener;
-//        OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
-//                measureHintCellHeight();
-//                if (float_label_anim_percentage == 0 && position != 0) {
-//                    startAnimator(0, 1);
-//                } else if (position == 0 && float_label_anim_percentage != 0) {
-//                    startAnimator(1, 0);
-//                }
-////                if (FloatingLabelSpinner.this.listener != null && can_select) {
-////                    FloatingLabelSpinner.this.listener.onItemSelected(parent, view, position, id);
-////                    can_select = false;
-////                } else {
-////                    can_select = true;
-////                }
-//
-//                if (!isRecursive_mode())
-//                    popupWindow = null;
-//                requestLayout();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                if (FloatingLabelSpinner.this.listener != null) {
-//                    FloatingLabelSpinner.this.listener.onNothingSelected(parent);
-//                }
-//            }
-//
-//            private void startAnimator(float startValue, float endValue) {
-//                final ObjectAnimator animator = ObjectAnimator.ofFloat(FloatingLabelSpinner.this, "float_label_anim_percentage", startValue, endValue);
-//                animator.setInterpolator(new AccelerateInterpolator(3));
-//                animator.setDuration(ANIM_DURATION);
-//                animator.start();
-//            }
-//        };
-//        super.setOnItemSelectedListener(itemSelectedListener);
     }
 
     private void measureHintCellHeight() {
@@ -640,6 +603,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             if (lp == null)
                 lp = generateDefaultLayoutParams();
             addViewInLayout(selectedView, 0, lp);
+            removeAllViewsInLayout();
             addViewInLayout(selectedView, 0, lp);
             selectedView.setSelected(true);
             selectedView.setEnabled(true);
@@ -701,7 +665,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     }
 
     public void dismiss() {
-//        can_select = false;
         if (recursive_mode && popupWindow != null) {
             popupWindow.dismiss();
             popupWindow = null;
