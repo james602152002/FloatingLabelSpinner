@@ -644,6 +644,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     @Override
     public void setSelection(int position) {
+        if (listener != null) {
+            listener.onItemSelected(this, this, position, 0);
+        }
         layoutSpinnerView(position);
     }
 
