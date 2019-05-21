@@ -17,5 +17,6 @@
         <attr name="j_fls_float_anim_duration" format="integer"/>
         <attr name="j_fls_error_anim_duration" format="integer"/>
         <attr name="j_fls_recursive" format="boolean"/>
+        <attr name="j_fls_must_fill_type" format="boolean" />
     </declare-styleable>
 </resources>

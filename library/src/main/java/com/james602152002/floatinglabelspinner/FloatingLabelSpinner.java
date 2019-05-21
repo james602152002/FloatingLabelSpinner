@@ -15,6 +15,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
@@ -148,6 +149,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         ANIM_DURATION = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_float_anim_duration, 800);
         ERROR_ANIM_DURATION_PER_WIDTH = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_error_anim_duration, 8000);
         recursive_mode = typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_recursive, false);
+
+        if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type , false)) {
+            hint = new SpannableString(hint + "*");
+            ((SpannableString) hint).setSpan(new ForegroundColorSpan(Color.RED), hint.length() - 1, hint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
 
         if (ANIM_DURATION < 0)
             ANIM_DURATION = 800;
