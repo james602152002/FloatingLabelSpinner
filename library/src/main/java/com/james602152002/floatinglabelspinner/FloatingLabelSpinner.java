@@ -151,7 +151,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         recursive_mode = typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_recursive, false);
 
         if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type , false)) {
-            hint = new SpannableString(hint + "*");
+            hint = new SpannableString(hint + " *");
             ((SpannableString) hint).setSpan(new ForegroundColorSpan(Color.RED), hint.length() - 1, hint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
