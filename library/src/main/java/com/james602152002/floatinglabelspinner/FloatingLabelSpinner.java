@@ -618,6 +618,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             int w = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
             int h = w;
             selectedView.measure(w, h);
+
             final int left = padding_left;
             final int top = (int) (padding_top + label_text_size + label_vertical_margin);
             final int right = padding_left + selectedView.getMeasuredWidth();
@@ -679,9 +680,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (recursive_mode && popupWindow != null) {
             popupWindow.dismiss();
             popupWindow = null;
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                requestLayout();
-            }
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            requestLayout();
+//            }
         }
     }
 
@@ -691,6 +692,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (popupWindow != null) {
             popupWindow.notifyDataSetChanged();
         }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         requestLayout();
+//        }
     }
 }
