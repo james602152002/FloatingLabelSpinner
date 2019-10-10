@@ -12,8 +12,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatSpinner;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -27,7 +25,11 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.SpinnerAdapter;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
 import com.james602152002.floatinglabelspinner.popupwindow.SpinnerPopupWindow;
@@ -65,7 +67,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private float float_label_anim_percentage = 0;
     private short ANIM_DURATION;
     private short ERROR_ANIM_DURATION_PER_WIDTH;
-    private OnItemSelectedListener listener;
+    private AdapterView.OnItemSelectedListener listener;
     private HintAdapter hintAdapter;
     //    private View hintView;
     private View dropDownHintView;
@@ -150,7 +152,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         ERROR_ANIM_DURATION_PER_WIDTH = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_error_anim_duration, 8000);
         recursive_mode = typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_recursive, false);
 
-        if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type , false)) {
+        if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type, false)) {
             hint = new SpannableString(hint + " *");
             ((SpannableString) hint).setSpan(new ForegroundColorSpan(Color.RED), hint.length() - 1, hint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -689,5 +691,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (popupWindow != null) {
             popupWindow.notifyDataSetChanged();
         }
+        requestLayout();
     }
 }

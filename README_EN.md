@@ -47,6 +47,11 @@ allprojects {
 dependencies {
 	implementation 'com.github.james602152002:FloatingLabelSpinner:1.4.5'
 }
+
+//Android X
+dependencis {
+    implementation 'com.github.james602152002:FloatingLabelSpinner:1.5.0'
+}
 ```
 
 ## Property

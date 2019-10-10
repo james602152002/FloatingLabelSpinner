@@ -1,7 +1,7 @@
 package com.james602152002.floatinglabelspinner;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnitRunner;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnitRunner;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
