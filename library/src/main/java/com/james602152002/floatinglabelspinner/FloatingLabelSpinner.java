@@ -2,15 +2,22 @@ package com.james602152002.floatinglabelspinner;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -30,10 +37,12 @@ import android.widget.SpinnerAdapter;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.content.ContextCompat;
 
 import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
 import com.james602152002.floatinglabelspinner.popupwindow.SpinnerPopupWindow;
 
+import java.lang.ref.SoftReference;
 import java.lang.reflect.Field;
 
 
@@ -53,6 +62,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private short error_vertical_margin;
     private short error_horizontal_margin;
     private final TextPaint errorPaint;
+
+    private final Paint iconPaint;
 
     private int highlight_color;
     private int hint_text_color;
@@ -85,11 +96,16 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private final short touch_slop;
     private float down_x, down_y;
 
+    private short bitmap_height;
+    private Bitmap rightIconBitmap;
+    private short rightIconSize = 0;
+
     public FloatingLabelSpinner(Context context) {
         super(context);
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
+        iconPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
         touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, null);
@@ -100,6 +116,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
+        iconPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
         touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, null);
@@ -110,6 +127,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
+        iconPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
         touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, attrs);
@@ -120,6 +138,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         final int anti_alias_flag = Paint.ANTI_ALIAS_FLAG;
         labelPaint = new TextPaint(anti_alias_flag);
         dividerPaint = new Paint(anti_alias_flag);
+        iconPaint = new Paint(anti_alias_flag);
         errorPaint = new TextPaint(anti_alias_flag);
         touch_slop = (short) ViewConfiguration.get(context).getScaledTouchSlop();
         init(context, attrs);
@@ -188,7 +207,6 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         paddingArray.recycle();
         paddingArray = null;
         updatePadding();
-
     }
 
     private int dp2px(float dpValue) {
@@ -263,6 +281,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             }
         }
         canvas.drawLine(0, divider_y, getWidth(), divider_y, dividerPaint);
+        if (rightIconBitmap != null) {
+            drawRightIcon(canvas, divider_y, hint_cell_height);
+        }
     }
 
     private void drawSpannableString(final Canvas canvas, CharSequence hint, final TextPaint paint, final int start_x, final int start_y) {
@@ -309,6 +330,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             canvas.drawText(hint, 0, hint.length(), xStart, start_y, paint);
         }
 
+    }
+
+    private void drawRightIcon(Canvas canvas, float dividerY, float hint_cell_height) {
+        canvas.drawBitmap(rightIconBitmap, getWidth() - padding_right - rightIconSize,
+                dividerY - (hint_cell_height + bitmap_height) * 0.65f, iconPaint);
     }
 
     @Override
@@ -619,9 +645,13 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
             int h = w;
             selectedView.measure(w, h);
 
+            int iconSize = 0;
+            if (rightIconBitmap != null) {
+                iconSize = rightIconSize - (padding_right << 1);
+            }
             final int left = padding_left;
             final int top = (int) (padding_top + label_text_size + label_vertical_margin);
-            final int right = padding_left + selectedView.getMeasuredWidth();
+            final int right = padding_left + selectedView.getMeasuredWidth() - iconSize;
             final int bottom = top + selectedView.getMeasuredHeight();
             selectedView.layout(left, top, right, bottom);
             selectedView.requestLayout();
@@ -695,5 +725,72 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         requestLayout();
 //        }
+    }
+
+    public void setRightIcon(int drawableID, int clear_btn_width, int alpha) {
+        this.rightIconSize = (short) clear_btn_width;
+
+        iconPaint.setAlpha(alpha);
+        Drawable drawable = ContextCompat.getDrawable(getContext(), drawableID);
+//        Drawable drawable = VectorDrawableCompat.create(getResources(),drawableID,null) ;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        Bitmap sampleBitmap = createBitmap(drawable, getResources(), drawableID, options);
+        int sampleSize = 1;
+        int width = options.outWidth;
+        int height = options.outHeight;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && drawable instanceof VectorDrawable) {
+            width = drawable.getIntrinsicWidth();
+            height = drawable.getIntrinsicHeight();
+        }
+        bitmap_height = (short) (height * clear_btn_width / width);
+        int destinationHeight = bitmap_height;
+        if (height > destinationHeight || width > clear_btn_width) {
+            int halfHeight = height >> 1;
+            int halfWidth = width >> 1;
+            while ((halfHeight / sampleSize) > destinationHeight && (halfWidth / sampleSize) > clear_btn_width) {
+                sampleSize *= 2;
+            }
+        }
+        if (sampleBitmap != null)
+            sampleBitmap.recycle();
+        options.inSampleSize = sampleSize;
+        options.inJustDecodeBounds = false;
+        Bitmap oldBitmap = createBitmap(drawable, getResources(), drawableID, options);
+        width = oldBitmap.getWidth();
+        height = oldBitmap.getHeight();
+        Matrix matrix = new Matrix();
+        float scaleX = ((float) clear_btn_width / width);
+        float scaleY = ((float) destinationHeight / height);
+        matrix.postScale(scaleX, scaleY);
+        rightIconBitmap = new SoftReference<>(
+                Bitmap.createBitmap(oldBitmap, 0, 0, width, height, matrix, true)).get();
+    }
+
+    private Bitmap createBitmap(Drawable drawable, Resources resources, int drawableId, BitmapFactory.Options options) {
+        if (drawable instanceof BitmapDrawable) {
+            return getBitmap(resources, drawableId, options);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && drawable instanceof VectorDrawable) {
+            return getVectorBitmap((VectorDrawable) drawable);
+        } else {
+            throw new IllegalArgumentException("unsupported drawable type");
+        }
+    }
+
+
+    private Bitmap getBitmap(Resources resources, int drawableId, BitmapFactory.Options options) {
+        return new SoftReference<>(
+                BitmapFactory.decodeResource(resources, drawableId, options)).get();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private Bitmap getVectorBitmap(VectorDrawable vectorDrawable) {
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
+        return bitmap;
     }
 }
