@@ -50,7 +50,7 @@ dependencies {
 
 //Android X
 dependencis {
-    implementation 'com.github.james602152002:FloatingLabelSpinner:1.6.0'
+    implementation 'com.github.james602152002:FloatingLabelSpinner:1.6.1'
 }
 ```
 
