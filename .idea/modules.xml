@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FloatingLabelSpinner.iml" filepath="$PROJECT_DIR$/FloatingLabelSpinner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/FloatingLabelSpinner.iml" filepath="$PROJECT_DIR$/.idea/FloatingLabelSpinner.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>

@@ -686,6 +686,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         if (listener != null) {
             listener.onItemSelected(this, this, position, 0);
         }
+        if (recursive_mode) {
+            notifyDataSetChanged();
+        }
         layoutSpinnerView(position);
     }
 
