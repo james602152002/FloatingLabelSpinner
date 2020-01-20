@@ -720,11 +720,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     }
 
     public void notifyDataSetChanged() {
-        if (dropDownHintView != null)
-            dropDownHintView.invalidate();
         if (popupWindow != null) {
             popupWindow.notifyDataSetChanged();
         }
+        if (dropDownHintView != null)
+            dropDownHintView.invalidate();
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         requestLayout();
 //        }
