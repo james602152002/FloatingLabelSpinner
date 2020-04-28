@@ -814,4 +814,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         }
         invalidate();
     }
+
+    public boolean isMustFill() {
+        return isMustFill;
+    }
 }
