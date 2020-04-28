@@ -99,6 +99,8 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private short bitmap_height;
     private Bitmap rightIconBitmap;
     private short rightIconSize = 0;
+    private CharSequence savedLabel = null;
+    private boolean isMustFill = false;
 
     public FloatingLabelSpinner(Context context) {
         super(context);
@@ -171,8 +173,9 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         ERROR_ANIM_DURATION_PER_WIDTH = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_error_anim_duration, 8000);
         recursive_mode = typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_recursive, false);
 
+        savedLabel = hint;
         if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type, false)) {
-            hint = new SpannableString(hint + " *");
+            hint = new SpannableString(savedLabel + " *");
             ((SpannableString) hint).setSpan(new ForegroundColorSpan(Color.RED), hint.length() - 1, hint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
@@ -795,5 +798,20 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         vectorDrawable.draw(canvas);
         return bitmap;
+    }
+
+    public void setMustFillMode(boolean isMustFill) {
+        this.isMustFill = isMustFill;
+        updateLabel();
+    }
+
+    private void updateLabel() {
+        if (isMustFill) {
+            hint = new SpannableString(savedLabel + " *");
+            ((SpannableString) hint).setSpan(new ForegroundColorSpan(Color.RED), hint.length() - 1, hint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            hint = savedLabel;
+        }
+        invalidate();
     }
 }
