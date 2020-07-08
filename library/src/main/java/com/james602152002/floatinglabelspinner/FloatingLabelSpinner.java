@@ -696,7 +696,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     }
 
     private void removeSelectedView() {
-        if (selectedView != null)
+//        if (selectedView != null)
             removeAllViewsInLayout();
     }
 
