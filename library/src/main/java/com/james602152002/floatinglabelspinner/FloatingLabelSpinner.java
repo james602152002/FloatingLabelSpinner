@@ -175,6 +175,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
         savedLabel = hint;
         if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type, false)) {
+            isMustFill = true;
             hint = new SpannableString(savedLabel + " *");
             ((SpannableString) hint).setSpan(new ForegroundColorSpan(Color.RED), hint.length() - 1, hint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -697,7 +698,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
 
     private void removeSelectedView() {
 //        if (selectedView != null)
-            removeAllViewsInLayout();
+        removeAllViewsInLayout();
     }
 
     @Override
