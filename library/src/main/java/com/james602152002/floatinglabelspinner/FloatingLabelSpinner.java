@@ -13,6 +13,8 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -776,7 +778,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         matrix.postScale(scaleX, scaleY);
 
         if (right_icon_color > 0) {
-            iconPaint.setColor(right_icon_color);
+            iconPaint.setColorFilter(new PorterDuffColorFilter(right_icon_color, PorterDuff.Mode.SRC_IN));
         }
 
         rightIconBitmap = new SoftReference<>(
