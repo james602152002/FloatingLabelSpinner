@@ -68,6 +68,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     private int highlight_color;
     private int hint_text_color;
     private int error_color;
+    private int right_icon_color;
     private CharSequence hint;
     private short padding_left, padding_top, padding_right, padding_bottom;
     private short hint_cell_height = -1;
@@ -160,6 +161,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         hint_text_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_textColorHint, Color.GRAY);
         highlight_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_colorHighlight, primary_color);
         error_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_colorError, Color.RED);
+        right_icon_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_rightIconTint, -1);
         hint = typedArray.getString(R.styleable.FloatingLabelSpinner_j_fls_hint);
         divider_stroke_width = (short) typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_thickness, dp2px(2));
         label_text_size = typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_label_textSize, sp2Px(16));
@@ -172,6 +174,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         ANIM_DURATION = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_float_anim_duration, 800);
         ERROR_ANIM_DURATION_PER_WIDTH = (short) typedArray.getInteger(R.styleable.FloatingLabelSpinner_j_fls_error_anim_duration, 8000);
         recursive_mode = typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_recursive, false);
+
 
         savedLabel = hint;
         if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type, false)) {
@@ -771,6 +774,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         float scaleX = ((float) clear_btn_width / width);
         float scaleY = ((float) destinationHeight / height);
         matrix.postScale(scaleX, scaleY);
+
+        if (right_icon_color > 0) {
+            iconPaint.setColor(right_icon_color);
+        }
+
         rightIconBitmap = new SoftReference<>(
                 Bitmap.createBitmap(oldBitmap, 0, 0, width, height, matrix, true)).get();
     }

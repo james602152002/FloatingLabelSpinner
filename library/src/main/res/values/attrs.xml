@@ -4,6 +4,7 @@
         <attr name="j_fls_textColorHint" format = "color"/>
         <attr name="j_fls_colorHighlight" format = "color"/>
         <attr name="j_fls_colorError" format = "color"/>
+        <attr name="j_fls_rightIconTint" format = "color"/>
         <attr name="j_fls_hint" format ="string" />
         <attr name="j_fls_thickness" format = "dimension"/>
         <attr name="j_fls_label_horizontal_margin"  format="dimension"/>
