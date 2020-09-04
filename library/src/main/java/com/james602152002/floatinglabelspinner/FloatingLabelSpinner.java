@@ -163,7 +163,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         hint_text_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_textColorHint, Color.GRAY);
         highlight_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_colorHighlight, primary_color);
         error_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_colorError, Color.RED);
-        right_icon_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_rightIconTint, -1);
+        right_icon_color = typedArray.getColor(R.styleable.FloatingLabelSpinner_j_fls_rightIconTint, 0);
         hint = typedArray.getString(R.styleable.FloatingLabelSpinner_j_fls_hint);
         divider_stroke_width = (short) typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_thickness, dp2px(2));
         label_text_size = typedArray.getDimensionPixelOffset(R.styleable.FloatingLabelSpinner_j_fls_label_textSize, sp2Px(16));
@@ -777,7 +777,7 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
         float scaleY = ((float) destinationHeight / height);
         matrix.postScale(scaleX, scaleY);
 
-        if (right_icon_color > 0) {
+        if (right_icon_color != 0) {
             iconPaint.setColorFilter(new PorterDuffColorFilter(right_icon_color, PorterDuff.Mode.SRC_IN));
         }
 
