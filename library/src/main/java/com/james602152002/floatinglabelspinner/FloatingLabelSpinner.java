@@ -709,8 +709,11 @@ public class FloatingLabelSpinner extends AppCompatSpinner {
     @Override
     public View getSelectedView() {
         if (hintAdapter != null) {
-            final int position = getSelectedItemPosition();
+            int position = getSelectedItemPosition();
             if (position < hintAdapter.getCount()) {
+                if (position < 0) {
+                    position = 0;
+                }
                 selectedView = hintAdapter.getView(position, selectedView, this);
                 return selectedView;
             }
