@@ -55,22 +55,23 @@ class SpinnerPopupWindow(context: Context?) : PopupWindow(context), OnItemClickL
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-        listener?.let {
-            it.onItemSelected(parent, view, position, id)
-            if (spinner?.recursiveMode == true) {
-                notifyDataSetChanged()
-                spinner?.showPopupWindow()
-            }
-        }
+        listener?.onItemSelected(parent, view, position, id)
+//        listener?.let {
+//            it.onItemSelected(parent, view, position, id)
+////            if (spinner?.recursiveMode == true) {
+////                notifyDataSetChanged()
+////            }
+//        }
         spinner?.apply {
             layoutSpinnerView(position)
-            if (recursiveMode) {
+            if (!recursiveMode) {
                 this@SpinnerPopupWindow.dismiss()
             }
         }
     }
 
     fun notifyDataSetChanged() {
+        hintAdapter?.notifyDataSetChanged()
         dropDownViewAdapter?.notifyDataSetChanged()
     }
 }

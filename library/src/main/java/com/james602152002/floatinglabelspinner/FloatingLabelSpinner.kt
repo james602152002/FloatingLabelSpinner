@@ -687,27 +687,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
             e.printStackTrace()
         }
         getSelectedView()
-        selectedView?.let {
-            var lp = it.layoutParams
-            if (lp == null) lp = generateDefaultLayoutParams()
-            addViewInLayout(selectedView, 0, lp)
-            removeAllViewsInLayout()
-            addViewInLayout(selectedView, 0, lp)
-            it.isSelected = true
-            it.isEnabled = true
-            val w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-            it.measure(w, w)
-            var iconSize = 0
-            if (rightIconBitmap != null) {
-                iconSize = rightIconSize - (mPaddingRight shl 1)
-            }
-            val left = mPaddingLeft
-            val top = (mPaddingTop + labelTextSize + labelVerticalMargin).toInt()
-            val right = mPaddingLeft + it.measuredWidth - iconSize
-            val bottom = top + it.measuredHeight
-            it.layout(left, top, right, bottom)
-            it.requestLayout()
-        }
+        layoutSelectedView()
         measureHintCellHeight()
         if (floatLabelAnimPercentage == 0f && position != 0) {
             startAnimator(0f, 1f)
@@ -715,9 +695,9 @@ class FloatingLabelSpinner : AppCompatSpinner {
             startAnimator(1f, 0f)
         }
 //        if (!recursiveMode) popupWindow = null
-        if (!recursiveMode) {
-            popupWindow.dismiss()
-        }
+//        if (!recursiveMode) {
+//            popupWindow.dismiss()
+//        }
         requestLayout()
     }
 
@@ -751,8 +731,9 @@ class FloatingLabelSpinner : AppCompatSpinner {
     }
 
     override fun getSelectedView(): View? {
-        return hintAdapter?.let {
+        selectedView = hintAdapter?.let {
             when {
+                it.count == 0 -> selectedView
                 selectedItemPosition < 0 -> it.getView(0, selectedView, this)
                 selectedItemPosition in 0..it.count -> it.getView(
                     selectedItemPosition,
@@ -762,6 +743,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
                 else -> super.getSelectedView()
             }
         } ?: super.getSelectedView()
+        return selectedView
     }
 
     fun dismiss() {
@@ -774,6 +756,9 @@ class FloatingLabelSpinner : AppCompatSpinner {
     }
 
     fun notifyDataSetChanged() {
+//        popupWindow.dismiss()
+//        showPopupWindow()
+
         popupWindow.notifyDataSetChanged()
         dropDownHintView?.invalidate()
 
@@ -783,6 +768,29 @@ class FloatingLabelSpinner : AppCompatSpinner {
         //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         requestLayout()
         //        }
+    }
+
+    private fun layoutSelectedView() {
+        selectedView?.let {
+            val lp = it.layoutParams ?: generateDefaultLayoutParams()
+//            addViewInLayout(selectedView, 0, lp)
+            removeAllViewsInLayout()
+            addViewInLayout(selectedView, -1, lp)
+            it.isSelected = true
+            it.isEnabled = true
+            val w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            it.measure(w, w)
+            var iconSize = 0
+            if (rightIconBitmap != null) {
+                iconSize = rightIconSize - (mPaddingRight shl 1)
+            }
+            val left = mPaddingLeft
+            val top = (mPaddingTop + labelTextSize + labelVerticalMargin).toInt()
+            val right = mPaddingLeft + it.measuredWidth - iconSize
+            val bottom = top + it.measuredHeight
+            it.layout(left, top, right, bottom)
+            it.requestLayout()
+        }
     }
 
     fun setRightIcon(drawableID: Int, clear_btn_width: Int, alpha: Int) {
@@ -812,19 +820,21 @@ class FloatingLabelSpinner : AppCompatSpinner {
         sampleBitmap?.recycle()
         options.inSampleSize = sampleSize
         options.inJustDecodeBounds = false
-        val oldBitmap = createBitmap(drawable, resources, drawableID, options)
-        width = oldBitmap!!.width
-        height = oldBitmap.height
-        val matrix = Matrix()
-        val scaleX = clear_btn_width.toFloat() / width
-        val scaleY = destinationHeight.toFloat() / height
-        matrix.postScale(scaleX, scaleY)
-        if (rightIconColor != 0) {
-            iconPaint.colorFilter = PorterDuffColorFilter(rightIconColor, PorterDuff.Mode.SRC_IN)
+        createBitmap(drawable, resources, drawableID, options)?.let { oldBitmap ->
+            width = oldBitmap.width
+            height = oldBitmap.height
+            val matrix = Matrix()
+            val scaleX = clear_btn_width.toFloat() / width
+            val scaleY = destinationHeight.toFloat() / height
+            matrix.postScale(scaleX, scaleY)
+            if (rightIconColor != 0) {
+                iconPaint.colorFilter =
+                    PorterDuffColorFilter(rightIconColor, PorterDuff.Mode.SRC_IN)
+            }
+            rightIconBitmap = SoftReference(
+                Bitmap.createBitmap(oldBitmap, 0, 0, width, height, matrix, true)
+            ).get()
         }
-        rightIconBitmap = SoftReference(
-            Bitmap.createBitmap(oldBitmap, 0, 0, width, height, matrix, true)
-        ).get()
     }
 
     private fun createBitmap(
