@@ -650,20 +650,25 @@ class FloatingLabelSpinner : AppCompatSpinner {
     }
 
     private fun showPopupWindow() {
-        val margin = dp2px(8f)
-        val cardMarginBelowLollipop =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) 0 else dp2px(5f)
-        val dy: Int =
-            -(errorTextSize.roundToInt() + (errorVerticalMargin shl 1) + mPaddingBottom + margin
-                    + if (cardMarginBelowLollipop != 0) cardMarginBelowLollipop + dp2px(
-                3f
-            ) else cardMarginBelowLollipop)
-        popupWindow.width =
-            width - mPaddingLeft - mPaddingRight + (cardMarginBelowLollipop + margin shl 1)
-        if (hintAdapter != popupWindow.hintAdapter) {
-            popupWindow.setAdapter(this, hintAdapter, margin, listener)
+        if (visibility != View.GONE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !isAttachedToWindow) {
+                return
+            }
+            val margin = dp2px(8f)
+            val cardMarginBelowLollipop =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) 0 else dp2px(5f)
+            val dy: Int =
+                -(errorTextSize.roundToInt() + (errorVerticalMargin shl 1) + mPaddingBottom + margin
+                        + if (cardMarginBelowLollipop != 0) cardMarginBelowLollipop + dp2px(
+                    3f
+                ) else cardMarginBelowLollipop)
+            popupWindow.width =
+                width - mPaddingLeft - mPaddingRight + (cardMarginBelowLollipop + margin shl 1)
+            if (hintAdapter != popupWindow.hintAdapter) {
+                popupWindow.setAdapter(this, hintAdapter, margin, listener)
+            }
+            popupWindow.showAsDropDown(this, -(cardMarginBelowLollipop + margin), dy)
         }
-        popupWindow.showAsDropDown(this, -(cardMarginBelowLollipop + margin), dy)
     }
 
     fun layoutSpinnerView(position: Int) {
