@@ -48,11 +48,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
     private var errorHorizontalMargin = 0
     private val errorPaint: TextPaint
     private val iconPaint: Paint
-    var highlightColor = 0
-        set(value) {
-            field = value
-            invalidate()
-        }
+
     var hintTextColor = 0
     var errorColor = 0
     private var rightIconColor = 0
@@ -61,12 +57,48 @@ class FloatingLabelSpinner : AppCompatSpinner {
     private var mPaddingTop = 0
     private var mPaddingRight = 0
     private var mPaddingBottom = 0
+
+    private var mHintCellHeight = -1
+
+    var animDuration = 0
+        private set
+    var errorAnimDuration = 0
+        private set
+    private var listener: OnItemSelectedListener? = null
+    private var hintAdapter: HintAdapter? = null
+
+    //    private View hintView;
+    var dropDownHintView: View? = null
+
+    //Default hint views
+    var dropDownHintViewID = 0
+    private var isError = false
+    private var errorAnimator: ObjectAnimator? = null
+    private val popupWindow: SpinnerPopupWindow
+    var recursiveMode = false
+    private var selectedView: View? = null
+    private var isMoving = false
+    private val touchSlop: Int
+    private var downX = 0f
+    private var downY = 0f
+    private var bitmapHeight = 0
+    private var rightIconBitmap: Bitmap? = null
+    private var rightIconSize = 0
+    private var savedLabel: CharSequence? = null
+    var mustFill = false
+
+    var highlightColor = 0
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     val hintCellHeight: Int
         get() {
             measureHintCellHeight()
             return mHintCellHeight
         }
-    private var mHintCellHeight = -1
+
     var labelTextSize = 0f
         set(value) {
             field = value
@@ -88,19 +120,21 @@ class FloatingLabelSpinner : AppCompatSpinner {
             field = value
             invalidate()
         }
-    var animDuration = 0
-        private set
-    var errorAnimDuration = 0
-        private set
-    private var listener: OnItemSelectedListener? = null
-    private var hintAdapter: HintAdapter? = null
 
-    //    private View hintView;
-    var dropDownHintView: View? = null
+    var errorPercentage = 0f
+        set(value) {
+            field = value
+            invalidate()
+        }
 
-    //Default hint views
-    var dropDownHintViewID = 0
-    private var isError = false
+    var thickness: Int
+        get() = dividerStrokeWidth
+        set(thickness) {
+            dividerStrokeWidth = thickness
+            dividerPaint.strokeWidth = dividerStrokeWidth.toFloat()
+            updatePadding()
+        }
+
     var error: CharSequence? = null
         set(value) {
             isError = !TextUtils.isEmpty(error)
@@ -134,24 +168,6 @@ class FloatingLabelSpinner : AppCompatSpinner {
             }
             invalidate()
         }
-    private var errorAnimator: ObjectAnimator? = null
-    var errorPercentage = 0f
-        set(value) {
-            field = value
-            invalidate()
-        }
-    private val popupWindow: SpinnerPopupWindow
-    var recursiveMode = false
-    private var selectedView: View? = null
-    private var isMoving = false
-    private val touchSlop: Int
-    private var downX = 0f
-    private var downY = 0f
-    private var bitmapHeight = 0
-    private var rightIconBitmap: Bitmap? = null
-    private var rightIconSize = 0
-    private var savedLabel: CharSequence? = null
-    var mustFill = false
 
     constructor(context: Context) : super(context) {
         init(context, null)
@@ -524,14 +540,6 @@ class FloatingLabelSpinner : AppCompatSpinner {
         labelVerticalMargin = vertical_margin
         updatePadding()
     }
-
-    var thickness: Int
-        get() = dividerStrokeWidth
-        set(thickness) {
-            dividerStrokeWidth = thickness
-            dividerPaint.strokeWidth = dividerStrokeWidth.toFloat()
-            updatePadding()
-        }
 
     fun setErrorMargin(horizontal_margin: Int, vertical_margin: Int) {
         errorHorizontalMargin = horizontal_margin
