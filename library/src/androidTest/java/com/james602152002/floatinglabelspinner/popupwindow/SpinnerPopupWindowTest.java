@@ -61,7 +61,7 @@ public class SpinnerPopupWindowTest extends AndroidJUnitRunner {
         Field field = SpinnerPopupWindow.class.getDeclaredField("listener");
         field.setAccessible(true);
         field.set(popupWindow, null);
-        spinner.setRecursive_mode(true);
+        spinner.setRecursiveMode(true);
         popupWindow.onItemClick(null, null, 0, 0);
     }
 

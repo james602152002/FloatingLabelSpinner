@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FloatingLabelSpinner.iml" filepath="$PROJECT_DIR$/.idea/FloatingLabelSpinner.iml" group="FloatingLabelSpinner" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" group="FloatingLabelSpinner/library" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FloatingLabelSpinner.iml" filepath="$PROJECT_DIR$/.idea/modules/FloatingLabelSpinner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.iml" />
     </modules>
   </component>
 </project>

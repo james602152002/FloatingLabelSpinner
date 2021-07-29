@@ -5,9 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.SystemClock;
-import androidx.annotation.VisibleForTesting;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnitRunner;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -18,6 +15,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnitRunner;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -33,7 +34,7 @@ import java.lang.reflect.Method;
  */
 public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
 
-//    @Rule
+    //    @Rule
     public FloatingLabelSpinner customView;
 
     @Before
@@ -56,29 +57,29 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
     @Test
     public void testHintTextColor() {
         final int color = Color.GRAY;
-        customView.setHint_text_color(color);
-        Assert.assertEquals(color, customView.getHint_text_color());
+        customView.setHintTextColor(color);
+        Assert.assertEquals(color, customView.getHintTextColor());
     }
 
     @Test
     public void testHintTestSize() {
         final float text_size = 10;
-        customView.setHint_text_size(text_size);
-        Assert.assertEquals(text_size, customView.getHint_text_size(), 0);
+        customView.setHintTextSize(text_size);
+        Assert.assertEquals(text_size, customView.getHintTextSize(), 0);
     }
 
     @Test
     public void testHighLightColor() {
         final int color = Color.BLUE;
-        customView.setHighlight_color(color);
-        Assert.assertEquals(color, customView.getHighlight_color());
+        customView.setHighlightColor(color);
+        Assert.assertEquals(color, customView.getHighlightColor());
     }
 
     @Test
     public void testLabelTextSize() {
         final float label_text_size = 8;
-        customView.setLabel_text_size(label_text_size);
-        Assert.assertEquals(label_text_size, customView.getLabel_text_size(),0);
+        customView.setLabelTextSize(label_text_size);
+        Assert.assertEquals(label_text_size, customView.getLabelTextSize(), 0);
     }
 
     @Test
@@ -88,7 +89,7 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
         Field field = FloatingLabelSpinner.class.getDeclaredField("errorAnimator");
         field.setAccessible(true);
         field.set(customView, new ObjectAnimator());
-        field = FloatingLabelSpinner.class.getDeclaredField("hint_cell_height");
+        field = FloatingLabelSpinner.class.getDeclaredField("hintCellHeight");
         field.setAccessible(true);
         field.set(customView, (short) 1);
         customView.setAdapter(new BaseAdapter() {
@@ -121,7 +122,7 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
         customView.dispatchDraw(canvas);
         customView.setSelection(0);
         customView.dispatchDraw(canvas);
-        field = FloatingLabelSpinner.class.getDeclaredField("float_label_anim_percentage");
+        field = FloatingLabelSpinner.class.getDeclaredField("floatLabelAnimPercentage");
         field.setAccessible(true);
         field.set(customView, 1);
         customView.dispatchDraw(canvas);
@@ -168,15 +169,15 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
     @Test
     public void testErrorColor() {
         final int color = Color.RED;
-        customView.setError_color(color);
-        Assert.assertEquals(color, customView.getError_color());
+        customView.setErrorColor(color);
+        Assert.assertEquals(color, customView.getErrorColor());
     }
 
     @Test
     public void testErrorTextSize() {
         final float error_text_size = 6;
-        customView.setError_text_size(error_text_size);
-        Assert.assertEquals(error_text_size, customView.getError_text_size(), 0);
+        customView.setErrorTextSize(error_text_size);
+        Assert.assertEquals(error_text_size, customView.getErrorTextSize(), 0);
     }
 
     @Test
@@ -195,10 +196,10 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
     @Test
     public void testErrorPercentage() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
         final float test_percentage = .5f;
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("setError_percentage", float.class);
+        Method method = FloatingLabelSpinner.class.getDeclaredMethod("setErrorPercentage", float.class);
         method.setAccessible(true);
         method.invoke(customView, test_percentage);
-        Field field = FloatingLabelSpinner.class.getDeclaredField("error_percentage");
+        Field field = FloatingLabelSpinner.class.getDeclaredField("errorPercentage");
         field.setAccessible(true);
         Assert.assertEquals(test_percentage, field.get(customView));
     }
@@ -206,10 +207,10 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
     @Test
     public void testLabelPercentage() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
         final float test_percentage = .5f;
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("setFloat_label_anim_percentage", float.class);
+        Method method = FloatingLabelSpinner.class.getDeclaredMethod("setFloatLabelAnimPercentage", float.class);
         method.setAccessible(true);
         method.invoke(customView, test_percentage);
-        Field field = FloatingLabelSpinner.class.getDeclaredField("float_label_anim_percentage");
+        Field field = FloatingLabelSpinner.class.getDeclaredField("floatLabelAnimPercentage");
         field.setAccessible(true);
         Assert.assertEquals(test_percentage, field.get(customView));
     }
@@ -296,8 +297,8 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
 
     @Test
     public void testRecursiveMode() {
-        customView.setRecursive_mode(true);
-        Assert.assertTrue(customView.isRecursive_mode());
+        customView.setRecursiveMode(true);
+        Assert.assertTrue(customView.getRecursiveMode());
     }
 
     @Test
@@ -318,7 +319,7 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
         Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
         method.setAccessible(true);
         method.invoke(customView);
-        customView.setRecursive_mode(true);
+        customView.setRecursiveMode(true);
         customView.dismiss();
         Field field = FloatingLabelSpinner.class.getDeclaredField("popupWindow");
         field.setAccessible(true);
@@ -329,9 +330,9 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
     public void testAllDismissCondition() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         initAdapter();
         customView.dismiss();
-        customView.setRecursive_mode(true);
+        customView.setRecursiveMode(true);
         customView.dismiss();
-        customView.setRecursive_mode(false);
+        customView.setRecursiveMode(false);
         Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
         method.setAccessible(true);
         method.invoke(customView);
@@ -364,7 +365,7 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
         customView.dispatchTouchEvent(motionEvent);
         motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
         customView.dispatchTouchEvent(motionEvent);
-        Field field = FloatingLabelSpinner.class.getDeclaredField("long_click");
+        Field field = FloatingLabelSpinner.class.getDeclaredField("performClick");
         field.setAccessible(true);
         field.set(customView, true);
         motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);

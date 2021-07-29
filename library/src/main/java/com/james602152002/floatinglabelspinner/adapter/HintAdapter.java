@@ -98,8 +98,8 @@ public class HintAdapter extends BaseAdapter {
         View convertView = null;
         final View dropDownHintView = spinner.getDropDownHintView();
         final int dropDownHintViewID = spinner.getDropDownHintViewID();
-        final short hint_cell_height = spinner.getHint_cell_height();
-        final float hint_text_size = spinner.getHint_text_size();
+        final int hint_cell_height = spinner.getHintCellHeight();
+        final float hint_text_size = spinner.getHintTextSize();
         if (isDropDownView) {
             if (dropDownHintView != null) {
                 convertView = dropDownHintView;
@@ -111,7 +111,7 @@ public class HintAdapter extends BaseAdapter {
                 textView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hint_cell_height));
                 textView.setGravity(Gravity.CENTER_VERTICAL);
                 textView.setText(hint);
-                textView.setTextColor(spinner.getHint_text_color());
+                textView.setTextColor(spinner.getHintTextColor());
                 if (hint_text_size != -1)
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, hint_text_size);
                 convertView = textView;

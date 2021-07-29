@@ -1,64 +1,75 @@
-package com.james602152002.floatinglabelspinner.popupwindow;
+package com.james602152002.floatinglabelspinner.popupwindow
 
-import android.content.Context;
-import androidx.cardview.widget.CardView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-
-import com.james602152002.floatinglabelspinner.FloatingLabelSpinner;
-import com.james602152002.floatinglabelspinner.R;
-import com.james602152002.floatinglabelspinner.adapter.DropDownViewAdapter;
-import com.james602152002.floatinglabelspinner.adapter.HintAdapter;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.FrameLayout
+import android.widget.ListView
+import android.widget.PopupWindow
+import androidx.cardview.widget.CardView
+import com.james602152002.floatinglabelspinner.FloatingLabelSpinner
+import com.james602152002.floatinglabelspinner.R
+import com.james602152002.floatinglabelspinner.adapter.DropDownViewAdapter
+import com.james602152002.floatinglabelspinner.adapter.HintAdapter
 
 /**
  * Created by shiki60215 on 18-1-10.
  */
+class SpinnerPopupWindow(context: Context?) : PopupWindow(context), OnItemClickListener {
 
-public class SpinnerPopupWindow extends PopupWindow implements AdapterView.OnItemClickListener {
+    var hintAdapter: HintAdapter? = null
 
-    private DropDownViewAdapter dropDownViewAdapter;
-    private AdapterView.OnItemSelectedListener listener;
-    private FloatingLabelSpinner spinner;
+    private var dropDownViewAdapter: DropDownViewAdapter? = null
+    private var listener: OnItemSelectedListener? = null
+    private var spinner: FloatingLabelSpinner? = null
 
-    public SpinnerPopupWindow(Context context) {
-        super(context);
+    @SuppressLint("InflateParams")
+    fun setAdapter(
+        spinner: FloatingLabelSpinner,
+        hintAdapter: HintAdapter?,
+        margin: Int,
+        listener: OnItemSelectedListener?
+    ) {
+        this.spinner = spinner
+        val contentView = LayoutInflater.from(spinner.context)
+            .inflate(R.layout.floating_label_spinner_popup_window, null, false)
+        val listView = contentView.findViewById<ListView>(R.id.list_view)
+        val cardView: CardView = contentView.findViewById(R.id.card_view)
+
+        this.hintAdapter = hintAdapter
+        dropDownViewAdapter = DropDownViewAdapter(hintAdapter)
+        listView.adapter = dropDownViewAdapter
+        (cardView.layoutParams as FrameLayout.LayoutParams).setMargins(
+            margin,
+            margin,
+            margin,
+            margin
+        )
+        setContentView(contentView)
+        this.listener = listener
+        listView.onItemClickListener = this
     }
 
-    public void setAdapter(FloatingLabelSpinner spinner, HintAdapter hintAdapter, short margin, AdapterView.OnItemSelectedListener listener) {
-        this.spinner = spinner;
-        View contentView = LayoutInflater.from(spinner.getContext()).inflate(R.layout.floating_label_spinner_popup_window, null, false);
-        ListView listView = contentView.findViewById(R.id.list_view);
-        CardView cardView = contentView.findViewById(R.id.card_view);
-        dropDownViewAdapter = new DropDownViewAdapter(hintAdapter);
-        listView.setAdapter(dropDownViewAdapter);
-
-        ((FrameLayout.LayoutParams) cardView.getLayoutParams()).setMargins(margin, margin, margin, margin);
-        setContentView(contentView);
-        this.listener = listener;
-        listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (listener != null) {
-            listener.onItemSelected(parent, view, position, id);
-            if(spinner.isRecursive_mode()){
-                notifyDataSetChanged();
+    override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+        listener?.let {
+            it.onItemSelected(parent, view, position, id)
+            if (spinner?.recursiveMode == true) {
+                notifyDataSetChanged()
             }
         }
-        spinner.layoutSpinnerView(position);
-        if (!spinner.isRecursive_mode())
-            dismiss();
+        spinner?.apply {
+            layoutSpinnerView(position)
+            if (recursiveMode) {
+                this@SpinnerPopupWindow.dismiss()
+            }
+        }
     }
 
-    public void notifyDataSetChanged() {
-        if (dropDownViewAdapter != null)
-            dropDownViewAdapter.notifyDataSetChanged();
+    fun notifyDataSetChanged() {
+        dropDownViewAdapter?.notifyDataSetChanged()
     }
-
-
 }
