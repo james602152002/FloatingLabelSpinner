@@ -100,7 +100,39 @@ class FloatingLabelSpinner : AppCompatSpinner {
     //Default hint views
     var dropDownHintViewID = 0
     private var isError = false
-    private var error: CharSequence? = null
+    var error: CharSequence? = null
+        set(value) {
+            isError = !TextUtils.isEmpty(error)
+            field = value
+            if (isError) {
+                if (width > 0) {
+                    startErrorAnimation()
+                } else {
+                    addOnLayoutChangeListener(object : OnLayoutChangeListener {
+                        override fun onLayoutChange(
+                            v: View,
+                            left: Int,
+                            top: Int,
+                            right: Int,
+                            bottom: Int,
+                            oldLeft: Int,
+                            oldTop: Int,
+                            oldRight: Int,
+                            oldBottom: Int
+                        ) {
+                            if (v.width > 0) {
+                                startErrorAnimation()
+                            }
+                            v.removeOnLayoutChangeListener(this)
+                        }
+                    })
+                }
+            } else {
+                errorAnimator?.cancel()
+                errorAnimator = null
+            }
+            invalidate()
+        }
     private var errorAnimator: ObjectAnimator? = null
     var errorPercentage = 0f
         set(value) {
@@ -542,43 +574,6 @@ class FloatingLabelSpinner : AppCompatSpinner {
             super.setAdapter(hintAdapter)
         }
         hintAdapter?.setHint(hint)
-    }
-
-    fun getError(): CharSequence? {
-        return error
-    }
-
-    fun setError(error: CharSequence?) {
-        isError = !TextUtils.isEmpty(error)
-        this.error = error
-        if (isError) {
-            if (width > 0) {
-                startErrorAnimation()
-            } else {
-                addOnLayoutChangeListener(object : OnLayoutChangeListener {
-                    override fun onLayoutChange(
-                        v: View,
-                        left: Int,
-                        top: Int,
-                        right: Int,
-                        bottom: Int,
-                        oldLeft: Int,
-                        oldTop: Int,
-                        oldRight: Int,
-                        oldBottom: Int
-                    ) {
-                        if (v.width > 0) {
-                            startErrorAnimation()
-                        }
-                        v.removeOnLayoutChangeListener(this)
-                    }
-                })
-            }
-        } else {
-            errorAnimator?.cancel()
-            errorAnimator = null
-        }
-        invalidate()
     }
 
     private fun startErrorAnimation() {
