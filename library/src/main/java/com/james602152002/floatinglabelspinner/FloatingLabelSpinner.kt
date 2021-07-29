@@ -503,7 +503,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
                 i = next
             }
         } else {
-            canvas.drawText(ellpHint!!, 0, ellpHint.length, xStart, start_y.toFloat(), paint)
+            ellpHint?.let { canvas.drawText(it, 0, it.length, xStart, start_y.toFloat(), paint) }
         }
     }
 
@@ -649,7 +649,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
         }
     }
 
-    private fun showPopupWindow() {
+    fun showPopupWindow() {
         if (visibility != View.GONE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !isAttachedToWindow) {
                 return
@@ -752,9 +752,13 @@ class FloatingLabelSpinner : AppCompatSpinner {
 
     override fun getSelectedView(): View? {
         return hintAdapter?.let {
-            when (selectedItemPosition) {
-                in 0..it.count -> it.getView(selectedItemPosition, selectedView, this)
-                in Int.MIN_VALUE..0 -> it.getView(0, selectedView, this)
+            when {
+                selectedItemPosition < 0 -> it.getView(0, selectedView, this)
+                selectedItemPosition in 0..it.count -> it.getView(
+                    selectedItemPosition,
+                    selectedView,
+                    this
+                )
                 else -> super.getSelectedView()
             }
         } ?: super.getSelectedView()
@@ -773,9 +777,9 @@ class FloatingLabelSpinner : AppCompatSpinner {
         popupWindow.notifyDataSetChanged()
         dropDownHintView?.invalidate()
 
-        if (recursiveMode) {
-            showPopupWindow()
-        }
+//        if (recursiveMode) {
+//            showPopupWindow()
+//        }
         //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         requestLayout()
         //        }

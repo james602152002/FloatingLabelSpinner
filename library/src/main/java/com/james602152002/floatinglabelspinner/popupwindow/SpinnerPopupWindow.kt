@@ -59,6 +59,7 @@ class SpinnerPopupWindow(context: Context?) : PopupWindow(context), OnItemClickL
             it.onItemSelected(parent, view, position, id)
             if (spinner?.recursiveMode == true) {
                 notifyDataSetChanged()
+                spinner?.showPopupWindow()
             }
         }
         spinner?.apply {
