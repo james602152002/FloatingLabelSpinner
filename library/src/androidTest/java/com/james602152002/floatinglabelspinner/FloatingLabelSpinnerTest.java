@@ -28,6 +28,7 @@ import org.junit.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 /**
  * Created by shiki60215 on 18-1-9.
@@ -337,6 +338,28 @@ public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
         method.setAccessible(true);
         method.invoke(customView);
         customView.dismiss();
+    }
+
+    @Test
+    public void testMustFillMode() {
+        customView.setMustFillMode(true);
+    }
+
+    @Test
+    public void testRightIcon() {
+        customView.setRightIcon(0, 0, 0);
+    }
+
+    @Test
+    public void testLocale() {
+        customView.updatePaintLocale(Locale.getDefault());
+    }
+
+    @SuppressWarnings("SimplifiableAssertion")
+    @Test
+    public void testMustFill() {
+        customView.setMustFill(true);
+        Assert.assertEquals(customView.getMustFill(), true);
     }
 
     @Test

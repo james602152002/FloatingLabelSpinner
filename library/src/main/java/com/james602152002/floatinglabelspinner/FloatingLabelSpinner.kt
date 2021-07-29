@@ -32,6 +32,7 @@ import com.james602152002.floatinglabelspinner.adapter.HintAdapter
 import com.james602152002.floatinglabelspinner.popupwindow.SpinnerPopupWindow
 import java.lang.ref.SoftReference
 import java.util.*
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
@@ -437,9 +438,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
             }
         }
         canvas.drawLine(0f, dividerY, width.toFloat(), dividerY, dividerPaint)
-        if (rightIconBitmap != null) {
-            drawRightIcon(canvas, dividerY, mHintCellHeight.toFloat())
-        }
+        drawRightIcon(canvas, dividerY, mHintCellHeight.toFloat())
     }
 
     private fun drawSpannableString(
@@ -523,13 +522,14 @@ class FloatingLabelSpinner : AppCompatSpinner {
 
     private fun measureHintCellHeight() {
         if (mHintCellHeight == -1) {
-            if (hintAdapter != null && hintAdapter!!.count > 0) {
-                val firstChild = hintAdapter!!.getView(1, null, null)
-                if (firstChild != null) {
-                    val w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-                    firstChild.measure(w, w)
-                    mHintCellHeight = firstChild.measuredHeight
-                    invalidate()
+            hintAdapter?.let {
+                if (it.count > 0) {
+                    it.getView(1, null, null)?.let { firstChild ->
+                        val w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+                        firstChild.measure(w, w)
+                        mHintCellHeight = firstChild.measuredHeight
+                        invalidate()
+                    }
                 }
             }
         }
@@ -557,7 +557,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
 
     fun setHint(hint: CharSequence?) {
         this.hint = hint
-        if (hintAdapter != null) hintAdapter!!.setHint(hint)
+        hintAdapter?.setHint(hint)
         invalidate()
     }
 
@@ -624,7 +624,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
                 downX = event.rawX
                 downY = event.rawY
             }
-            MotionEvent.ACTION_MOVE -> if (!isMoving && (Math.abs(event.rawX - downX) > touchSlop || Math.abs(
+            MotionEvent.ACTION_MOVE -> if (!isMoving && (abs(event.rawX - downX) > touchSlop || abs(
                     event.rawY - downY
                 ) > touchSlop)
             ) {
@@ -706,6 +706,9 @@ class FloatingLabelSpinner : AppCompatSpinner {
             startAnimator(1f, 0f)
         }
 //        if (!recursiveMode) popupWindow = null
+        if (!recursiveMode) {
+            popupWindow.dismiss()
+        }
         requestLayout()
     }
 
