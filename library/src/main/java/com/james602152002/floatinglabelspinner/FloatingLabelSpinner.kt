@@ -61,11 +61,12 @@ class FloatingLabelSpinner : AppCompatSpinner {
     private var mPaddingTop = 0
     private var mPaddingRight = 0
     private var mPaddingBottom = 0
-    var hintCellHeight = -1
+    val hintCellHeight: Int
         get() {
             measureHintCellHeight()
-            return field
+            return mHintCellHeight
         }
+    private var mHintCellHeight = -1
     var labelTextSize = 0f
         set(value) {
             field = value
@@ -364,7 +365,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
             hintTextSize + (labelTextSize - hintTextSize) * floatLabelAnimPercentage
         labelPaint.textSize = currentTextSize
         val labelPaintDy =
-            (mPaddingTop + currentTextSize + (1 - floatLabelAnimPercentage) * (hintCellHeight * .5f)).toInt()
+            (mPaddingTop + currentTextSize + (1 - floatLabelAnimPercentage) * (mHintCellHeight * .5f)).toInt()
         if (hint != null) drawSpannableString(
             canvas,
             hint,
@@ -374,7 +375,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
         )
         val dividerY =
             (mPaddingTop + labelTextSize + labelVerticalMargin + (dividerStrokeWidth shr 1)
-                    + if (hintCellHeight > 0) hintCellHeight.toFloat() else hintTextSize)
+                    + if (mHintCellHeight > 0) mHintCellHeight.toFloat() else hintTextSize)
         if (!isError) {
             dividerPaint.color = highlightColor
         } else {
@@ -421,7 +422,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
         }
         canvas.drawLine(0f, dividerY, width.toFloat(), dividerY, dividerPaint)
         if (rightIconBitmap != null) {
-            drawRightIcon(canvas, dividerY, hintCellHeight.toFloat())
+            drawRightIcon(canvas, dividerY, mHintCellHeight.toFloat())
         }
     }
 
@@ -505,13 +506,13 @@ class FloatingLabelSpinner : AppCompatSpinner {
     }
 
     private fun measureHintCellHeight() {
-        if (hintCellHeight == -1) {
+        if (mHintCellHeight == -1) {
             if (hintAdapter != null && hintAdapter!!.count > 0) {
                 val firstChild = hintAdapter!!.getView(1, null, null)
                 if (firstChild != null) {
                     val w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
                     firstChild.measure(w, w)
-                    hintCellHeight = firstChild.measuredHeight
+                    mHintCellHeight = firstChild.measuredHeight
                     invalidate()
                 }
             }
