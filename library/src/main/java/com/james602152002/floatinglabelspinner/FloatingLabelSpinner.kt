@@ -464,7 +464,6 @@ class FloatingLabelSpinner : AppCompatSpinner {
             var i = 0
             while (i < spannableString.length) {
 
-
                 // find the next span transition
                 next = spannableString.nextSpanTransition(
                     i,
@@ -649,7 +648,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
         }
     }
 
-    fun showPopupWindow() {
+    private fun showPopupWindow() {
         if (visibility != View.GONE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !isAttachedToWindow) {
                 return
@@ -686,8 +685,11 @@ class FloatingLabelSpinner : AppCompatSpinner {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
         getSelectedView()
-        layoutSelectedView()
+        if (!recursiveMode) {
+            layoutSelectedView()
+        }
         measureHintCellHeight()
         if (floatLabelAnimPercentage == 0f && position != 0) {
             startAnimator(0f, 1f)
