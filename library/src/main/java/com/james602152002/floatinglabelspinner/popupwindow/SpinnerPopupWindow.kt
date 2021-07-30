@@ -2,6 +2,8 @@ package com.james602152002.floatinglabelspinner.popupwindow
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -56,6 +58,9 @@ class SpinnerPopupWindow(context: Context?) : PopupWindow(context), OnItemClickL
 
     override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
         listener?.onItemSelected(parent, view, position, id)
+
+
+//        listener?.onItemSelected(parent, view, position, id)
 //        listener?.let {
 //            it.onItemSelected(parent, view, position, id)
 ////            if (spinner?.recursiveMode == true) {

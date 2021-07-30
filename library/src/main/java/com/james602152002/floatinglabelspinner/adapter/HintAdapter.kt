@@ -1,129 +1,145 @@
-package com.james602152002.floatinglabelspinner.adapter;
+package com.james602152002.floatinglabelspinner.adapter
 
-import android.content.Context;
-import android.os.Build;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
-
-import com.james602152002.floatinglabelspinner.FloatingLabelSpinner;
+import android.content.Context
+import android.os.Build
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AbsListView
+import android.widget.BaseAdapter
+import android.widget.SpinnerAdapter
+import android.widget.TextView
+import com.james602152002.floatinglabelspinner.FloatingLabelSpinner
 
 /**
  * Created by shiki60215 on 18-1-10.
  */
+class HintAdapter(
+    private val mContext: Context,
+    private val spinner: FloatingLabelSpinner,
+    private val mSpinnerAdapter: SpinnerAdapter
+) : BaseAdapter() {
+    private val hintType = -1
+    private var hint: CharSequence? = spinner.getHint()
 
-public class HintAdapter extends BaseAdapter {
-
-    private final short HINT_TYPE = -1;
-
-    private SpinnerAdapter mSpinnerAdapter;
-    private final Context mContext;
-    private CharSequence hint;
-    private final FloatingLabelSpinner spinner;
-
-    public HintAdapter(Context context, FloatingLabelSpinner spinner, SpinnerAdapter spinnerAdapter) {
-        this.mContext = context;
-        this.spinner = spinner;
-        this.mSpinnerAdapter = spinnerAdapter;
-        hint = spinner.getHint();
+    fun setHint(hint: CharSequence?) {
+        this.hint = hint
     }
 
-    public void setHint(CharSequence hint) {
-        this.hint = hint;
-    }
-
-    @Override
-    public int getViewTypeCount() {
+    override fun getViewTypeCount(): Int {
         //Workaround waiting for a Google correction (https://code.google.com/p/android/issues/detail?id=79011)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return 1;
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            1
+        } else mSpinnerAdapter.viewTypeCount
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (val adjustPos = posShift(position)) {
+            -1 -> hintType
+            else -> mSpinnerAdapter.getItemViewType(adjustPos)
         }
-        int viewTypeCount = mSpinnerAdapter.getViewTypeCount();
-        return viewTypeCount;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        position = hint != null ? position - 1 : position;
-        return (position == -1) ? HINT_TYPE : mSpinnerAdapter.getItemViewType(position);
+    override fun getCount(): Int {
+        val count = mSpinnerAdapter.count
+        return if (hint != null) count + 1 else count
     }
 
-    @Override
-    public int getCount() {
-        int count = mSpinnerAdapter.getCount();
-        return hint != null ? count + 1 : count;
+    override fun getItem(position: Int): Any? {
+        return when (val adjustPos = posShift(position)) {
+            -1 -> hint
+            else -> mSpinnerAdapter.getItem(adjustPos)
+        }
     }
 
-    @Override
-    public Object getItem(int position) {
-        position = hint != null ? position - 1 : position;
-        return (position == -1) ? hint : mSpinnerAdapter.getItem(position);
+    override fun getItemId(position: Int): Long {
+        return when (val adjustPos = posShift(position)) {
+            -1 -> 0
+            else -> mSpinnerAdapter.getItemId(adjustPos)
+        }
     }
 
-    @Override
-    public long getItemId(int position) {
-        position = hint != null ? position - 1 : position;
-        return (position == -1) ? 0 : mSpinnerAdapter.getItemId(position);
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        return buildView(position, convertView, parent, false)
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return buildView(position, convertView, parent, false);
+    override fun getDropDownView(position: Int, convertView: View, parent: ViewGroup): View {
+        return buildView(position, convertView, parent, true)
     }
 
-    @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return buildView(position, convertView, parent, true);
-    }
-
-    private View buildView(int position, View convertView, ViewGroup parent, boolean isDropDownView) {
-        if (getItemViewType(position) == HINT_TYPE) {
-            return getHintView(parent, isDropDownView);
+    private fun buildView(
+        position: Int,
+        view: View?,
+        parent: ViewGroup?,
+        isDropDownView: Boolean
+    ): View {
+        var adjustPos = position
+        var convertView: View? = view
+        if (getItemViewType(adjustPos) == hintType) {
+            return getHintView(parent, isDropDownView)
         }
         //workaround to have multiple types in spinner
         if (convertView != null) {
-            convertView = (convertView.getTag() != null && convertView.getTag() instanceof Integer && (Integer) convertView.getTag() != HINT_TYPE) ? convertView : null;
+            convertView = when (val tag = convertView.tag) {
+                tag is Int && tag != hintType -> convertView
+                else -> null
+            }
         }
-        position = hint != null ? position - 1 : position;
-        return isDropDownView ? mSpinnerAdapter.getDropDownView(position, convertView, parent) : mSpinnerAdapter.getView(position, convertView, parent);
+        adjustPos = posShift(position)
+
+        return if (isDropDownView) mSpinnerAdapter.getDropDownView(
+            adjustPos,
+            convertView,
+            parent
+        ) else mSpinnerAdapter.getView(adjustPos, convertView, parent)
     }
 
-    private View getHintView(final ViewGroup parent, final boolean isDropDownView) {
-        View convertView = null;
-        final View dropDownHintView = spinner.getDropDownHintView();
-        final int dropDownHintViewID = spinner.getDropDownHintViewID();
-        final int hint_cell_height = spinner.getHintCellHeight();
-        final float hint_text_size = spinner.getHintTextSize();
+    private fun getHintView(parent: ViewGroup?, isDropDownView: Boolean): View {
+        val convertView: View?
+        val dropDownHintView = spinner.dropDownHintView
+        val dropDownHintViewID = spinner.dropDownHintViewID
+        val hintCellHeight = spinner.hintCellHeight
+        val hintTextSize = spinner.hintTextSize
         if (isDropDownView) {
             if (dropDownHintView != null) {
-                convertView = dropDownHintView;
-                convertView.setTag(HINT_TYPE);
+                convertView = dropDownHintView
+                convertView.tag = hintType
             } else {
-                final LayoutInflater inflater = LayoutInflater.from(mContext);
-                final int resid = dropDownHintViewID;
-                final TextView textView = (TextView) inflater.inflate(resid, parent, false);
-                textView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hint_cell_height));
-                textView.setGravity(Gravity.CENTER_VERTICAL);
-                textView.setText(hint);
-                textView.setTextColor(spinner.getHintTextColor());
-                if (hint_text_size != -1)
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, hint_text_size);
-                convertView = textView;
+                val inflater = LayoutInflater.from(mContext)
+                val textView = inflater.inflate(dropDownHintViewID, parent, false) as TextView
+                textView.layoutParams =
+                    AbsListView.LayoutParams(
+                        AbsListView.LayoutParams.MATCH_PARENT,
+                        hintCellHeight
+                    )
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = hint
+                textView.setTextColor(spinner.hintTextColor)
+                if (hintTextSize != -1f) textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    hintTextSize
+                )
+                convertView = textView
             }
         } else {
-            convertView = new View(mContext);
-            convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hint_cell_height));
+            convertView = View(mContext)
+            convertView.layoutParams =
+                AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, hintCellHeight)
         }
-        if (convertView.getLayoutParams() == null) {
-            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            convertView.setLayoutParams(lp);
+        if (convertView.layoutParams == null) {
+            val lp = AbsListView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            convertView.layoutParams = lp
         }
-        return convertView;
+        return convertView
+    }
+
+    private fun posShift(position: Int) = when (hint) {
+        null -> position
+        else -> position - 1
     }
 }

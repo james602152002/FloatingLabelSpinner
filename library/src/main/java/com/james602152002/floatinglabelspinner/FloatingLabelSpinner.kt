@@ -663,7 +663,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
                 ) else cardMarginBelowLollipop)
             popupWindow.width =
                 width - mPaddingLeft - mPaddingRight + (cardMarginBelowLollipop + margin shl 1)
-            if (hintAdapter != popupWindow.hintAdapter) {
+            if (hintAdapter != null && hintAdapter != popupWindow.hintAdapter) {
                 popupWindow.setAdapter(this, hintAdapter, margin, listener)
             }
             popupWindow.showAsDropDown(this, -(cardMarginBelowLollipop + margin), dy)
@@ -675,6 +675,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
         if (position != selectedItemPosition) {
             selectedView = null
         }
+
         try {
             FloatingLabelSpinner::class.java.superclass?.superclass?.superclass?.superclass?.getDeclaredField(
                 "mNextSelectedPosition"
@@ -686,10 +687,8 @@ class FloatingLabelSpinner : AppCompatSpinner {
             e.printStackTrace()
         }
 
-        getSelectedView()
-        if (!recursiveMode) {
-            layoutSelectedView()
-        }
+//        getSelectedView()
+        layoutSelectedView()
         measureHintCellHeight()
         if (floatLabelAnimPercentage == 0f && position != 0) {
             startAnimator(0f, 1f)
@@ -761,7 +760,21 @@ class FloatingLabelSpinner : AppCompatSpinner {
 //        popupWindow.dismiss()
 //        showPopupWindow()
 
-        popupWindow.notifyDataSetChanged()
+//        popupWindow.notifyDataSetChanged()
+        when {
+            //递归模式避免更新适配器的控件绘制到spinner的画面，选择先重新显示popupwindow
+            recursiveMode && popupWindow.isShowing -> {
+                dismiss()
+                showPopupWindow()
+            }
+            else -> popupWindow.notifyDataSetChanged()
+        }
+//        if (recursiveMode) {
+//            dismiss()
+//            showPopupWindow()
+//        } else {
+//            popupWindow.notifyDataSetChanged()
+//        }
         dropDownHintView?.invalidate()
 
 //        if (recursiveMode) {
@@ -777,7 +790,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
             val lp = it.layoutParams ?: generateDefaultLayoutParams()
 //            addViewInLayout(selectedView, 0, lp)
             removeAllViewsInLayout()
-            addViewInLayout(selectedView, -1, lp)
+            addViewInLayout(it, -1, lp)
             it.isSelected = true
             it.isEnabled = true
             val w = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
