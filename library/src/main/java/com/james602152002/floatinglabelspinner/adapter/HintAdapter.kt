@@ -61,11 +61,11 @@ class HintAdapter(
         }
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         return buildView(position, convertView, parent, false)
     }
 
-    override fun getDropDownView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         return buildView(position, convertView, parent, true)
     }
 
@@ -74,7 +74,7 @@ class HintAdapter(
         view: View?,
         parent: ViewGroup?,
         isDropDownView: Boolean
-    ): View {
+    ): View? {
         var adjustPos = position
         var convertView: View? = view
         if (getItemViewType(adjustPos) == hintType) {

@@ -50,7 +50,12 @@ dependencies {
 
 //Android X
 dependencis {
-    implementation 'com.github.james602152002:FloatingLabelSpinner:1.6.9'
+    implementation 'com.github.james602152002:FloatingLabelSpinner:1.6.10'
+}
+
+//Kotlin Version
+dependencis {
+    implementation 'com.github.james602152002:FloatingLabelSpinner:2.0.0+'
 }
 ```
 
