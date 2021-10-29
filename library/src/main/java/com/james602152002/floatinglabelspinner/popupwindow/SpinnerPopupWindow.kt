@@ -2,8 +2,6 @@ package com.james602152002.floatinglabelspinner.popupwindow
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -43,7 +41,7 @@ class SpinnerPopupWindow(context: Context?) : PopupWindow(context), OnItemClickL
         val cardView: CardView = contentView.findViewById(R.id.card_view)
 
         this.hintAdapter = hintAdapter
-        dropDownViewAdapter = DropDownViewAdapter(hintAdapter)
+        dropDownViewAdapter = hintAdapter?.let { DropDownViewAdapter(it) }
         listView.adapter = dropDownViewAdapter
         (cardView.layoutParams as FrameLayout.LayoutParams).setMargins(
             margin,
@@ -56,7 +54,7 @@ class SpinnerPopupWindow(context: Context?) : PopupWindow(context), OnItemClickL
         listView.onItemClickListener = this
     }
 
-    override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         listener?.onItemSelected(parent, view, position, id)
 
 
