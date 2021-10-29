@@ -1,43 +1,29 @@
-package com.james602152002.floatinglabelspinner.adapter;
+package com.james602152002.floatinglabelspinner.adapter
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.view.View
+import android.view.ViewGroup
+import android.widget.BaseAdapter
 
 /**
  * Created by shiki60215 on 18-1-11.
  */
+class DropDownViewAdapter(private val hintAdapter: HintAdapter) : BaseAdapter() {
 
-public class DropDownViewAdapter extends BaseAdapter {
+    override fun getCount() = hintAdapter.count
 
-    private HintAdapter hintAdapter;
-
-    public DropDownViewAdapter(HintAdapter hintAdapter) {
-        this.hintAdapter = hintAdapter;
+    override fun getItem(position: Int): Any? {
+        return hintAdapter.getItem(position)
     }
 
-    @Override
-    public int getCount() {
-        return hintAdapter.getCount();
+    override fun getItemId(position: Int): Long {
+        return hintAdapter.getItemId(position)
     }
 
-    @Override
-    public Object getItem(int position) {
-        return hintAdapter.getItem(position);
+    override fun getItemViewType(position: Int): Int {
+        return hintAdapter.getItemViewType(position)
     }
 
-    @Override
-    public long getItemId(int position) {
-        return hintAdapter.getItemId(position);
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return hintAdapter.getItemViewType(position);
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return hintAdapter.getDropDownView(position, convertView, parent);
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+        return hintAdapter.getDropDownView(position, convertView, parent)
     }
 }

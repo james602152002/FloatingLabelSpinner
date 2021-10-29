@@ -1,455 +1,520 @@
-package com.james602152002.floatinglabelspinner;
+package com.james602152002.floatinglabelspinner
 
-import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.os.SystemClock;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.style.ForegroundColorSpan;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Spinner;
-
-import androidx.annotation.VisibleForTesting;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnitRunner;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Locale;
+import android.animation.ObjectAnimator
+import android.graphics.Canvas
+import android.graphics.Color
+import android.os.SystemClock
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.style.ForegroundColorSpan
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.BaseAdapter
+import android.widget.Spinner
+import androidx.annotation.VisibleForTesting
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnitRunner
+import com.james602152002.floatinglabelspinner.FloatingLabelSpinner
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+import java.lang.reflect.InvocationTargetException
+import java.util.*
 
 /**
  * Created by shiki60215 on 18-1-9.
  */
-public class FloatingLabelSpinnerTest extends AndroidJUnitRunner {
-
+class FloatingLabelSpinnerTest : AndroidJUnitRunner() {
     //    @Rule
-    public FloatingLabelSpinner customView;
+    var customView: FloatingLabelSpinner? = null
 
     @Before
-    public void setUp() throws Exception {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        customView = new FloatingLabelSpinner(context, null, 0, Spinner.MODE_DROPDOWN);
-        customView = new FloatingLabelSpinner(context, null);
-        customView = new FloatingLabelSpinner(context, Spinner.MODE_DROPDOWN);
-        customView = new FloatingLabelSpinner(context);
-        customView.setMinimumWidth(100);
+    @Throws(Exception::class)
+    fun setUp() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        customView = FloatingLabelSpinner(context, null, 0, Spinner.MODE_DROPDOWN)
+        customView = FloatingLabelSpinner(context, null)
+        customView = FloatingLabelSpinner(context, Spinner.MODE_DROPDOWN)
+        customView = FloatingLabelSpinner(context)
+        customView!!.minimumWidth = 100
     }
 
     @Test
-    public void testHintTextEqual() {
-        final String hint = "hint";
-        customView.setHint(hint);
-        Assert.assertEquals(hint, customView.getHint());
+    fun testHintTextEqual() {
+        val hint = "hint"
+        customView!!.setHint(hint)
+        Assert.assertEquals(hint, customView!!.getHint())
     }
 
     @Test
-    public void testHintTextColor() {
-        final int color = Color.GRAY;
-        customView.setHintTextColor(color);
-        Assert.assertEquals(color, customView.getHintTextColor());
+    fun testHintTextColor() {
+        val color = Color.GRAY
+        customView!!.hintTextColor = color
+        Assert.assertEquals(color.toLong(), customView!!.hintTextColor)
     }
 
     @Test
-    public void testHintTestSize() {
-        final float text_size = 10;
-        customView.setHintTextSize(text_size);
-        Assert.assertEquals(text_size, customView.getHintTextSize(), 0);
+    fun testHintTestSize() {
+        val text_size = 10f
+        customView!!.hintTextSize = text_size
+        Assert.assertEquals(text_size, customView!!.hintTextSize, 0f)
     }
 
     @Test
-    public void testHighLightColor() {
-        final int color = Color.BLUE;
-        customView.setHighlightColor(color);
-        Assert.assertEquals(color, customView.getHighlightColor());
+    fun testHighLightColor() {
+        val color = Color.BLUE
+        customView!!.highlightColor = color
+        Assert.assertEquals(color.toLong(), customView!!.highlightColor)
     }
 
     @Test
-    public void testLabelTextSize() {
-        final float label_text_size = 8;
-        customView.setLabelTextSize(label_text_size);
-        Assert.assertEquals(label_text_size, customView.getLabelTextSize(), 0);
+    fun testLabelTextSize() {
+        val label_text_size = 8f
+        customView!!.labelTextSize = label_text_size
+        Assert.assertEquals(label_text_size, customView!!.labelTextSize, 0f)
     }
 
     @Test
-    public void testDispatchDraw() throws NoSuchFieldException, IllegalAccessException {
-        final Canvas canvas = new Canvas();
-        customView.setError("error");
-        Field field = FloatingLabelSpinner.class.getDeclaredField("errorAnimator");
-        field.setAccessible(true);
-        field.set(customView, new ObjectAnimator());
-        field = FloatingLabelSpinner.class.getDeclaredField("hintCellHeight");
-        field.setAccessible(true);
-        field.set(customView, (short) 1);
-        customView.setAdapter(new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return 0;
+    @Throws(NoSuchFieldException::class, IllegalAccessException::class)
+    fun testDispatchDraw() {
+        val canvas = Canvas()
+        customView!!.error = "error"
+        var field = FloatingLabelSpinner::class.java.getDeclaredField("errorAnimator")
+        field.isAccessible = true
+        field[customView] = ObjectAnimator()
+        field = FloatingLabelSpinner::class.java.getDeclaredField("hintCellHeight")
+        field.isAccessible = true
+        field[customView] = 1.toShort()
+        customView!!.setAdapter(object : BaseAdapter() {
+            override fun getCount(): Int {
+                return 0
             }
 
-            @Override
-            public Object getItem(int position) {
-                return null;
+            override fun getItem(position: Int): Any? {
+                return null
             }
 
-            @Override
-            public long getItemId(int position) {
-                return 0;
+            override fun getItemId(position: Int): Long {
+                return 0
             }
 
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return new View(InstrumentationRegistry.getInstrumentation().getTargetContext());
+            override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+                return View(InstrumentationRegistry.getInstrumentation().targetContext)
             }
-        });
-        customView.setSelection(1);
-        field = FloatingLabelSpinner.class.getDeclaredField("selectedView");
-        field.setAccessible(true);
-        field.set(customView, new View(InstrumentationRegistry.getInstrumentation().getTargetContext()));
-        customView.setHint("hint");
-        customView.setError("error");
-        customView.dispatchDraw(canvas);
-        customView.setSelection(0);
-        customView.dispatchDraw(canvas);
-        field = FloatingLabelSpinner.class.getDeclaredField("floatLabelAnimPercentage");
-        field.setAccessible(true);
-        field.set(customView, 1);
-        customView.dispatchDraw(canvas);
+        })
+        customView!!.setSelection(1)
+        field = FloatingLabelSpinner::class.java.getDeclaredField("selectedView")
+        field.isAccessible = true
+        field[customView] = View(InstrumentationRegistry.getInstrumentation().targetContext)
+        customView!!.setHint("hint")
+        customView!!.error = "error"
+        customView!!.dispatchDraw(canvas)
+        customView!!.setSelection(0)
+        customView!!.dispatchDraw(canvas)
+        field = FloatingLabelSpinner::class.java.getDeclaredField("floatLabelAnimPercentage")
+        field.isAccessible = true
+        field[customView] = 1
+        customView!!.dispatchDraw(canvas)
     }
 
     @Test
-    public void testDispatchDrawWithErrorMargin() throws NoSuchFieldException, IllegalAccessException {
-        customView.setErrorMargin(10, 10);
-        customView.setError("error");
-        Field field = FloatingLabelSpinner.class.getDeclaredField("errorAnimator");
-        field.setAccessible(true);
-        field.set(customView, new ObjectAnimator());
-        customView.setHint("hint");
-        customView.setError("error");
-        customView.dispatchDraw(new Canvas());
+    @Throws(NoSuchFieldException::class, IllegalAccessException::class)
+    fun testDispatchDrawWithErrorMargin() {
+        customView!!.setErrorMargin(10, 10)
+        customView!!.error = "error"
+        val field = FloatingLabelSpinner::class.java.getDeclaredField("errorAnimator")
+        field.isAccessible = true
+        field[customView] = ObjectAnimator()
+        customView!!.setHint("hint")
+        customView!!.error = "error"
+        customView!!.dispatchDraw(Canvas())
     }
 
     @Test
-    public void testDispatchDrawWithoutHintAndError() {
-        customView.setHint(null);
-        customView.setError(null);
-        customView.dispatchDraw(new Canvas());
+    fun testDispatchDrawWithoutHintAndError() {
+        customView!!.setHint(null)
+        customView!!.error = null
+        customView!!.dispatchDraw(Canvas())
     }
 
     @Test
-    public void testDrawSpannableString() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        SpannableString span = new SpannableString("*hint");
-        span.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        customView.setHint(span);
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("drawSpannableString", Canvas.class, CharSequence.class, TextPaint.class, int.class, int.class);
-        method.setAccessible(true);
-        method.invoke(customView, new Canvas(), span, new TextPaint(), 0, 0);
+    @Throws(
+        NoSuchMethodException::class,
+        InvocationTargetException::class,
+        IllegalAccessException::class
+    )
+    fun testDrawSpannableString() {
+        val span = SpannableString("*hint")
+        span.setSpan(ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        customView!!.setHint(span)
+        val method = FloatingLabelSpinner::class.java.getDeclaredMethod(
+            "drawSpannableString",
+            Canvas::class.java,
+            CharSequence::class.java,
+            TextPaint::class.java,
+            Int::class.javaPrimitiveType,
+            Int::class.javaPrimitiveType
+        )
+        method.isAccessible = true
+        method.invoke(customView, Canvas(), span, TextPaint(), 0, 0)
     }
 
     @Test
-    public void testError() {
-        final String error = "error";
-        customView.requestLayout();
-        customView.setError(error);
-        Assert.assertEquals(error, customView.getError());
-        customView.setError(null);
+    fun testError() {
+        val error = "error"
+        customView!!.requestLayout()
+        customView!!.error = error
+        Assert.assertEquals(error, customView!!.error)
+        customView!!.error = null
     }
 
     @Test
-    public void testErrorColor() {
-        final int color = Color.RED;
-        customView.setErrorColor(color);
-        Assert.assertEquals(color, customView.getErrorColor());
+    fun testErrorColor() {
+        val color = Color.RED
+        customView!!.errorColor = color
+        Assert.assertEquals(color.toLong(), customView!!.errorColor)
     }
 
     @Test
-    public void testErrorTextSize() {
-        final float error_text_size = 6;
-        customView.setErrorTextSize(error_text_size);
-        Assert.assertEquals(error_text_size, customView.getErrorTextSize(), 0);
+    fun testErrorTextSize() {
+        val error_text_size = 6f
+        customView!!.errorTextSize = error_text_size
+        Assert.assertEquals(error_text_size, customView!!.errorTextSize, 0f)
     }
 
     @Test
-    public void testMargins() {
-        customView.setLabelMargins(10, 10);
-        customView.setErrorMargin(10, 10);
+    fun testMargins() {
+        customView!!.setLabelMargins(10, 10)
+        customView!!.setErrorMargin(10, 10)
     }
 
     @Test
-    public void testThickness() {
-        final int thickness = 5;
-        customView.setThickness(thickness);
-        Assert.assertEquals(thickness, customView.getThickness());
+    fun testThickness() {
+        val thickness = 5
+        customView!!.thickness = thickness
+        Assert.assertEquals(thickness.toLong(), customView!!.thickness.toLong())
     }
 
     @Test
-    public void testErrorPercentage() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-        final float test_percentage = .5f;
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("setErrorPercentage", float.class);
-        method.setAccessible(true);
-        method.invoke(customView, test_percentage);
-        Field field = FloatingLabelSpinner.class.getDeclaredField("errorPercentage");
-        field.setAccessible(true);
-        Assert.assertEquals(test_percentage, field.get(customView));
+    @Throws(
+        NoSuchMethodException::class,
+        InvocationTargetException::class,
+        IllegalAccessException::class,
+        NoSuchFieldException::class
+    )
+    fun testErrorPercentage() {
+        val test_percentage = .5f
+        val method = FloatingLabelSpinner::class.java.getDeclaredMethod(
+            "setErrorPercentage",
+            Float::class.javaPrimitiveType
+        )
+        method.isAccessible = true
+        method.invoke(customView, test_percentage)
+        val field = FloatingLabelSpinner::class.java.getDeclaredField("errorPercentage")
+        field.isAccessible = true
+        Assert.assertEquals(test_percentage, field[customView])
     }
 
     @Test
-    public void testLabelPercentage() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-        final float test_percentage = .5f;
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("setFloatLabelAnimPercentage", float.class);
-        method.setAccessible(true);
-        method.invoke(customView, test_percentage);
-        Field field = FloatingLabelSpinner.class.getDeclaredField("floatLabelAnimPercentage");
-        field.setAccessible(true);
-        Assert.assertEquals(test_percentage, field.get(customView));
+    @Throws(
+        NoSuchMethodException::class,
+        InvocationTargetException::class,
+        IllegalAccessException::class,
+        NoSuchFieldException::class
+    )
+    fun testLabelPercentage() {
+        val test_percentage = .5f
+        val method = FloatingLabelSpinner::class.java.getDeclaredMethod(
+            "setFloatLabelAnimPercentage",
+            Float::class.javaPrimitiveType
+        )
+        method.isAccessible = true
+        method.invoke(customView, test_percentage)
+        val field = FloatingLabelSpinner::class.java.getDeclaredField("floatLabelAnimPercentage")
+        field.isAccessible = true
+        Assert.assertEquals(test_percentage, field[customView])
     }
 
     @Test
-    public void testAnimationDuration() {
-        final short anim_duration = 80;
-        customView.setAnimDuration(-1);
-        customView.setAnimDuration(anim_duration);
-        Assert.assertEquals(anim_duration, customView.getAnimDuration());
+    fun testAnimationDuration() {
+        val anim_duration: Short = 80
+        customView!!.setAnimDuration(-1)
+        customView!!.setAnimDuration(anim_duration.toInt())
+        Assert.assertEquals(anim_duration.toLong(), customView!!.animDuration)
     }
 
     @Test
-    public void testErrorAnimDuration() {
-        final short error_anim_duration = 5000;
-        customView.setErrorAnimDuration(-1);
-        customView.setErrorAnimDuration(error_anim_duration);
-        Assert.assertEquals(error_anim_duration, customView.getErrorAnimDuration());
+    fun testErrorAnimDuration() {
+        val error_anim_duration: Short = 5000
+        customView!!.setErrorAnimDuration(-1)
+        customView!!.setErrorAnimDuration(error_anim_duration.toInt())
+        Assert.assertEquals(error_anim_duration.toLong(), customView!!.errorAnimDuration)
     }
 
     @Test
-    public void testAdapter() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        initAdapter();
-        customView.setHint("hint");
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("measureHintCellHeight");
-        method.setAccessible(true);
-        method.invoke(customView);
+    @Throws(
+        NoSuchMethodException::class,
+        InvocationTargetException::class,
+        IllegalAccessException::class
+    )
+    fun testAdapter() {
+        initAdapter()
+        customView!!.setHint("hint")
+        val method = FloatingLabelSpinner::class.java.getDeclaredMethod("measureHintCellHeight")
+        method.isAccessible = true
+        method.invoke(customView)
     }
 
     @VisibleForTesting
-    public void testErrorAnimation() {
+    fun testErrorAnimation() {
         try {
-            customView.setError("error");
-            Method method = FloatingLabelSpinner.class.getDeclaredMethod("startErrorAnimation");
-            method.setAccessible(true);
-            method.invoke(customView);
-        } catch (Exception e) {
-
+            customView!!.error = "error"
+            val method = FloatingLabelSpinner::class.java.getDeclaredMethod("startErrorAnimation")
+            method.isAccessible = true
+            method.invoke(customView)
+        } catch (e: Exception) {
         }
     }
 
     @Test
-    public void testDropDownHintView() {
-        View hintView = new View(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        customView.setDropDownHintView(hintView);
-        Assert.assertEquals(hintView, customView.getDropDownHintView());
-        int dropDownHintView = (int) (Integer.MAX_VALUE * Math.random());
-        customView.setDropDownHintView(dropDownHintView);
-        Assert.assertEquals(dropDownHintView, customView.getDropDownHintViewID());
+    fun testDropDownHintView() {
+        val hintView = View(InstrumentationRegistry.getInstrumentation().targetContext)
+        customView!!.dropDownHintView = hintView
+        Assert.assertEquals(hintView, customView!!.dropDownHintView)
+        val dropDownHintView = (Int.MAX_VALUE * Math.random()).toInt()
+        customView!!.setDropDownHintView(dropDownHintView)
+        Assert.assertEquals(dropDownHintView.toLong(), customView!!.dropDownHintViewID)
     }
 
     @VisibleForTesting
-    public void testOnItemSelectedListener() {
-        customView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+    fun testOnItemSelectedListener() {
+        customView!!.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        final AdapterView.OnItemSelectedListener listener = customView.getOnItemSelectedListener();
-        listener.onItemSelected(null, null, 0, 0);
-        listener.onNothingSelected(null);
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        val listener = customView!!.onItemSelectedListener
+        listener!!.onItemSelected(null, null, 0, 0)
+        listener.onNothingSelected(null)
     }
 
     @VisibleForTesting
-    public void testPerformClick() {
-        initAdapter();
-        customView.performClick();
-        customView.performClick();
+    fun testPerformClick() {
+        initAdapter()
+        customView!!.performClick()
+        customView!!.performClick()
     }
 
     @VisibleForTesting
-    public void testPerformLongClick() {
-        initAdapter();
-        customView.performLongClick();
-        customView.performLongClick(0, 0);
-    }
-
-
-    @Test
-    public void testRecursiveMode() {
-        customView.setRecursiveMode(true);
-        Assert.assertTrue(customView.getRecursiveMode());
+    fun testPerformLongClick() {
+        initAdapter()
+        customView!!.performLongClick()
+        customView!!.performLongClick(0f, 0f)
     }
 
     @Test
-    public void testLayoutSpinnerView() {
-        customView.layoutSpinnerView(1);
+    fun testRecursiveMode() {
+        customView!!.recursiveMode = true
+        Assert.assertTrue(customView!!.recursiveMode)
     }
 
     @Test
-    public void testSetSelection() {
-        final int position = 1;
-        customView.setSelection(position, false);
-        Assert.assertEquals(position, customView.getSelectedItemPosition());
+    fun testLayoutSpinnerView() {
+        customView!!.layoutSpinnerView(1)
     }
 
     @Test
-    public void testRecursiveModeDismiss() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-        initAdapter();
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
-        method.setAccessible(true);
-        method.invoke(customView);
-        customView.setRecursiveMode(true);
-        customView.dismiss();
-        Field field = FloatingLabelSpinner.class.getDeclaredField("popupWindow");
-        field.setAccessible(true);
-        Assert.assertNull(field.get(customView));
+    fun testSetSelection() {
+        val position = 1
+        customView!!.setSelection(position, false)
+        Assert.assertEquals(position.toLong(), customView!!.selectedItemPosition.toLong())
     }
 
     @Test
-    public void testAllDismissCondition() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        initAdapter();
-        customView.dismiss();
-        customView.setRecursiveMode(true);
-        customView.dismiss();
-        customView.setRecursiveMode(false);
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
-        method.setAccessible(true);
-        method.invoke(customView);
-        customView.dismiss();
+    @Throws(
+        NoSuchMethodException::class,
+        InvocationTargetException::class,
+        IllegalAccessException::class,
+        NoSuchFieldException::class
+    )
+    fun testRecursiveModeDismiss() {
+        initAdapter()
+        val method = FloatingLabelSpinner::class.java.getDeclaredMethod("togglePopupWindow")
+        method.isAccessible = true
+        method.invoke(customView)
+        customView!!.recursiveMode = true
+        customView!!.dismiss()
+        val field = FloatingLabelSpinner::class.java.getDeclaredField("popupWindow")
+        field.isAccessible = true
+        Assert.assertNull(field[customView])
     }
 
     @Test
-    public void testMustFillMode() {
-        customView.setMustFillMode(true);
+    @Throws(
+        NoSuchMethodException::class,
+        InvocationTargetException::class,
+        IllegalAccessException::class
+    )
+    fun testAllDismissCondition() {
+        initAdapter()
+        customView!!.dismiss()
+        customView!!.recursiveMode = true
+        customView!!.dismiss()
+        customView!!.recursiveMode = false
+        val method = FloatingLabelSpinner::class.java.getDeclaredMethod("togglePopupWindow")
+        method.isAccessible = true
+        method.invoke(customView)
+        customView!!.dismiss()
     }
 
     @Test
-    public void testRightIcon() {
-        customView.setRightIcon(0, 0, 0);
+    fun testMustFillMode() {
+        customView!!.setMustFillMode(true)
     }
 
     @Test
-    public void testLocale() {
-        customView.updatePaintLocale(Locale.getDefault());
-    }
-
-    @SuppressWarnings("SimplifiableAssertion")
-    @Test
-    public void testMustFill() {
-        customView.setMustFill(true);
-        Assert.assertEquals(customView.getMustFill(), true);
+    fun testRightIcon() {
+        customView!!.setRightIcon(0, 0, 0)
     }
 
     @Test
-    public void testDataSetChanged() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-        initAdapter();
-        customView.notifyDataSetChanged();
-        customView.setDropDownHintView(new View(InstrumentationRegistry.getInstrumentation().getTargetContext()));
-        Method method = FloatingLabelSpinner.class.getDeclaredMethod("togglePopupWindow");
-        method.setAccessible(true);
-        method.invoke(customView);
-        customView.notifyDataSetChanged();
+    fun testLocale() {
+        customView!!.updatePaintLocale(Locale.getDefault())
     }
 
     @Test
-    public void testTouchEvent() throws NoSuchFieldException, IllegalAccessException {
+    fun testMustFill() {
+        customView!!.mustFill = true
+        Assert.assertEquals(customView!!.mustFill, true)
+    }
+
+    @Test
+    @Throws(
+        NoSuchMethodException::class,
+        InvocationTargetException::class,
+        IllegalAccessException::class,
+        NoSuchFieldException::class
+    )
+    fun testDataSetChanged() {
+        initAdapter()
+        customView!!.notifyDataSetChanged()
+        customView!!.dropDownHintView =
+            View(InstrumentationRegistry.getInstrumentation().targetContext)
+        val method = FloatingLabelSpinner::class.java.getDeclaredMethod("togglePopupWindow")
+        method.isAccessible = true
+        method.invoke(customView)
+        customView!!.notifyDataSetChanged()
+    }
+
+    @Test
+    @Throws(NoSuchFieldException::class, IllegalAccessException::class)
+    fun testTouchEvent() {
         // Obtain MotionEvent object
-        long downTime = SystemClock.uptimeMillis();
-        long eventTime = SystemClock.uptimeMillis() + 100;
-        float x = 0.0f;
-        float y = 0.0f;
+        val downTime = SystemClock.uptimeMillis()
+        val eventTime = SystemClock.uptimeMillis() + 100
+        val x = 0.0f
+        val y = 0.0f
         // List of meta states found here: developer.android.com/reference/android/view/KeyEvent.html#getMetaState()
-        int metaState = 0;
-        MotionEvent motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        Field field = FloatingLabelSpinner.class.getDeclaredField("performClick");
-        field.setAccessible(true);
-        field.set(customView, true);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 1000, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 0, 1000, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 1000, 1000, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
-        motionEvent = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_CANCEL, x, y, metaState);
-        customView.dispatchTouchEvent(motionEvent);
+        val metaState = 0
+        var motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        val field = FloatingLabelSpinner::class.java.getDeclaredField("performClick")
+        field.isAccessible = true
+        field[customView] = true
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 1000f, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, 0f, 1000f, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent = MotionEvent.obtain(
+            downTime,
+            eventTime,
+            MotionEvent.ACTION_MOVE,
+            1000f,
+            1000f,
+            metaState
+        )
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
+        motionEvent =
+            MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_CANCEL, x, y, metaState)
+        customView!!.dispatchTouchEvent(motionEvent)
     }
 
-    private void initAdapter() {
-        customView.setAdapter(new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return 1;
+    private fun initAdapter() {
+        customView!!.setAdapter(object : BaseAdapter() {
+            override fun getCount(): Int {
+                return 1
             }
 
-            @Override
-            public Object getItem(int position) {
-                return null;
+            override fun getItem(position: Int): Any? {
+                return null
             }
 
-            @Override
-            public long getItemId(int position) {
-                return 0;
+            override fun getItemId(position: Int): Long {
+                return 0
             }
 
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return new View(InstrumentationRegistry.getInstrumentation().getTargetContext());
+            override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+                return View(InstrumentationRegistry.getInstrumentation().targetContext)
             }
-        });
+        })
     }
 
     @After
-    public void tearDown() throws Exception {
-        customView = null;
+    @Throws(Exception::class)
+    fun tearDown() {
+        customView = null
     }
-
 }
