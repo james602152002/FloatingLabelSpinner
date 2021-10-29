@@ -138,8 +138,8 @@ class FloatingLabelSpinner : AppCompatSpinner {
 
     var error: CharSequence? = null
         set(value) {
-            isError = !TextUtils.isEmpty(error)
             field = value
+            isError = !TextUtils.isEmpty(error)
             if (isError) {
                 if (width > 0) {
                     startErrorAnimation()
