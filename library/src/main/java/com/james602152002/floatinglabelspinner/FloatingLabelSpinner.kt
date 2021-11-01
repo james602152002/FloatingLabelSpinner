@@ -663,10 +663,12 @@ class FloatingLabelSpinner : AppCompatSpinner {
                 ) else cardMarginBelowLollipop)
             popupWindow.width =
                 width - mPaddingLeft - mPaddingRight + (cardMarginBelowLollipop + margin shl 1)
+            popupWindow.height = LayoutParams.WRAP_CONTENT
             if (hintAdapter != null && hintAdapter != popupWindow.hintAdapter) {
                 popupWindow.setAdapter(this, hintAdapter, margin, listener)
             }
             popupWindow.showAsDropDown(this, -(cardMarginBelowLollipop + margin), dy)
+            popupWindow.contentView?.findViewById<View>(R.id.list_view)?.requestLayout()
         }
     }
 
