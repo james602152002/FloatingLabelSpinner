@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="StyleCard" parent="BaseStyleCard">
+        <item name="android:outlineProvider">bounds</item>
+    </style>
+
+    <style name="StyleList" parent="BaseStyleList">
+        <item name="android:outlineProvider">bounds</item>
+    </style>
+</resources>
