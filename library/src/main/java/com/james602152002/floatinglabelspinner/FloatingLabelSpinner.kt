@@ -892,6 +892,11 @@ class FloatingLabelSpinner : AppCompatSpinner {
         updateLabel()
     }
 
+    fun updateLabel(label: String?) {
+        savedLabel = label
+        updateLabel()
+    }
+
     private fun updateLabel() {
         hint = when (mustFill) {
             true -> {

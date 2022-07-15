@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/FloatingLabelSpinner.iml" filepath="$PROJECT_DIR$/.idea/modules/FloatingLabelSpinner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.main.iml" filepath="$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/library/FloatingLabelSpinner.library.unitTest.iml" />
     </modules>
   </component>
 </project>
