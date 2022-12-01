@@ -86,6 +86,22 @@ class FloatingLabelSpinner : AppCompatSpinner {
     private var rightIconBitmap: Bitmap? = null
     private var rightIconSize = 0
     private var savedLabel: CharSequence? = null
+
+    //if mark changed then updateLabel
+    var mustFillMark: CharSequence? = " *"
+        set(value) {
+            if (field != value) {
+                field = value
+                updateLabel()
+            }
+        }
+    var normalMark: CharSequence? = null
+        set(value) {
+            if (field != value) {
+                field = value
+                updateLabel()
+            }
+        }
     var mustFill = false
 
     var highlightColor = 0
@@ -276,13 +292,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
         savedLabel = hint
         if (typedArray.getBoolean(R.styleable.FloatingLabelSpinner_j_fls_must_fill_type, false)) {
             mustFill = true
-            hint = SpannableString(savedLabel.toString() + " *").apply {
-                setSpan(
-                    ForegroundColorSpan(Color.RED),
-                    length - 1, length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
+            hint = initMustFillSpan()
         }
         if (animDuration < 0) animDuration = 800
         if (errorAnimDuration < 0) errorAnimDuration = 8000
@@ -900,19 +910,33 @@ class FloatingLabelSpinner : AppCompatSpinner {
     private fun updateLabel() {
         hint = when (mustFill) {
             true -> {
-                SpannableString(savedLabel.toString() + " *").apply {
+                initMustFillSpan()
+            }
+            else -> {
+                initNormalSpan()
+            }
+        }
+        invalidate()
+    }
+
+    private fun initMustFillSpan() = initSpan(mustFillMark)
+
+    private fun initNormalSpan() = initSpan(normalMark)
+
+    private fun initSpan(mark: CharSequence?): CharSequence? {
+        return when (mark.isNullOrEmpty()) {
+            true -> savedLabel
+            else -> SpannableString("$savedLabel$mark").apply {
+                val markLength = mark.length
+                val index = length - markLength
+                if (index in indices) {
                     setSpan(
                         ForegroundColorSpan(Color.RED),
-                        length - 1,
-                        length,
+                        index, length,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
                 }
             }
-            else -> {
-                savedLabel
-            }
         }
-        invalidate()
     }
 }
