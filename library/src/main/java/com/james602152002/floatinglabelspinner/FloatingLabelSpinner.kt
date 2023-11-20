@@ -633,12 +633,14 @@ class FloatingLabelSpinner : AppCompatSpinner {
                 downX = event.rawX
                 downY = event.rawY
             }
+
             MotionEvent.ACTION_MOVE -> if (!isMoving && (abs(event.rawX - downX) > touchSlop || abs(
                     event.rawY - downY
                 ) > touchSlop)
             ) {
                 isMoving = true
             }
+
             MotionEvent.ACTION_UP -> if (!isMoving) {
                 performClick()
             }
@@ -648,10 +650,14 @@ class FloatingLabelSpinner : AppCompatSpinner {
 
     private fun togglePopupWindow() {
         hintAdapter ?: return
+        if (!isEnabled) {
+            return
+        }
         when (popupWindow.isShowing) {
             true -> {
                 popupWindow.dismiss()
             }
+
             else -> {
                 showPopupWindow()
             }
@@ -753,6 +759,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
                     selectedView,
                     this
                 )
+
                 else -> super.getSelectedView()
             }
         } ?: super.getSelectedView()
@@ -779,6 +786,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
                 dismiss()
                 showPopupWindow()
             }
+
             else -> popupWindow.notifyDataSetChanged()
         }
 //        if (recursiveMode) {
@@ -912,6 +920,7 @@ class FloatingLabelSpinner : AppCompatSpinner {
             true -> {
                 initMustFillSpan()
             }
+
             else -> {
                 initNormalSpan()
             }
